@@ -1,0 +1,191 @@
+:root {
+      --primary: var(--primary);
+      --secondary: var(--secondary);
+    }
+    
+
+
+.html-layer { 
+            pointer-events: auto; position: absolute; box-sizing: border-box; 
+            transform-style: preserve-3d;
+            will-change: transform, opacity, box-shadow;
+        }
+        pixelengine {
+            display: block; width: 100%; height: 100%; position: relative;
+        }
+        
+        .engine-wrapper {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+        
+        
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  /* Prevent bounce scroll on mobile web */
+  overscroll-behavior-y: none; 
+}
+
+/* =========================================================
+    PAGE VIEW ROOT
+========================================================= */
+
+pageview, PageView {
+  position: fixed; /* Changed from absolute to fixed to guarantee viewport filling */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--surface, #ffffff);
+  display: none; 
+  z-index: 1; /* Baseline z-index */
+}
+
+pageview[active="true"], 
+PageView[active="true"] {
+  display: block !important;
+  z-index: 5; /* Active page sits above to prevent ghost layers */
+}
+
+/* =========================================================
+    APP ROOT
+========================================================= */
+
+App {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  isolation: isolate;
+
+  /* Dynamically fill the parent PageView */
+  width: var(--app-width, 100%);
+  height: var(--app-height, 100%);
+  min-width: 0;
+  min-height: 0;
+}
+
+/* =========================================================
+    TOP BAR
+========================================================= */
+
+AppBar {
+  flex-shrink: 0;
+  z-index: 10;
+  min-height: 0;
+}
+/* =========================================================
+   BODY
+========================================================= */
+/* =========================================================
+   BODY
+========================================================= */
+
+AppBody {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  
+  scrollbar-gutter: auto; 
+
+  /* Default */
+  overflow-x: hidden;
+  overflow-y: auto; 
+  overflow-y: overlay; /* FIX 1: Forces Webkit to float the scrollbar without taking width */
+
+  /* Firefox Default */
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.10s ease;
+}
+
+/* =========================================================
+   SCROLL TYPES
+========================================================= */
+
+AppBody[type="vscroll"] {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overflow-y: overlay; /* Apply overlay fix here too */
+}
+
+AppBody[type="hscroll"] {
+  overflow-x: auto;
+  overflow-x: overlay;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+AppBody[type="both"] {
+  overflow-x: auto;
+  overflow-x: overlay;
+  overflow-y: auto;
+  overflow-y: overlay;
+}
+
+AppBody[type="none"] {
+  overflow: hidden;
+}
+
+/* =========================================================
+   SCROLLBAR VISIBILITY (HIDE)
+========================================================= */
+
+AppBody[scrollbar="false"] {
+  scrollbar-width: none;
+}
+
+AppBody[scrollbar="false"]::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* =========================================================
+   APP-STYLE FLOATING SCROLLBAR (SHOW)
+========================================================= */
+
+/* FIX 2: Only apply the 14px width on devices with a mouse/trackpad. 
+   Touch devices will naturally use their 0px overlay scrollbars. */
+@media (pointer: fine) {
+  AppBody::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+
+  AppBody::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  AppBody::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border: 4px solid transparent;
+    background-clip: padding-box;
+    border-radius: 999px;
+  }
+
+  AppBody.scrolling::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.25);
+  }
+
+  AppBody::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.45) !important;
+  }
+}
+
+/* Firefox Interaction Styles */
+AppBody.scrolling {
+  scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
+}

@@ -1,0 +1,30 @@
+/* Custom Scrollbar Tracks - Material Design */
+.md-scrollbar-track {
+    position: absolute;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.4); /* Material dark semi-transparent overlay */
+    border-radius: 0px; /* Fully rounded "pill" shape */
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    will-change: transform;
+}
+
+/* Optional: Material Light Overlay for Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .md-scrollbar-track {
+        background: rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* Hide Default Scrollbars */
+[ScrollBar="true"] {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    overflow: auto;
+    position: relative; 
+}
+
+[ScrollBar="true"]::-webkit-scrollbar {
+    display: none !important;
+}

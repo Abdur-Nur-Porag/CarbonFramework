@@ -1,0 +1,100 @@
+const ActionSheetRegistry = {};
+
+const ActionSheetEngine = {
+  // Helper to calculate Material Shadow based on Elevation 0-10
+  getShadow(level) {
+    const val = Math.min(Math.max(parseInt(level) || 0, 0), 10);
+    if (val === 0) return 'none';
+    const blur = val * 4;
+    const spread = val * 0.5;
+    const alpha = (val * 0.03) + 0.05;
+    return `0px -${val}px ${blur}px ${spread}px rgba(0,0,0,${alpha})`;
+  },
+  
+  initSheet(el) {
+    const name = el.getAttribute('Name');
+    const pos = (el.getAttribute('Position') || 'Bottom').toLowerCase();
+    const hasNotch = el.getAttribute('Notch') === 'true';
+    const elevation = el.getAttribute('Elevation') || '2';
+    
+    // 1. Create Overlay (Global Singleton)
+    if (!document.getElementById('as-global-overlay')) {
+      const overlay = document.createElement('div');
+      overlay.id = 'as-global-overlay';
+      overlay.className = 'as-overlay';
+      // REMOVED: overlay.onclick close logic
+      document.body.appendChild(overlay);
+    }
+    
+    // 2. Create UI Wrapper
+    const wrapper = document.createElement('div');
+    wrapper.className = `as-wrapper as-${pos}`;
+    wrapper.style.boxShadow = this.getShadow(elevation);
+    
+    // Set width based on parent element at time of initialization
+    const parentWidth = el.parentElement.clientWidth;
+    wrapper.style.maxWidth = parentWidth + 'px';
+    
+    if (hasNotch) {
+      const notch = document.createElement('div');
+      notch.className = 'as-notch';
+      wrapper.appendChild(notch);
+    }
+    
+    // 3. Migrate Content
+    while (el.firstChild) {
+      wrapper.appendChild(el.firstChild);
+    }
+    
+    // 4. Register
+    document.body.appendChild(wrapper);
+    ActionSheetRegistry[name] = wrapper;
+    el.remove();
+  }
+};
+
+// --- API Methods ---
+window.openActionSheet = (name) => {
+  const sheet = ActionSheetRegistry[name];
+  if (sheet) {
+    document.getElementById('as-global-overlay').classList.add('active');
+    sheet.classList.add('active');
+  }
+};
+
+window.closeActionSheet = (name) => {
+  const sheet = ActionSheetRegistry[name];
+  if (sheet) {
+    sheet.classList.remove('active');
+    // Check if any other sheets are still open before hiding overlay
+    setTimeout(() => {
+      const anyActive = document.querySelector('.as-wrapper.active');
+      if (!anyActive) {
+        document.getElementById('as-global-overlay').classList.remove('active');
+      }
+    }, 100); // Shorter timeout for snappier feel
+  }
+};
+
+// Observer for Dynamic Injection
+const observer_2 = new MutationObserver((mutations) => {
+  mutations.forEach(mutation => {
+    mutation.addedNodes.forEach(node => {
+      if (node.tagName === 'ACTIONSHEET') ActionSheetEngine.initSheet(node);
+    });
+  });
+});
+
+observer_2.observe(document.documentElement, { childList: true, subtree: true });
+
+// Initial Boot
+document.querySelectorAll('ActionSheet').forEach(el => ActionSheetEngine.initSheet(el));
+
+// Update width on window resize to ensure responsiveness
+window.addEventListener('resize', () => {
+  Object.values(ActionSheetRegistry).forEach(sheet => {
+    // You can customize this logic if sheets should respond to parent resizing
+    const container = document.querySelector('.app-container');
+    sheet.style.maxWidth = container.clientWidth + 'px';
+  });
+});

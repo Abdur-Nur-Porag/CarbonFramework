@@ -1,0 +1,16 @@
+GridView {
+  display: grid !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+GridView > * {
+  box-sizing: border-box;
+  margin: 0 !important; /* Critical: removes default button margins */
+  min-width: 0;
+}
+
+ColumnSpan {
+  display: block;
+  width: 100%;
+}

@@ -1,0 +1,7 @@
+:Package
+  :Script
+    :Carbon.MaterialDesign
+      - Carbon.MaterialDesign.js
+  :Style
+    :Carbon.MaterialDesign
+      - Carbon.MaterialDesign.css

@@ -1,0 +1,68 @@
+:root {
+    
+    --as-backdrop: rgba(0, 0, 0, 0.4);
+    /* Smooth Material Design Easing */
+    --as-transition: 0.4s cubic-bezier(0.05, 0.7, 0.1, 1);
+    --as-radius: 15px;
+}
+
+/* Essential for preventing layout shift before JS runs */
+        ActionSheet { display: none; }
+
+        .as-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--as-backdrop);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            z-index: 9998;
+            backdrop-filter: blur(2px);
+        }
+        .as-overlay.active { opacity: 1; visibility: visible; }
+
+        .as-wrapper {
+            position: fixed;
+            /* Center horizontally and match parent/container width */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: inherit; /* Inherits width from parent if placed inside a container */
+            background: var(--surface);
+            z-index: 9999;
+            transition: transform var(--as-transition), visibility var(--as-transition);
+            visibility: hidden;
+            padding: 16px;
+            padding-bottom: calc(16px + env(safe-area-inset-bottom));
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            will-change: transform; /* Performance optimization for smooth translation */
+        }
+
+        /* Position specific logic */
+        .as-top { 
+            top: 0; 
+            transform: translate(-50%, -100%); 
+            border-radius: 0 0 var(--as-radius) var(--as-radius); 
+        }
+        .as-top .as-notch { order: 100; margin-top: 12px; }
+
+        .as-bottom { 
+            bottom: 0; 
+            transform: translate(-50%, 100%); 
+            border-radius: var(--as-radius) var(--as-radius) 0 0; 
+        }
+        .as-bottom .as-notch { margin-bottom: 12px; }
+        
+        /* Active State - Centered X remains, Y goes to 0 */
+        .as-wrapper.active { transform: translate(-50%, 0); visibility: visible; }
+
+        .as-notch {
+            width: 32px;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            align-self: center;
+            flex-shrink: 0;
+        }

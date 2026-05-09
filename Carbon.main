@@ -1,0 +1,18 @@
+:Main
+  :PreScript
+    - Themes.js
+  :Script
+    - MainView.js
+  :Style
+    - MainStyle.css
+  :Themes
+    - Carbon.Material.Themes.js
+  :Views
+    - MainView.jsx
+    - HomeView.jsx
+  :PostScript
+    - PixelGrid.js
+  :BottomScript
+    - bottom.js
+  :TopScript
+    - top.js

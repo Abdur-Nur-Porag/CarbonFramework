@@ -1,5 +1,9 @@
 # CarbonFramework
 
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![JSX](https://img.shields.io/badge/JSX-%2361DAFB.svg?style=for-the-badge&logo=react&logoColor=white)
+![Material Design](https://img.shields.io/badge/material%20design-%23757575.svg?style=for-the-badge&logo=material-design&logoColor=white)
+
 Carbon Framework is a UI library designed for Android App Development, providing a vast collection of prebuilt components, themes, and Material Design 3 widgets. It aims to simplify the development process by offering ready-to-use components that follow modern design principles.
 
 ## 🚀 Key Features
@@ -108,3 +112,16 @@ Explore our prebuilt components:
 ## 📄 Release History
 
 Check out the latest updates in [Release.md](Release.md).
+
+## ❤️ Thanks
+
+Special thanks to the following open-source projects:
+- **beer-css**
+- **vue**
+- **js**
+- **prism js**
+
+We always appreciate them.
+
+> [!NOTE]
+> They are not official sponsors; we respect these open-source projects.

@@ -118,10 +118,9 @@ Check out the latest updates in [Release.md](Release.md).
 ## ❤️ Thanks
 
 Special thanks to the following open-source projects:
-- **beer-css**
-- **vue**
-- **js**
-- **prism js**
+- [beer-css](https://github.com/beercss/beercss)
+- [vue-js](https://vuejs.org/)
+- [Prism-js](https://prismjs.com/)
 
 We always appreciate them.
 

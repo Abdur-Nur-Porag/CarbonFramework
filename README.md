@@ -12,15 +12,18 @@ Carbon Framework is a UI library designed for Android App Development, providing
 
 ## 📁 Project Structure
 
-- `Engine/`: Core framework logic, including the Build API, themes, and styles.
-- `Doc/`: Comprehensive documentation for prebuilt components.
-- `Example/`: Practical examples and tutorials for using various components.
-- `Package/`: Dependencies and package management.
-- `CarbonCli.js`: Command-line interface for managing Carbon projects.
+- <add file tree here of project with Engine,Main,Package>
+Add say user will write there code 
+For jsx write Main/Views and Write Script in Script.js(generaly) script folder must contain pageview(link)render code of your view. Also there is files for TopScript,BottomScript,PostScript,PreScript for various perpose.
+TopScript means this execute at start of page. BottomScript execute after end of code. Prescript means runs before all views set. Postscript means this run after all execute of Script folder script. Themes folder contain themes js,style provide styling of user.
 
+And a caution user ony access to edit in Main folder (except:PixelGrid.js,Themes.js,Carbon.Material.Themes.js,MainView.js,MainView.jsx,HomeView.jsx)[add documention for it after read this file]. These file are not access to delete if deleted may suffer from ui or otuers problem. And say Engine is only access maintained by owner. If you modified project may break down. And Package folder need manage by cli(unless may break) dependency Main.build,Engine.build,Package.build auto update with change by cli no need manual(use manual as you own risk).(Tutorial for manual use)
 ## 🛠 Getting Started (CLI Usage)
 
 The Carbon CLI provides tools for project assembly and package management.
+//<say require node js>
+//must remember any file change(add,remove,change name,..new package,delete package)..or every time before build or live server run command --sync (link it as most important.)
+// run node LiveServer.js
 
 ### Build Commands
 - **Full Build**: `node CarbonCli.js --carbon-framework --build`

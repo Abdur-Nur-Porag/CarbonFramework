@@ -12,18 +12,60 @@ Carbon Framework is a UI library designed for Android App Development, providing
 
 ## 📁 Project Structure
 
-- <add file tree here of project with Engine,Main,Package>
-Add say user will write there code 
-For jsx write Main/Views and Write Script in Script.js(generaly) script folder must contain pageview(link)render code of your view. Also there is files for TopScript,BottomScript,PostScript,PreScript for various perpose.
-TopScript means this execute at start of page. BottomScript execute after end of code. Prescript means runs before all views set. Postscript means this run after all execute of Script folder script. Themes folder contain themes js,style provide styling of user.
+```text
+.
+├── Engine/           # Framework Core (Maintained by owner. Do not modify.)
+│   ├── Core/         # Core logic and Build API
+│   ├── Debug/        # Debugging tools
+│   ├── Prebuilt/     # Prebuilt Material Design 3 components
+│   ├── Style/        # Core styles
+│   └── Themes/       # Core themes
+├── Main/             # User Application Code
+│   ├── TopScript/    # Executes at the very start of the page
+│   ├── PreScript/    # Runs before all views are set
+│   ├── Script/       # Application logic (generally PageView render code)
+│   ├── Views/        # UI components and layouts (JSX)
+│   ├── Style/        # User-defined styles
+│   ├── Themes/       # User-defined themes
+│   ├── PostScript/   # Runs after all Script/ folder scripts have executed
+│   └── BottomScript/ # Executes after the end of the code
+└── Package/          # Dependencies managed via CLI
+```
 
-And a caution user ony access to edit in Main folder (except:PixelGrid.js,Themes.js,Carbon.Material.Themes.js,MainView.js,MainView.jsx,HomeView.jsx)[add documention for it after read this file]. These file are not access to delete if deleted may suffer from ui or otuers problem. And say Engine is only access maintained by owner. If you modified project may break down. And Package folder need manage by cli(unless may break) dependency Main.build,Engine.build,Package.build auto update with change by cli no need manual(use manual as you own risk).(Tutorial for manual use)
+### 🛠 Development Guidelines
+- **User Code**: Users should write their JSX code in `Main/Views` and their logic in `Main/Script`.
+- **Scripts**:
+  - `TopScript`: Start of page execution.
+  - `PreScript`: Before views are initialized.
+  - `PostScript`: After main scripts.
+  - `BottomScript`: At the end of the page.
+- **⚠️ Caution**:
+  - Only edit files within the `Main` folder.
+  - **Do not modify or delete** the following protected files as it may break the UI or functionality:
+    - `Main/PostScript/PixelGrid.js`
+    - `Main/PreScript/Themes.js`
+    - `Main/Themes/Carbon.Material.Themes.js`
+    - `Main/Script/MainView.js`
+    - `Main/Views/MainView.jsx`
+    - `Main/Views/HomeView.jsx`
+  - The `Engine` folder is strictly maintained by the owner. Modifications may cause project instability.
+  - The `Package` folder should be managed via the CLI. Manual changes are risky. `Main.build`, `Engine.build`, and `Package.build` are auto-updated by the CLI.
+
 ## 🛠 Getting Started (CLI Usage)
 
-The Carbon CLI provides tools for project assembly and package management.
-//<say require node js>
-//must remember any file change(add,remove,change name,..new package,delete package)..or every time before build or live server run command --sync (link it as most important.)
-// run node LiveServer.js
+The Carbon CLI provides tools for project assembly and package management. **Node.js is required** to run the CLI.
+
+> [!IMPORTANT]
+> Always run the sync command after any file change (add, remove, rename, etc.) and before building or starting the live server:
+> ```bash
+> node CarbonCli.js --sync
+> ```
+
+### Running the Live Server
+To preview your application, run:
+```bash
+node LiveServer.js
+```
 
 ### Build Commands
 - **Full Build**: `node CarbonCli.js --carbon-framework --build`

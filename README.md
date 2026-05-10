@@ -1,5 +1,6 @@
 # CarbonFramework
-![carbon.png](Resources/carbon.png)
+![carbon.png](./Resources/carbon.png)
+
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![JSX](https://img.shields.io/badge/JSX-%2361DAFB.svg?style=for-the-badge&logo=react&logoColor=white)
 ![Material Design](https://img.shields.io/badge/material%20design-%23757575.svg?style=for-the-badge&logo=material-design&logoColor=white)

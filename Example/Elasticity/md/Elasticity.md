@@ -23,3 +23,4 @@ ElasticityEffect("id").<api>
 
 ## Structure Note
 For best results, place content inside a child element with the class `.elastic-content` to prevent visual distortion of the text/images during the stretch.
+#verified 

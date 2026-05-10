@@ -4,21 +4,20 @@ The PageView system provides a robust routing and page management framework for 
 
 ## Use Example
 ```jsx
-<App>
-  <AppBody Type="VScroll" ScrollBar="true">
-
-    <PageView Name="home">
-      <h1>Welcome Home</h1>
-      <button onclick="openPageView('settings')">Go to Settings</button>
-    </PageView>
-
-    <PageView Name="settings">
-      <h1>Settings</h1>
-      <button onclick="openPageView('home')">Back</button>
-    </PageView>
-
-  </AppBody>
-</App>
+<PageView Name="home">
+	<App>
+		<AppBar></AppBar>
+		<AppBody>Home</AppBody>
+		<BottomBar></BottomBar>
+	</App>
+</PageView>
+<PageView Name="settings">
+	<App>
+		<AppBar></AppBar>
+		<AppBody>Home</AppBody>
+		<BottomBar></BottomBar>
+	</App>
+</PageView>
 
 <script>
 Carbon.PageView({
@@ -30,6 +29,7 @@ Carbon.PageView({
 
 Carbon.PageView({
   Name: "settings"
+  //default inital is false
 });
 </script>
 ```
@@ -38,6 +38,13 @@ Carbon.PageView({
 ### AppBody
 1.  **Type** = Scroll direction ("VScroll" or "HScroll").
 2.  **ScrollBar** = Boolean ("true"/"false").
+```html
+<AppBody Type="VScroll" ScrollBar="true/false">
+With ScrollBar
+</AppBody>
+Or
+<AppBody>No Scrollbar</AppBody>
+```
 
 ### PageView
 1.  **Name** = Unique name for the page.
@@ -47,13 +54,13 @@ Carbon.PageView({
 ### Use of api:
 ```js
 Carbon.PageView(config);
-openPageView("name");
+Carbon.openPageView("name");
 ```
 
-| Api Name | Method | Example | Extra |
-| :--- | :--- | :--- | :--- |
-| **Register Page** | `Carbon.PageView(config)` | `Carbon.PageView({...})` | Registers a page and its lifecycle hooks. |
-| **Open Page** | `openPageView(name)` | `openPageView("settings")` | Switches view to the specified page. |
+| Api Name          | Method                      | Example                           | Extra                                     |
+| :---------------- | :-------------------------- | :-------------------------------- | :---------------------------------------- |
+| **Register Page** | `Carbon.PageView(config)`   | `Carbon.PageView({...})`          | Registers a page and its lifecycle hooks. |
+| **Open Page**     | `Carbon.openPageView(name)` | `Carbon.openPageView("settings")` | Switches view to the specified page.      |
 
 ## Config Object Properties:
 1.  **Name** = Matching name attribute in HTML.
@@ -61,3 +68,6 @@ openPageView("name");
 3.  **OnStart** = Async hook called before the page shows.
 4.  **OnScript** = Async hook called after the page is visible.
 5.  **OnFinished** = Async hook called when leaving the page.
+
+`
+#verified 

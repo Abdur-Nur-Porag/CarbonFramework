@@ -18,3 +18,4 @@ Divider is a simple UI component used to separate content with lines and optiona
 
 ### DividerText
 The content inside this tag will be displayed in the middle of the divider line.
+#verified 

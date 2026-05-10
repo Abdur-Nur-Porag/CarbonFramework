@@ -38,3 +38,4 @@ openNativeToast("name");
 6.  **Duration** = Time in ms before hiding.
 7.  **Width** = "full" or specific width like "300px".
 8.  **Height** = Specific height (optional).
+#verified 

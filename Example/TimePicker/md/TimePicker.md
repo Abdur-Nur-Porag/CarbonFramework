@@ -40,3 +40,4 @@ CarbonTimePicker.<api>
 | **Get Time** | `getTime(id)` | `CarbonTimePicker.getTime("meeting_1")` | Returns currently selected time string. |
 | **Set Time** | `setTime(id, timeStr)` | `CarbonTimePicker.setTime("id", "10:30 AM")` | Programmatically sets the time. |
 | **Clear** | `removeTime(id)` | `CarbonTimePicker.removeTime("meeting_1")` | Resets the time picker. |
+#verified 

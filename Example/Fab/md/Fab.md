@@ -4,17 +4,38 @@ FABs represent the primary action of a screen. This component supports expandabl
 
 ## Use Example
 ```jsx
-<fab>
-  <fabbutton><i>add</i></fabbutton>
-  <fabitem data-action="camera"><i>photo_camera</i></fabitem>
-  <fabitem data-action="gallery"><i>image</i></fabitem>
-</fab>
+   <Fab name="MainFab">
+        <FabBody>
+            <FabItem>Create New <FabSpace></FabSpace> 📝</FabItem>
+            <FabItem>Upload File <FabSpace></FabSpace> ☁️</FabItem>
+            <FabItem>Settings <FabSpace></FabSpace> ⚙️</FabItem>
+        </FabBody>
+        <FabButton></FabButton>
+    </Fab>
+    
 ```
 
 ## Structure Define:
 1.  **fab** = The main container.
 2.  **fabbutton** = The primary floating button.
 3.  **fabitem** = Sub-action items that appear when the FAB is clicked.
+## Event
+For event you can use `event` method of [Carbon Build Api](Example/Core_JavaScript/md/Carbon_Build_Api.md)
+Example:
+```jsx
+<Fab name="MainFab">
+        <FabBody>
+            <FabItem id="goHome">
+            	Home
+            </FabItem>
+        </FabBody>
+        <FabButton></FabButton>
+    </Fab>
+```
 
-## Attribute Define:
-1.  **data-action** = Custom identifier for the action triggered by the sub-item.
+```js
+$("#goHome").event("click",()=>{
+//here is opratiom
+})
+```
+#verified 

@@ -28,3 +28,4 @@ SvgContainer is a custom web component that ensures SVGs scale perfectly within 
 - Automatically removes hardcoded `width` and `height` from internal `<svg>` tags.
 - Sets internal SVG to `100%` width/height to match container.
 - Supports both external loading and inline SVG content.
+#verified 

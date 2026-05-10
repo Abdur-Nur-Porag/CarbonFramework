@@ -3,6 +3,7 @@
 CodeHighlighter is a powerful component for displaying syntax-highlighted code blocks, powered by PrismJS.
 
 ## Use Example
+Avoid use diractly inside in jsx.
 ```jsx
 <CodeHighlighter
   Id="code_1"
@@ -17,7 +18,22 @@ function hello() {
 }
 </CodeHighlighter>
 ```
-
+Or 
+### Recommended
+Use by js
+```js
+<div id="exampleJs"></div>✅must
+<script>
+CodeHighlighter('exampleJs')
+.syntax('javascript')
+.code(`
+function runAPI() {
+  console.log("Injected into parent div!");
+        }
+    `);
+    
+</script>
+```
 ## Attribute Define:
 1.  **Id** = Unique identifier.
 2.  **Language** = Programming language (e.g., javascript, css, html, etc.).
@@ -30,10 +46,13 @@ function hello() {
 ## Javascript Api
 ### Use of api:
 ```js
-CodeHighlighter("id").syntax("lang").code(`string`);
+CodeHighlighter("id")
+.syntax("lang")
+.code(`string`);
 ```
 
 | Api Name | Method | Example | Extra |
 | :--- | :--- | :--- | :--- |
 | **Set Syntax** | `syntax(lang)` | `.syntax("python")` | Chainable method to set language. |
 | **Set Code** | `code(string)` | `.code("print('hi')")` | Sets code and renders highlighter. |
+#verified 

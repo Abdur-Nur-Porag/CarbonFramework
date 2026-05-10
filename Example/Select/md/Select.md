@@ -40,3 +40,4 @@ CarbonSelect.<api>
 | **Clear** | `unSet(id)` | `CarbonSelect.unSet("id")` | Resets the select field. |
 | **Add Data** | `appendData(id, arr)` | `CarbonSelect.appendData("id", ["New"])` | Appends new options. |
 | **Get Checked** | `getAllChecked(id)` | `CarbonSelect.getAllChecked("id")` | Returns array of selected items. |
+#verified 

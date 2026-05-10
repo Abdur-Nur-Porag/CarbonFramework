@@ -30,3 +30,4 @@ openDrawer("mainMenu");
 | :--- | :--- | :--- | :--- |
 | **Open Drawer** | `openDrawer(name)` | `openDrawer("mainMenu")` | Opens the drawer by Name. |
 | **Close Drawer** | `closeDrawer(name)` | `closeDrawer("mainMenu")` | Closes the drawer by Name. |
+#verified 

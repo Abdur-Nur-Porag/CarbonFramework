@@ -36,3 +36,4 @@ GestureManager.grastureLeft(config);
 2.  **EdgeSize** = Detection zone size in pixels. Default is 40.
 3.  **OnOpen** = Callback function triggered on "Open" gesture.
 4.  **OnClose** = Callback function triggered on "Close" gesture.
+#verified 

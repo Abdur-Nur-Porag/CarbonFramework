@@ -13,7 +13,10 @@ Alert("Operation Successful!", (ok) => {
 AlertConfirm("Do you want to delete this item?", (isConfirmed) => {
   if (isConfirmed) {
     console.log("Deleted");
-  }
+  }//when click ok
+  else{
+  	console.log("Not Confirmed")
+  }//when click cancel
 });
 
 // Input Dialog
@@ -35,3 +38,4 @@ Alert(message, callback);
 | **Alert** | `Alert(message, callback)` | `Alert("Hello", cb)` | Standard alert dialog. |
 | **Confirm** | `AlertConfirm(message, callback)` | `AlertConfirm("Sure?", cb)` | Returns true/false to callback. |
 | **Input** | `AlertInput(message, callback, placeholder)` | `AlertInput("Name:", cb, "Type...")` | Returns input string or null. |
+#verified 

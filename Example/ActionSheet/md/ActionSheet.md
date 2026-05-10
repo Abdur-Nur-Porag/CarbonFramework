@@ -28,3 +28,5 @@ openActionSheet("mySheet");
 | :--- | :--- | :--- | :--- |
 | **Open Sheet** | `openActionSheet(name)` | `openActionSheet("mySheet")` | Opens the ActionSheet by Name. |
 | **Close Sheet** | `closeActionSheet(name)` | `closeActionSheet("mySheet")` | Closes the ActionSheet by Name. |
+
+#verified

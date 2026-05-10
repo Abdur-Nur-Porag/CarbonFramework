@@ -37,3 +37,4 @@ CarbonDatePicker.<api>
 | **Get Date** | `getSelectDate(id)` | `CarbonDatePicker.getSelectDate("event_1")` | Returns currently selected date string. |
 | **Set Today** | `goToday(id)` | `CarbonDatePicker.goToday("event_1")` | Jumps the calendar view to today. |
 | **Reset View** | `init(id)` | `CarbonDatePicker.init("event_1")` | Re-initializes the picker state. |
+#verified 

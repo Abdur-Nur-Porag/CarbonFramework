@@ -1,0 +1,22 @@
+{
+  "name": "carbon-framework",
+  "version": "3.2.0",
+  "description": "A UI library designed for Android App Development, providing a vast collection of prebuilt components, themes, and Material Design 3 widgets.",
+  "main": "CarbonCli.js",
+  "scripts": {
+    "sync": "node CarbonCli.js --sync",
+    "build": "node CarbonCli.js --carbon-framework --build",
+    "build:js": "node CarbonCli.js --build-js",
+    "build:css": "node CarbonCli.js --build-css",
+    "start": "node LiveServer.js"
+  },
+  "keywords": [
+    "carbon",
+    "framework",
+    "android",
+    "ui",
+    "material-design-3"
+  ],
+  "author": "",
+  "license": "ISC"
+}

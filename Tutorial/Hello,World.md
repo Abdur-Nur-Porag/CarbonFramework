@@ -37,7 +37,7 @@ You need to learn about PageView,Layout after complete this basic lesson.
 
 [PageView](Example/PageView/md/PageView.md)
 
-## [🥰 Next Lesson](Tutorial/BasicPageView.md)
+## [🥰 Next Lesson](BasicPageView.md)
 
 
 

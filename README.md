@@ -61,7 +61,7 @@ Carbon Framework is a UI library designed for Android App Development, providing
 If this is your first please read `CLI Usage` and read `🛠 Development Guidelines`.
 Then you can start tutorial form here..
 1. [Hello,World](Tutorial/Hello,World.md)
-2. 
+2. [BasicPageView](Tutorial/BasicPageView)
 ## CLI Usage
 
 The Carbon CLI provides tools for project assembly and package management. **Node.js is required** to run the CLI.

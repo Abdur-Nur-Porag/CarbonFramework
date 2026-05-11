@@ -22,3 +22,8 @@
     16. [Add TimePicker Documentation](Doc/Prebuilt/TimePicker.md)
     17. [Add NativeToast Example](Example/NativeToast/md/NativeToast.md)
     18. [Add Svg Example](Example/Svg/md/Svg.md)
+3. R1.2
+	1. [Add Tutorial/Hello,World.md](Add Tutorial/Hello,World.md)
+	2. [Add Tutorial/BasicPageView.md](Tutorial/BasicPageView)
+	3.  Update README.md file 🛠 Getting Started 
+

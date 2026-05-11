@@ -2,6 +2,8 @@
 
 The PageView system provides a robust routing and page management framework for Carbon apps.
 
+## ⚠️Do you complete your basic❓
+If not go to [basic](Tutorial/Hello,World)
 ## Use Example
 ```jsx
 <PageView Name="home">

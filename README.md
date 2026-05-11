@@ -56,7 +56,13 @@ Carbon Framework is a UI library designed for Android App Development, providing
   - The `Engine` folder is strictly maintained by the owner. Modifications may cause project instability.
   - The `Package` folder should be managed via the CLI. Manual changes are risky. `Main.build`, `Engine.build`, and `Package.build` are auto-updated by the CLI.
 
-## 🛠 Getting Started (CLI Usage)
+## 🛠 Getting Started 
+
+If this is your first please read `CLI Usage` and read `🛠 Development Guidelines`.
+Then you can start tutorial form here..
+1. [Hello,World](Tutorial/Hello,World.md)
+2. 
+## CLI Usage
 
 The Carbon CLI provides tools for project assembly and package management. **Node.js is required** to run the CLI.
 

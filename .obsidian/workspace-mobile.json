@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Tutorial/Hello,World.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "Hello,World"
+              "title": "README"
             }
           }
         ]
@@ -170,13 +170,13 @@
   },
   "active": "5bf79301ff21d1d5",
   "lastOpenFiles": [
+    "Tutorial/Hello,World.md",
     "Tutorial/BasicPageView.md",
     "README.md",
     "version.md",
     "Release.md",
     "Example/PageView/md/PageView.md",
     "Example/Layout/md/Layout.md",
-    "Tutorial/Hello,World.md",
     "Tutorial/svg/goPre.png",
     "Tutorial/svg/gonext.png",
     "Tutorial/svg/gonext.png",

@@ -1,13 +1,13 @@
-/* =========================================================
-   CORE CONFIGURATION STYLES
-========================================================= */
 :root {
   --primary: var(--primary);
   --secondary: var(--secondary);
+  --surface: #ffffff;
 }
 
 .html-layer { 
-  pointer-events: auto; position: absolute; box-sizing: border-box; 
+  pointer-events: auto; 
+  position: absolute; 
+  box-sizing: border-box; 
   transform-style: preserve-3d;
   will-change: transform, opacity, box-shadow;
 }
@@ -19,7 +19,7 @@ pixelengine {
 .engine-wrapper {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
 }
-
+        
 *,
 *::before,
 *::after {
@@ -28,93 +28,41 @@ pixelengine {
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   width: 100%;
   height: 100%;
   overscroll-behavior-y: none; 
 }
 
 /* =========================================================
-   PAGE VIEW SYSTEM LAYERING & KEYFRAMES
+   PAGE VIEW ROOT (GHOST VIEW SAFE)
 ========================================================= */
 
 pageview, PageView {
-  position: fixed; 
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100%;
   height: 100%;
-  background: var(--surface, #ffffff);
+  background: var(--surface);
   display: none; 
-  z-index: 1; 
-  animation-duration: 0.3s; /* Default transition time */
-  animation-fill-mode: forwards;
-  animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 1;
+  /* Hardware acceleration for smoother animations */
+  transform: translateZ(0); 
+  will-change: transform, opacity;
 }
 
 pageview[active="true"], 
 PageView[active="true"] {
   display: block !important;
-  z-index: 5;
+  /* Baseline z-index when active, JS handles overlaying during transition */
+  z-index: 5; 
 }
 
 /* =========================================================
-   GLOBAL BACKDROP OVERLAY
-========================================================= */
-
-.carbon-backdrop-layer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 4; /* Sits right beneath active PageViews (z-index 5 and 6) */
-  pointer-events: auto; /* Blocks accidental clicks to hidden UI beneath */
-  opacity: 0; /* Base state */
-  animation-duration: 0.3s;
-  animation-fill-mode: forwards;
-  animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.carbon-backdrop-in {
-  animation-name: carbonFadeIn;
-}
-
-.carbon-backdrop-out {
-  animation-name: carbonFadeOut;
-}
-
-/* Native Motion Presets */
-@keyframes carbonSlideIn {
-  from { transform: translateX(100%); } to { transform: translateX(0); }
-}
-@keyframes carbonSlideOut {
-  from { transform: translateX(0); } to { transform: translateX(100%); }
-}
-@keyframes carbonSlideUp {
-  from { transform: translateY(100%); } to { transform: translateY(0); }
-}
-@keyframes carbonSlideDown {
-  from { transform: translateY(0); } to { transform: translateY(100%); }
-}
-@keyframes carbonFadeIn {
-  from { opacity: 0; } to { opacity: 1; }
-}
-@keyframes carbonFadeOut {
-  from { opacity: 1; } to { opacity: 0; }
-}
-
-/* Selector Hooks (z-index 6 forces animating elements above others) */
-.carbon-ani-slideIn   { animation-name: carbonSlideIn;   display: block !important; z-index: 6; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); }
-.carbon-ani-slideOut  { animation-name: carbonSlideOut;  display: block !important; z-index: 6; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); }
-.carbon-ani-slideUp   { animation-name: carbonSlideUp;   display: block !important; z-index: 6; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); }
-.carbon-ani-slideDown { animation-name: carbonSlideDown; display: block !important; z-index: 6; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); }
-.carbon-ani-fadeIn    { animation-name: carbonFadeIn;    display: block !important; z-index: 6; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); }
-.carbon-ani-fadeOut   { animation-name: carbonFadeOut;   display: block !important; z-index: 6; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); }/* =========================================================
-   APP STRUCTURAL VIEWPORT 
+   APP ROOT & LAYOUT
 ========================================================= */
 
 App {
@@ -152,7 +100,7 @@ AppBody {
 AppBody[type="vscroll"] {
   overflow-x: hidden;
   overflow-y: auto;
-  overflow-y: overlay; 
+  overflow-y: overlay;
 }
 
 AppBody[type="hscroll"] {
@@ -188,18 +136,22 @@ AppBody[scrollbar="false"]::-webkit-scrollbar {
     width: 14px;
     height: 14px;
   }
+
   AppBody::-webkit-scrollbar-track {
     background: transparent;
   }
+
   AppBody::-webkit-scrollbar-thumb {
     background-color: transparent;
     border: 4px solid transparent;
     background-clip: padding-box;
     border-radius: 999px;
   }
+
   AppBody.scrolling::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.25);
   }
+
   AppBody::-webkit-scrollbar-thumb:hover {
     background-color: rgba(0, 0, 0, 0.45) !important;
   }

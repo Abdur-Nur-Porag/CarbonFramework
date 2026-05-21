@@ -1,0 +1,78 @@
+/* =========================================================
+   CARBONE ROUTER ANIMATIONS
+========================================================= */
+
+/* 1. SLIDE IN (Right to Left)
+   Use with OpenPageView. Target slides in from the right over the current page.
+========================================================= */
+@keyframes SlideIn {
+  from {
+    transform: translateX(100%);
+    box-shadow: none; /* No shadow initially */
+  }
+  to {
+    transform: translateX(0);
+    /* Subtle shadow during and after transition to give depth over the previous page */
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+  }
+}
+
+/* 2. SLIDE OUT (Left to Right)
+   Use with ClosePageView. Current page slides out to the right, revealing target below.
+========================================================= */
+@keyframes SlideOut {
+  from {
+    transform: translateX(0);
+    /* Shadow exists initially while page is on top */
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+  }
+  to {
+    transform: translateX(100%);
+    box-shadow: none; /* Shadow disappears as page exits */
+  }
+}
+
+/* 3. SLIDE UP (Bottom to Top)
+   Use with OpenPageView (e.g., for creating a "modal" type view opening from bottom).
+========================================================= */
+@keyframes SlideUp {
+  from {
+    transform: translateY(100%);
+    box-shadow: none;
+  }
+  to {
+    transform: translateY(0);
+    /* Top shadow for depth */
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+  }
+}
+
+/* 4. SLIDE DOWN (Top to Bottom)
+   Use with ClosePageView. Page slides down off-screen.
+========================================================= */
+@keyframes SlideDown {
+  from {
+    transform: translateY(0);
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+  }
+  to {
+    transform: translateY(100%);
+    box-shadow: none;
+  }
+}
+
+/* 5. FADE IN
+   Simple opacity transition. Use with OpenPageView.
+========================================================= */
+@keyframes FadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 6. FADE OUT
+   Simple opacity transition. Use with ClosePageView.
+========================================================= */
+@keyframes FadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

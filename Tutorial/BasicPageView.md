@@ -3,7 +3,7 @@ You are too Smart 👍.
 Let's  go to deep.
 ## Core Knowledge
 CarbonFramework use `PageView` for making `spa(single page application)`. 
-As 👨‍🎓 learns you need to know it.
+As 👨‍🎓 a learner you need to know it.
 ### Let's go deep
 Open `Main/Views/HomeView.jsx` and write(replace Whole code with it)
 ```jsx
@@ -40,7 +40,7 @@ var MainView=(
 </div>
 );
 ```
-😍 you successful set you multiple view. But this is not visible now. For add Visibility we need add some `javascript`.
+😍 you successful set multiple view. But this is not visible now. For add Visibility we need add some `javascript`.
 ❓
  Open `Main/Script/MainView.js` add this 
  ```js
@@ -83,27 +83,4 @@ Or
 <AppBody>No Scrollbar</AppBody>
 ```
 
-### PageView
-1.  **Name** = Unique name for the page.
-2.  **active** = (Internal) Set to "true" when page is visible.
-
-## Javascript Api
-### Use of api:
-```js
-Carbon.PageView(config);
-Carbon.openPageView("name");
-```
-
-| Api Name          | Method                      | Example                           | Extra                                     |
-| :---------------- | :-------------------------- | :-------------------------------- | :---------------------------------------- |
-| **Register Page** | `Carbon.PageView(config)`   | `Carbon.PageView({...})`          | Registers a page and its lifecycle hooks. |
-| **Open Page**     | `Carbon.openPageView(name)` | `Carbon.openPageView("settings")` | Switches view to the specified page.      |
-
-## Config Object Properties:
-1.  **Name** = Matching name attribute in HTML.
-2.  **Initial** = Boolean. If true, this page loads first.
-3.  **OnStart** = Async hook called before the page shows.
-4.  **OnScript** = Async hook called after the page is visible.
-5.  **OnFinished** = Async hook called when leaving the page.
-
-`
+## [Learn PageView](Example/PageView/md/PageView)

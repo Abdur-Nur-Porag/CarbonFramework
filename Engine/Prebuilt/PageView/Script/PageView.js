@@ -89,15 +89,14 @@ document.querySelectorAll("App").forEach(app => {
 });
 window.LayoutFramework = LayoutFramework;
 
-
 /* =========================================================
-   CARBON ROUTER (WITH ANIMATION TIME & BACKDROP OVERLAY)
+   CARBON ROUTER (GHOST VIEW & ANIMATION FIXED)
 ========================================================= */
 
 const Carbon = {
   pages: {},
   currentPage: null,
-  isTransitioning: false, 
+  isTransitioning: false,
   
   _resetPageDOM: function(element) {
     if (!element) return;
@@ -109,14 +108,26 @@ const Carbon = {
       }
     });
   },
-
+  
+  // Fallback parser for time formats
+  _parseTime: function(timeStr) {
+    if (!timeStr) return '0ms';
+    return typeof timeStr === 'number' ? `${timeStr}ms` : timeStr;
+  },
+  
+  // Calculate fallback timeout to prevent animation hangs
+  _getMs: function(timeStr) {
+    if (!timeStr) return 0;
+    const isSec = timeStr.includes('s') && !timeStr.includes('ms');
+    return parseFloat(timeStr) * (isSec ? 1000 : 1) + 50;
+  },
+  
   PageView: function(config) {
     const isInitial = !!config.Initial;
-    Carbon.pages[config.Name] = { ...config, Initial: isInitial };
+    this.pages[config.Name] = { ...config, Initial: isInitial };
     
     if (isInitial) {
-      const initPage = () => Carbon.openPageView({ page: config.Name });
-      
+      const initPage = () => OpenPageView({ Target: config.Name });
       if (document.readyState === 'loading') {
         window.addEventListener('DOMContentLoaded', initPage);
       } else {
@@ -125,180 +136,103 @@ const Carbon = {
     }
   },
   
-  openPageView: async function(options) {
-    let pageName, delay, animation, backdrop, animationTime;
-    
-    if (typeof options === 'string') {
-      pageName = options;
-      delay = 0;
-    } else if (options && typeof options === 'object') {
-      pageName = options.page;
-      delay = options.delay !== undefined ? Number(options.delay) : 0;
-      animation = options.animation; 
-      backdrop = options.backdrop;
-      animationTime = options.animationTime; // e.g., 500 or "0.5s"
+  navigate: async function(config, mode = 'open') {
+    // Backwards compatibility for string inputs
+    if (typeof config === 'string') {
+      config = { Target: config };
     }
-
+    
+    const { Target, Delay = 0, AnimationName, AnimationTime = '300ms' } = config;
+    
     if (this.isTransitioning) {
-      console.warn(`Carbon: Transition in progress. Suppressing load for "${pageName}".`);
+      console.warn(`Carbon: Transition locked. Ignored action for "${Target}".`);
       return;
     }
-    if (this.currentPage === pageName) return; 
+    if (this.currentPage === Target) return;
     
-    const newPage = this.pages[pageName];
-    const targetEl = document.querySelector(`PageView[Name="${pageName}"], pageview[Name="${pageName}"]`);
+    const newPage = this.pages[Target];
+    const targetEl = document.querySelector(`PageView[Name="${Target}"], pageview[Name="${Target}"]`);
+    const currentEl = this.currentPage ? document.querySelector(`PageView[Name="${this.currentPage}"], pageview[Name="${this.currentPage}"]`) : null;
     
     if (!newPage || !targetEl) {
-      console.warn(`Carbon: Page "${pageName}" not found.`);
+      console.warn(`Carbon: Page "${Target}" not found.`);
       return;
     }
     
-    this.isTransitioning = true; 
+    this.isTransitioning = true;
     
-    // Format custom animation time to a valid CSS duration string
-    const parsedTime = animationTime ? (typeof animationTime === 'number' ? `${animationTime}ms` : animationTime) : null;
-
     try {
-      if (delay > 0) {
-        await new Promise(resolve => setTimeout(resolve, delay));
+      // 1. DELAY EXECUTION
+      if (Delay > 0) {
+        await new Promise(res => setTimeout(res, Delay));
       }
-
-      const oldPageName = this.currentPage;
-      const oldEl = oldPageName ? document.querySelector(`PageView[Name="${oldPageName}"], pageview[Name="${oldPageName}"]`) : null;
-
-      const currentExitAni = animation || (oldEl ? oldEl.getAttribute('closeAni') : null);
-      const targetOpenAni = targetEl.getAttribute('openAni');
-
-      // 1. MANAGE GLOBAL BACKDROP
-      this._manageBackdrop(backdrop, parsedTime);
-
-      // 2. EXIT LOGIC FOR CURRENT PAGE
-      if (oldPageName) {
-        const oldPage = this.pages[oldPageName];
-        
-        if (oldEl && currentExitAni) {
-          if (parsedTime) oldEl.style.animationDuration = parsedTime;
-          oldEl.className = `carbon-ani-${currentExitAni}`;
-          
-          oldEl.addEventListener('animationend', function handler() {
-            oldEl.removeAttribute('active');
-            oldEl.className = '';
-            oldEl.style.animationDuration = ''; // Cleanup inline styles
-            oldEl.removeEventListener('animationend', handler);
-          });
-        } else if (oldEl) {
-          oldEl.removeAttribute('active');
-        }
-
-        // Hide any ghost DOM nodes dynamically
-        document.querySelectorAll('PageView, pageview').forEach(el => {
-          if (el !== targetEl && el !== oldEl) {
-            el.removeAttribute('active');
-            el.className = '';
-          }
-        });
-        
-        if (oldPage && oldPage.OnFinished) {
-          await oldPage.OnFinished(); 
-        }
-      }
-
-      // 3. PREPARE NEW PAGE
+      
+      // 2. PREPARE NEW PAGE
       this._resetPageDOM(targetEl);
-      this.currentPage = pageName;
+      if (newPage.OnStart) await newPage.OnStart();
       
-      if (newPage.OnStart) {
-        await newPage.OnStart();
-      }
+      const animDuration = this._parseTime(AnimationTime);
+      const hasAnim = !!AnimationName;
       
-      // 4. SHOW TARGET UI
-      requestAnimationFrame(() => {
+      // 3. ANIMATION LOGIC
+      if (mode === 'open') {
+        // Opening: New page overlays current page and animates
+        if (currentEl) currentEl.style.zIndex = '1';
+        targetEl.style.zIndex = '10';
         targetEl.setAttribute('active', 'true');
         
-        if (targetOpenAni) {
-          if (parsedTime) targetEl.style.animationDuration = parsedTime;
-          targetEl.className = `carbon-ani-${targetOpenAni}`;
-          
-          targetEl.addEventListener('animationend', function handler() {
-            targetEl.className = ''; 
-            targetEl.style.animationDuration = ''; // Cleanup inline styles
-            targetEl.removeEventListener('animationend', handler);
+        if (hasAnim) {
+          targetEl.style.animation = `${AnimationName} ${animDuration} ease forwards`;
+          await new Promise(resolve => {
+            targetEl.addEventListener('animationend', resolve, { once: true });
+            setTimeout(resolve, this._getMs(animDuration));
           });
         }
-
-        setTimeout(async () => {
-          if (newPage.OnScript) {
-            await newPage.OnScript();
+      } else if (mode === 'close') {
+        // Closing: Current page animates out, revealing target page behind it
+        targetEl.style.zIndex = '1';
+        targetEl.setAttribute('active', 'true');
+        
+        if (currentEl) {
+          currentEl.style.zIndex = '10';
+          if (hasAnim) {
+            currentEl.style.animation = `${AnimationName} ${animDuration} ease forwards`;
+            await new Promise(resolve => {
+              currentEl.addEventListener('animationend', resolve, { once: true });
+              setTimeout(resolve, this._getMs(animDuration));
+            });
           }
-          this.isTransitioning = false; 
-        }, 0);
+        }
+      }
+      
+      // 4. GHOST VIEW CLEANUP (Force wipe states to prevent stuck views)
+      document.querySelectorAll('PageView, pageview').forEach(el => {
+        el.style.animation = ''; // Clear animations
+        el.style.zIndex = ''; // Clear inline z-indexes
+        if (el !== targetEl) {
+          el.removeAttribute('active'); // Hide non-targets
+        }
       });
+      
+      // 5. LIFECYCLE SCRIPTS
+      if (this.currentPage && this.pages[this.currentPage]?.OnFinished) {
+        await this.pages[this.currentPage].OnFinished();
+      }
+      
+      this.currentPage = Target;
+      
+      if (newPage.OnScript) {
+        setTimeout(async () => { await newPage.OnScript(); }, 0);
+      }
       
     } catch (error) {
       console.error("Carbon Router Error:", error);
-      this.isTransitioning = false; 
-    }
-  },
-
-  _manageBackdrop: function(backdropValue, customDuration) {
-    let backdropEl = document.getElementById('carbon-global-backdrop');
-    
-    // Determine duration to match user overrides or fallback to CSS default (0.3s)
-    const durationStyle = customDuration ? customDuration : ''; 
-
-    // Scenario A: The incoming page requests a backdrop
-    if (backdropValue) {
-      if (!backdropEl) {
-        backdropEl = document.createElement('div');
-        backdropEl.id = 'carbon-global-backdrop';
-        backdropEl.className = 'carbon-backdrop-layer';
-        document.body.appendChild(backdropEl);
-      }
-      
-      // Apply user's custom backdrop color/style if valid, else default to dark tint
-      backdropEl.style.background = typeof backdropValue === 'string' ? backdropValue : 'rgba(0,0,0,0.5)';
-      backdropEl.style.animationDuration = durationStyle;
-      
-      // Reset classes to trigger entry animation
-      backdropEl.classList.remove('carbon-backdrop-out');
-      // Trigger reflow to restart animation reliably
-      void backdropEl.offsetWidth; 
-      backdropEl.classList.add('carbon-backdrop-in');
-    } 
-    // Scenario B: The incoming page doesn't want a backdrop, but one is currently visible
-    else if (backdropEl && !backdropValue) {
-      backdropEl.style.animationDuration = durationStyle;
-      backdropEl.classList.remove('carbon-backdrop-in');
-      backdropEl.classList.add('carbon-backdrop-out');
-      
-      // Remove it from DOM completely once faded out
-      backdropEl.addEventListener('animationend', function handler() {
-        backdropEl.remove();
-        backdropEl.removeEventListener('animationend', handler);
-      });
+    } finally {
+      this.isTransitioning = false;
     }
   }
 };
 
-// Global Extensions
-Carbon.PageView.Animation = function(animationsObject) {
-  let styleEl = document.getElementById('carbon-custom-animations');
-  if (!styleEl) {
-    styleEl = document.createElement('style');
-    styleEl.id = 'carbon-custom-animations';
-    document.head.appendChild(styleEl);
-  }
-  
-  let cssBuffer = '';
-  for (const [animationName, cssRules] of Object.entries(animationsObject)) {
-    cssBuffer += `\n.carbon-ani-${animationName} { ${cssRules} }\n`;
-  }
-  styleEl.appendChild(document.createTextNode(cssBuffer));
-};
-
-const openPageView = (options) => Carbon.openPageView(options);
-const PageView = Carbon.PageView;
-
-window.Carbon = Carbon;
-window.PageView = PageView;
-window.openPageView = openPageView;
+// Global API
+const OpenPageView = (config) => Carbon.navigate(config, 'open');
+const ClosePageView = (config) => Carbon.navigate(config, 'close');

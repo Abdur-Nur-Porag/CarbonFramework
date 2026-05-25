@@ -14,10 +14,10 @@
   --surface: #ffffff;
 }
 
-.html-layer {
-  pointer-events: auto;
-  position: absolute;
-  box-sizing: border-box;
+.html-layer { 
+  pointer-events: auto; 
+  position: absolute; 
+  box-sizing: border-box; 
   transform-style: preserve-3d;
   will-change: transform, opacity, box-shadow;
 }
@@ -29,7 +29,7 @@ pixelengine {
 .engine-wrapper {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
 }
-
+        
 *,
 *::before,
 *::after {
@@ -41,7 +41,7 @@ pixelengine {
 html, body {
   width: 100%;
   height: 100%;
-  overscroll-behavior-y: none;
+  overscroll-behavior-y: none; 
 }
 
 /* =========================================================
@@ -57,18 +57,18 @@ pageview, PageView {
   width: 100%;
   height: 100%;
   background: var(--surface);
-  display: none;
+  display: none; 
   z-index: 1;
   /* Hardware acceleration for smoother animations */
-  transform: translateZ(0);
+  transform: translateZ(0); 
   will-change: transform, opacity;
 }
 
-pageview[active="true"],
+pageview[active="true"], 
 PageView[active="true"] {
   display: block !important;
   /* Baseline z-index when active, JS handles overlaying during transition */
-  z-index: 5;
+  z-index: 5; 
 }
 
 /* =========================================================
@@ -98,10 +98,10 @@ AppBody {
   flex: 1;
   min-height: 0;
   min-width: 0;
-  scrollbar-gutter: auto;
+  scrollbar-gutter: auto; 
   overflow-x: hidden;
-  overflow-y: auto;
-  overflow-y: overlay;
+  overflow-y: auto; 
+  overflow-y: overlay; 
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
   transition: scrollbar-color 0.10s ease;
@@ -211,7 +211,7 @@ AppBody.scrolling {
 const Themes = (function() {
   const themes = {};
   let currentStyleTag = null;
-
+  
   function injectCss(cssText) {
     if (currentStyleTag) currentStyleTag.remove();
     const style = document.createElement('style');
@@ -219,15 +219,15 @@ const Themes = (function() {
     document.head.appendChild(style);
     currentStyleTag = style;
   }
-
+  
   return {
     config(newThemes) { Object.assign(themes, newThemes); },
     apply(name) {
       if (!themes[name]) return console.warn(`Theme ${name} not found`);
-
+      
       // Sync the class name to the body so CSS selectors like body.greenForest work
       document.body.className = name;
-
+      
       injectCss(themes[name]);
     }
   };
@@ -345,7 +345,7 @@ ColumnSpan {
     }
 
     .calendar-content {
-      height: 300px;
+      height: 300px; 
       margin-top: 10px;
       overflow: hidden;
     }
@@ -358,7 +358,7 @@ ColumnSpan {
       text-align: center;
     }
     .calendar-grid .weekday { font-size: 0.75rem; opacity: 0.6; font-weight: bold; padding: 10px 0; }
-
+    
     .calendar-day {
       height: 40px;
       display: flex;
@@ -394,7 +394,7 @@ ColumnSpan {
     .selection-item.selected-item { background: var(--primary); color: var(--on-primary); }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
-
+  
 
 /* Source: Engine/Prebuilt/Select/Style/Select.css */
   .m3-dialog-list { padding: 0; margin: 0; list-style: none; }
@@ -405,7 +405,7 @@ ColumnSpan {
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     dialog.m3-select-dialog { border-radius: 28px !important; padding: 24px; max-width: 90vw; width: 340px; border: none; background: var(--surface-container-high, #fff); }
     dialog.m3-select-dialog h5 { margin: 0 0 12px 0; }
-
+  
 
 /* Source: Engine/Prebuilt/TimePicker/Style/TimePicker.css */
   :root {
@@ -614,7 +614,7 @@ ColumnSpan {
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none;
+      pointer-events: none; 
     }
 
     .clock-number {
@@ -664,7 +664,7 @@ ColumnSpan {
 
     .picker-btn:hover { background-color: rgba(103, 80, 164, 0.08); }
     .picker-btn:active { background-color: rgba(103, 80, 164, 0.12); }
-
+ 
 
 /* Source: Engine/Prebuilt/Elasticity/Style/Elasticity.css */
 /* Base styles required for the framework to work perfectly */
@@ -689,14 +689,14 @@ ColumnSpan {
 
 /* Source: Engine/Prebuilt/Layout/Style/Layout.css */
 /* Base styles: All fill their parent containers */
-        vcenter, vtop, vbottom,
-        hleft, hcenter, hright, hbottom,
+        vcenter, vtop, vbottom, 
+        hleft, hcenter, hright, hbottom, 
         hscroll, vscroll {
             display: flex;
             width: 100%;
             height: 100%;
             box-sizing: border-box;
-            position: relative;
+            position: relative; 
         }
 
         /* --- Vertical Alignment (Stacks items top-to-bottom) --- */
@@ -720,10 +720,10 @@ ColumnSpan {
 
         /* --- Scroll Containers --- */
         hscroll {
-            display: block;
+            display: block; 
             overflow-x: auto;
             overflow-y: hidden;
-            white-space: nowrap;
+            white-space: nowrap; 
         }
         vscroll {
             display: block;
@@ -756,7 +756,7 @@ ColumnSpan {
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
     overflow: auto;
-    position: relative;
+    position: relative; 
 }
 
 [ScrollBar="true"]::-webkit-scrollbar {
@@ -765,7 +765,7 @@ ColumnSpan {
 
 /* Source: Engine/Prebuilt/ActionSheet/Style/ActionSheet.css */
 :root {
-
+    
     --as-backdrop: rgba(0, 0, 0, 0.4);
     /* Smooth Material Design Easing */
     --as-transition: 0.4s cubic-bezier(0.05, 0.7, 0.1, 1);
@@ -807,20 +807,20 @@ ColumnSpan {
         }
 
         /* Position specific logic */
-        .as-top {
-            top: 0;
-            transform: translate(-50%, -100%);
-            border-radius: 0 0 var(--as-radius) var(--as-radius);
+        .as-top { 
+            top: 0; 
+            transform: translate(-50%, -100%); 
+            border-radius: 0 0 var(--as-radius) var(--as-radius); 
         }
         .as-top .as-notch { order: 100; margin-top: 12px; }
 
-        .as-bottom {
-            bottom: 0;
-            transform: translate(-50%, 100%);
-            border-radius: var(--as-radius) var(--as-radius) 0 0;
+        .as-bottom { 
+            bottom: 0; 
+            transform: translate(-50%, 100%); 
+            border-radius: var(--as-radius) var(--as-radius) 0 0; 
         }
         .as-bottom .as-notch { margin-bottom: 12px; }
-
+        
         /* Active State - Centered X remains, Y goes to 0 */
         .as-wrapper.active { transform: translate(-50%, 0); visibility: visible; }
 
@@ -835,13 +835,13 @@ ColumnSpan {
 
 /* Source: Engine/Prebuilt/Drawer/Style/Drawer.css */
 :root {
-
+            
   --dr-backdrop: rgba(0, 0, 0, 0.4);
        --dr-transition: 0.4s cubic-bezier(0.05, 0.7, 0.1, 1);
     --dr-width: 280px;
             /* Standard Android Drawer Width */
         }
-
+      
         /* Prevent FOUC (Flash of Unstyled Content) */
         Drawer { display: none; }
 
@@ -875,14 +875,14 @@ ColumnSpan {
         }
 
         /* Positioning Logic */
-        .dr-left {
-            left: 0;
-            transform: translateX(-100%);
+        .dr-left { 
+            left: 0; 
+            transform: translateX(-100%); 
             border-radius: 0 16px 16px 0;
         }
-        .dr-right {
-            right: 0;
-            transform: translateX(100%);
+        .dr-right { 
+            right: 0; 
+            transform: translateX(100%); 
             border-radius: 16px 0 0 16px;
         }
 
@@ -904,7 +904,7 @@ ColumnSpan {
             align-items: center;
             justify-content: center;
             z-index: 1000;
-
+            
             /* Initial State: Hidden */
             opacity: 0;
             transition: opacity 250ms ease-in-out;
@@ -925,17 +925,17 @@ ColumnSpan {
             min-width: 280px;
             padding: 24px;
             border-radius: 8px;
-            box-shadow: 0 11px 15px -7px rgba(0,0,0,0.2),
-                        0 24px 38px 3px rgba(0,0,0,0.14),
+            box-shadow: 0 11px 15px -7px rgba(0,0,0,0.2), 
+                        0 24px 38px 3px rgba(0,0,0,0.14), 
                         0 9px 46px 8px rgba(0,0,0,0.12);
-
+            
             /* Initial State: Scaled down */
             opacity: 0;
             transform: scale(0.9);
-            transition:
+            transition: 
                 transform 250ms cubic-bezier(0.4, 0, 0.2, 1),
                 opacity 250ms ease-in-out;
-
+            
             /* Ensure internal sizing is correct */
             box-sizing: border-box;
             display: flex;
@@ -962,7 +962,7 @@ ColumnSpan {
 
             /* VERTICAL SCROLL LOGIC */
             max-height: 40vh;         /* Prevents dialog from leaving the screen */
-
+            
             /* WORD WRAP LOGIC */
             word-wrap: break-word;   /* Legacy support */
             overflow-wrap: break-word; /* Prevents long text from pushing width */
@@ -994,15 +994,15 @@ ColumnSpan {
 /* --- THE FAB CONTAINER --- */
 fab {
     /* 1. Absolute binds the FAB to the boundaries of the active PageView */
-    position: absolute;
+    position: absolute; 
     bottom: 30px;
     right: 30px;
     /* 2. Automatically visible! If the PageView hides, this naturally hides with it. */
-    display: flex;
+    display: flex; 
     flex-direction: column;
     align-items: flex-end;
     /* 3. Sit above AppBody content */
-    z-index: 100;
+    z-index: 100; 
 }
 
 /* --- THE LOCAL OVERLAY --- */
@@ -1015,7 +1015,7 @@ fab .fab-overlay {
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
     /* 4. Sit behind the button, but cover the PageView underneath */
-    z-index: -1;
+    z-index: -1; 
     pointer-events: none; /* Ignore clicks when hidden */
 }
 
@@ -1069,24 +1069,24 @@ fabbody {
     min-width: 180px;
     overflow: hidden;
     order: 1;
-
+    
     opacity: 0;
     visibility: hidden;
     transform: scale(0.8) translateY(10px);
     transform-origin: bottom right;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-
-    position: absolute;
-    bottom: 70px;
+    
+    position: absolute; 
+    bottom: 70px; 
     right: 0;
-    pointer-events: none;
+    pointer-events: none; 
 }
 
 fab.active fabbody {
     opacity: 1;
     visibility: visible;
     transform: scale(1) translateY(0);
-    pointer-events: auto;
+    pointer-events: auto; 
 }
 
 /* --- THE MENU ITEMS --- */
@@ -1164,7 +1164,7 @@ code[class*=language-],pre[class*=language-]{color:#ccc;background:0 0;font-fami
             /* Customize Individual Accordion Items */
             --accordion-bg: #f3edf7;
             --accordion-radius: 16px;
-
+            
             /* Customize the Title */
             --accordion-title-color: #1d1b20;
             --accordion-title-pad: 16px 20px;
@@ -1180,7 +1180,7 @@ code[class*=language-],pre[class*=language-]{color:#ccc;background:0 0;font-fami
             --accordion-icon-color: #49454f;
             --accordion-icon-size: 24px;
         }
-
+    
         /* Base reset */
         Accordion, AccordionItem, AccordionItemTitle, AccordionItemDetail {
             display: block;
@@ -1203,7 +1203,7 @@ code[class*=language-],pre[class*=language-]{color:#ccc;background:0 0;font-fami
         AccordionItem {
             display: flex;             /* FIXED: Added flex */
             flex-direction: column;    /* FIXED: Force vertical stacking */
-            background-color: var(--accordion-bg);
+            background-color: var(--accordion-bg); 
             border-radius: var(--accordion-radius);
             overflow: hidden;
             transition: background-color 0.2s ease;
@@ -1219,12 +1219,12 @@ code[class*=language-],pre[class*=language-]{color:#ccc;background:0 0;font-fami
             font-weight: 500;
             color: var(--accordion-title-color);
             user-select: none;
-
+            
             transition: background-color 0.2s ease;
         }
 
         AccordionItemTitle:hover {
-            background-color: var(--accordion-title-hover-bg);
+            background-color: var(--accordion-title-hover-bg); 
         }
 
         /* Detail Area (Hidden via Grid Hack) */
@@ -1234,7 +1234,7 @@ code[class*=language-],pre[class*=language-]{color:#ccc;background:0 0;font-fami
             padding: var(--accordion-detail-pad);
             color: var(--accordion-detail-color);
             line-height: 1.5;
-            transition: grid-template-rows 0.3s cubic-bezier(0.2, 0, 0, 1),
+            transition: grid-template-rows 0.3s cubic-bezier(0.2, 0, 0, 1), 
                         padding-bottom 0.3s cubic-bezier(0.2, 0, 0, 1);
         }
 
@@ -1261,8 +1261,8 @@ code[class*=language-],pre[class*=language-]{color:#ccc;background:0 0;font-fami
         AccordionItem[Active="true"] .accordion-icon {
             transform: rotate(180deg);
         }
-
-
+        
+  
 </style>
     <style>
 /* Source: Package/Style/Carbon.MaterialDesign/Carbon.MaterialDesign.css */
@@ -3065,7 +3065,7 @@ input[type=number] {
   .field.fill > select:focus {
     background-color: var(--surface-variant);
   }
-
+  
   .field > select:focus + label {
     z-index: 1;
   }
@@ -3626,7 +3626,7 @@ i[class*=fa-] {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   grid-template-rows: auto auto minmax(0, 1fr) auto auto;
-  grid-template-areas:
+  grid-template-areas: 
     "left top right"
     "left header right"
     "left main right"
@@ -3899,12 +3899,12 @@ menu > li > a:only-child {
 }
 
 menu > li:first-child {
-  border-top-left-radius: inherit;
+  border-top-left-radius: inherit; 
   border-top-right-radius: inherit;
 }
 
 menu > li:last-child {
-  border-bottom-left-radius: inherit;
+  border-bottom-left-radius: inherit; 
   border-bottom-right-radius: inherit;
 }
 
@@ -4720,7 +4720,7 @@ progress.wavy:not(.circle, [value])::after {
   mask-position: 0 50%;
   mask-repeat: repeat-x;
   mask-size: auto 100%;
-
+  
 }
 progress.wavy::-moz-progress-bar {
      mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjIwIiBoZWlnaHQ9Ijc1IiB2aWV3Qm94PSI2MTAgMTEwMSAxMjIwIDc1Ij48cGF0aCBmaWxsPSIjZDBiY2ZmIiBkPSJNMTg3MC40MjUgMTE3My43NDZjLTI5LjQ0OCAwLTU4LjY2NS03LjQ3Ny04NC40OTMtMjEuNjIybC0uMDktLjA0OWMtNDMuNTU1LTIzLjgyLTk1LjU0Ni0yMy44MDktMTM5LjA5MS4wMzlsLS4xMTMuMDYyYy0yNS44MDMgMTQuMTA5LTU0Ljk4NCAyMS41NjctODQuMzk0IDIxLjU2OC0yOS40NDkgMC01OC42NjctNy40NzgtODQuNDk1LTIxLjYyMy00My41NTQtMjMuODUyLTk1LjUzOS0yMy44NjUtMTM5LjA4OS0uMDUybC0uMDkyLjA1MWMtMjUuODMgMTQuMTQ2LTU1LjA0OCAyMS42MjMtODQuNDk3IDIxLjYyMy0yOS40MjMgMC01OC42MTMtNy40NjMtODQuNDI1LTIxLjU4NGwtLjA3Ny0uMDQyYy00My41NzItMjMuODYzLTk1LjU5Ni0yMy44NjItMTM5LjE2NC0uMDAxbC0uMDg1LjA0NmMtMjUuODA5IDE0LjExNy01NS4wMDEgMjEuNTgxLTg0LjQxOCAyMS41ODFoLS4wMDFjLTI5LjQ1LS4wMDEtNTguNjY5LTcuNDc5LTg0LjQ5OC0yMS42MjUtNDMuNTM0LTIzLjg0NS05NS41MTMtMjMuODYzLTEzOS4wNjMtLjA1OGwtLjEwOC4wNmMtMjUuODI5IDE0LjE0Ni01NS4wNDcgMjEuNjIzLTg0LjQ5NiAyMS42MjMtMjkuMzk4IDAtNTguNTY2LTcuNDUxLTg0LjM2Mi0yMS41NTFsLS4xNDItLjA3NWMtNDMuNTY4LTIzLjg2My05NS41OTMtMjMuODYzLTEzOS4xNjMgMGwtLjA4MS4wNDNjLTI1LjgxMSAxNC4xMi01NS4wMDEgMjEuNTgzLTg0LjQyMSAyMS41ODMtMjkuNDUgMC01OC42NjgtNy40NzgtODQuNDk3LTIxLjYyNC03LjUyMS00LjExOC0xMC4yNzgtMTMuNTU0LTYuMTU5LTIxLjA3NHMxMy41NTQtMTAuMjc3IDIxLjA3NC02LjE1OGM0My41NyAyMy44NjIgOTUuNTkzIDIzLjg2NCAxMzkuMTYzIDBsLjA5OC0uMDUzYzI1LjgwNy0xNC4xMTQgNTQuOTkxLTIxLjU3MyA4NC40MDYtMjEuNTczIDI5LjM5OCAwIDU4LjU2NyA3LjQ1MSA4NC4zNjQgMjEuNTVsLjE0LjA3NmM0My41MzQgMjMuODQzIDk1LjUwOCAyMy44NjQgMTM5LjA1Ni4wNTlsLjExMy0uMDYzYzI1LjgyOC0xNC4xNDUgNTUuMDQ5LTIxLjYyMiA4NC40OTYtMjEuNjIyaC4wMDJjMjkuNDQ5IDAgNTguNjY4IDcuNDc4IDg0LjQ5NyAyMS42MjUgNDMuNTcgMjMuODYzIDk1LjU5NSAyMy44NjIgMTM5LjE2NS4wMDFxLjAzMi0uMDE5LjA2NS0uMDM2YzI1LjgxMy0xNC4xMjQgNTUuMDExLTIxLjU5MSA4NC40MzgtMjEuNTkxIDI5LjQyIDAgNTguNjEgNy40NjMgODQuNDIxIDIxLjU4MmwuMDgyLjA0NWM0My41MzkgMjMuODQ3IDk1LjUyMSAyMy44NjIgMTM5LjA3NC4wNDlsLjA5Ni0uMDUzYzI1LjgyOS0xNC4xNDYgNTUuMDQ3LTIxLjYyMyA4NC40OTYtMjEuNjIzczU4LjY2NyA3LjQ3NyA4NC40OTYgMjEuNjIzYzQzLjU4IDIzLjg2NyA5NS42MDQgMjMuODY2IDEzOS4xNzIuMDA1bC4xMTgtLjA2NGMyNS44MDMtMTQuMTA4IDU0Ljk4LTIxLjU2NCA4NC4zODktMjEuNTY0IDI5LjQ0OC0uMDAxIDU4LjY2NiA3LjQ3NiA4NC40OTQgMjEuNjJsLjExNC4wNjNjNDMuNTQ5IDIzLjgwNyA5NS41MjggMjMuNzkxIDEzOS4wNjMtLjA1MSA3LjUyLTQuMTIxIDE2Ljk1NS0xLjM2MSAyMS4wNzMgNi4xNTkgNC4xMTkgNy41MjEgMS4zNjEgMTYuOTU1LTYuMTU5IDIxLjA3My0yNS44MjggMTQuMTQ2LTU1LjA0NSAyMS42MjItODQuNDkyIDIxLjYyMiI+PGFuaW1hdGVUcmFuc2Zvcm0gYXR0cmlidXRlTmFtZT0idHJhbnNmb3JtIiBjYWxjTW9kZT0ibGluZWFyIiBkdXI9IjFzIiBmcm9tPSIwIDAiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiB0bz0iMzEyLjUgMCIgdHlwZT0idHJhbnNsYXRlIi8+PC9wYXRoPjwvc3ZnPg==");
@@ -7160,7 +7160,7 @@ Themes.config({
   light: `...`, // Keep your previous light code here
   dark: `...`, // Keep your previous dark code here
   lightBlue: `...`, // Keep your previous lightBlue code here
-
+  
   greenForest: `
     :root,
     body.greenForest {
@@ -7202,7 +7202,7 @@ Themes.config({
       --surface-container-highest: #e0e4dc;
     }
   `,
-
+  
   syberSky: `
     :root,
     body.syberSky {
@@ -7244,7 +7244,7 @@ Themes.config({
       --surface-container-highest: #e1e2e5;
     }
   `,
-
+  
   cream: `
     :root,
     body.cream {
@@ -7286,7 +7286,7 @@ Themes.config({
       --surface-container-highest: #e8e2d9;
     }
   `,
-
+  
   deepBerry: `
     :root,
     body.deepBerry {
@@ -7340,7 +7340,7 @@ Themes.config({
 // Source: Main/TopScript/top.js
 console.log("Top Script Loaded")
 </script>
-
+    
     <!--All Script-->
     <script>
 // Source: Engine/Core/Carbon.BuildApi.js
@@ -7349,19 +7349,19 @@ function buildAPI(el) {
   if (!(el instanceof HTMLElement)) {
     throw new Error("buildAPI requires a valid HTMLElement");
   }
-
+  
   let toggleState = false;
-
+  
   return {
     el,
-
+    
     // ---- id ----
     id(id) { if (id) el.id = id; return this; },
     addId(v) { if (v) el.id = v; return this; },
     removeId() { el.removeAttribute("id"); return this; },
     isExistId() { return !!el.id; },
     getId() { return el.id || null; },
-
+    
     // ---- class ----
     class(cls) { return this.addClass(cls); },
     addClass(cls) {
@@ -7379,7 +7379,7 @@ function buildAPI(el) {
     removeAllClass() { el.className = ""; return this; },
     isExistClass(c) { return !!c && el.classList.contains(c); },
     getAllClass() { return Array.from(el.classList); },
-
+    
     // ---- attrs ----
     attrs(a) { return this.addAttr(a); },
     addAttr(a) {
@@ -7405,13 +7405,13 @@ function buildAPI(el) {
       for (const a of el.attributes) obj[a.name] = a.value;
       return obj;
     },
-
+    
     // ---- style ----
     style(s) { return this.addStyle(s); },
     addStyle(s) { if (s && typeof s === "object") Object.assign(el.style, s); return this; },
     removeStyle() { el.removeAttribute("style"); return this; },
     getStyle(p) { return window.getComputedStyle(el)[p]; },
-
+    
     // ---- events ----
     event(name, fn, options) {
       if (typeof fn === "function" && name) el.addEventListener(name, fn, options);
@@ -7422,14 +7422,14 @@ function buildAPI(el) {
       return this;
     },
     onClick(fn) { return this.event("click", fn); },
-
+    
     // ---- form check/value ----
     check(v = true) { if (el.type === "checkbox" || el.type === "radio") el.checked = v; return this; },
     uncheck() { if (el.type === "checkbox" || el.type === "radio") el.checked = false; return this; },
     toggleCheck() { if (el.type === "checkbox" || el.type === "radio") el.checked = !el.checked; return this; },
     isChecked() { return !!el.checked; },
     val(v) { if (v !== undefined) { el.value = v; return this; } return el.value; },
-
+    
     // ---- toggle helper ----
     toggleEvent({ event = "click", initial = false, WhenTrue, WhenFalse } = {}) {
       toggleState = initial;
@@ -7440,11 +7440,11 @@ function buildAPI(el) {
       });
       return this;
     },
-
+    
     // ---- content ----
     html(html) { if (html != null) el.innerHTML = html; return this; },
     text(t) { if (t != null) el.innerText = t; return this; },
-
+    
     // ---- tree ----
     add(target) {
       let parent = null;
@@ -7455,7 +7455,7 @@ function buildAPI(el) {
       return this;
     },
     appendTo(parent) { return this.add(parent); },
-
+    
     children(childInput) {
       if (!childInput) return this;
       const addNode = (c) => {
@@ -7476,19 +7476,19 @@ function buildAPI(el) {
       }
       return this;
     },
-
+    
     removeChildren() {
       while (el.firstChild) el.removeChild(el.firstChild);
       return this;
     },
     clear() { return this.removeChildren(); },
-
+    
     // ---- plugin system ----
     use(fn) {
       if (typeof fn === "function") fn(this);
       return this;
     },
-
+    
     // ---- ripple effect ----
     ripple({ status = true, background = "rgba(0,0,0,0.3)", duration = 1500 } = {}) {
       if (!status) return this;
@@ -7508,7 +7508,7 @@ function buildAPI(el) {
       });
       return this;
     },
-
+    
     // ---- visibility ----
     show(displayType = "block") {
       el.style.display = displayType;
@@ -7526,7 +7526,7 @@ function buildAPI(el) {
       }
       return this;
     },
-
+    
     //---set background---
     // ---- background ----
     setBackground(url) {
@@ -7534,7 +7534,7 @@ function buildAPI(el) {
         // Ensure the element stretches to fill its parent
         el.style.width = "100%";
         el.style.height = "100%";
-
+        
         // Set background properties
         el.style.backgroundImage = `url("${url}")`;
         el.style.backgroundRepeat = "no-repeat";
@@ -7557,7 +7557,7 @@ function buildAPI(el) {
           document.head.appendChild(link);
         }
       }
-
+      
       el.style.fontFamily = fontName;
       return this;
     },
@@ -7729,7 +7729,7 @@ CarbonRouter()
   const initGrid = (el) => {
     // Helper: Finds attribute even if browser converts it to lowercase
     const getAttr = (n) => el.getAttribute(n) || el.getAttribute(n.toLowerCase());
-
+    
     // Helper: Ensures numbers have 'px' and returns '0px' if missing or negative
     const parseDim = (val) => {
       if (!val) return '0px';
@@ -7739,14 +7739,14 @@ CarbonRouter()
       // If the user typed "10", convert to "10px". If "10%", leave it alone.
       return isNaN(val) ? val : val + 'px';
     };
-
+    
     const rows = getAttr('Row') || '1';
     const cols = getAttr('Col') || '1';
-
+    
     // Horizontal space uses GapX, Vertical space uses GapY
     const gX = getAttr('GapX');
     const gY = getAttr('GapY');
-
+    
     Object.assign(el.style, {
       display: 'grid',
       gridTemplateColumns: `repeat(${cols}, 1fr)`,
@@ -7758,21 +7758,21 @@ CarbonRouter()
       paddingLeft: parseDim(getAttr('GapLeft')),
       paddingRight: parseDim(getAttr('GapRight'))
     });
-
+    
     // Handle ColumnSpan children
     el.querySelectorAll(':scope > ColumnSpan').forEach(span => {
       const range = span.getAttribute('ColRange') || span.getAttribute('colrange') || '1';
       span.style.gridColumn = `span ${range}`;
     });
   };
-
+  
   const setup = () => document.querySelectorAll('GridView').forEach(initGrid);
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', setup);
   } else {
     setup();
   }
-
+  
   new MutationObserver((mutations) => {
     mutations.forEach(m => m.addedNodes.forEach(n => {
       if (n.nodeType === 1) {
@@ -7889,23 +7889,23 @@ function processToastQueue() {
 
 class LayoutFramework {
   static instances = [];
-
+  
   constructor(root) {
     this.root = root;
     this.body = root.querySelector("AppBody");
     this.scrollTimer = null;
-
+    
     this.init();
     LayoutFramework.instances.push(this);
   }
-
+  
   init() {
     this.applyDefaults();
     this.initScrollbar();
     this.observe();
     this.emitReady();
   }
-
+  
   applyDefaults() {
     if (!this.body) return;
     if (!this.body.hasAttribute("type")) {
@@ -7915,53 +7915,53 @@ class LayoutFramework {
       this.body.setAttribute("scrollbar", "true");
     }
   }
-
+  
   initScrollbar() {
     if (!this.body) return;
     if (this.body.getAttribute("scrollbar") === "false") return;
-
+    
     this.body.addEventListener("scroll", () => {
       this.body.classList.add("scrolling");
       clearTimeout(this.scrollTimer);
-
+      
       this.scrollTimer = setTimeout(() => {
         this.body.classList.remove("scrolling");
       }, 1200);
     }, { passive: true });
   }
-
+  
   observe() {
     this.observer = new MutationObserver(() => {
       this.update();
     });
-
+    
     this.observer.observe(this.root, {
       childList: true,
       subtree: true,
       attributes: true
     });
   }
-
+  
   update() {}
-
+  
   scrollToTop(smooth = true) {
     this.body?.scrollTo({
       top: 0,
       behavior: smooth ? "smooth" : "auto"
     });
   }
-
+  
   scrollToLeft(smooth = true) {
     this.body?.scrollTo({
       left: 0,
       behavior: smooth ? "smooth" : "auto"
     });
   }
-
+  
   destroy() {
     this.observer?.disconnect();
   }
-
+  
   emitReady() {
     this.root.dispatchEvent(
       new CustomEvent("layout-ready", { detail: this })
@@ -7982,7 +7982,7 @@ const Carbon = {
   pages: {},
   currentPage: null,
   isTransitioning: false,
-
+  
   _resetPageDOM: function(element) {
     if (!element) return;
     element.querySelectorAll('input, textarea, select').forEach(field => {
@@ -7993,24 +7993,24 @@ const Carbon = {
       }
     });
   },
-
+  
   // Fallback parser for time formats
   _parseTime: function(timeStr) {
     if (!timeStr) return '0ms';
     return typeof timeStr === 'number' ? `${timeStr}ms` : timeStr;
   },
-
+  
   // Calculate fallback timeout to prevent animation hangs
   _getMs: function(timeStr) {
     if (!timeStr) return 0;
     const isSec = timeStr.includes('s') && !timeStr.includes('ms');
     return parseFloat(timeStr) * (isSec ? 1000 : 1) + 50;
   },
-
+  
   PageView: function(config) {
     const isInitial = !!config.Initial;
     this.pages[config.Name] = { ...config, Initial: isInitial };
-
+    
     if (isInitial) {
       const initPage = () => OpenPageView({ Target: config.Name });
       if (document.readyState === 'loading') {
@@ -8020,52 +8020,52 @@ const Carbon = {
       }
     }
   },
-
+  
   navigate: async function(config, mode = 'open') {
     // Backwards compatibility for string inputs
     if (typeof config === 'string') {
       config = { Target: config };
     }
-
+    
     const { Target, Delay = 0, AnimationName, AnimationTime = '300ms' } = config;
-
+    
     if (this.isTransitioning) {
       console.warn(`Carbon: Transition locked. Ignored action for "${Target}".`);
       return;
     }
     if (this.currentPage === Target) return;
-
+    
     const newPage = this.pages[Target];
     const targetEl = document.querySelector(`PageView[Name="${Target}"], pageview[Name="${Target}"]`);
     const currentEl = this.currentPage ? document.querySelector(`PageView[Name="${this.currentPage}"], pageview[Name="${this.currentPage}"]`) : null;
-
+    
     if (!newPage || !targetEl) {
       console.warn(`Carbon: Page "${Target}" not found.`);
       return;
     }
-
+    
     this.isTransitioning = true;
-
+    
     try {
       // 1. DELAY EXECUTION
       if (Delay > 0) {
         await new Promise(res => setTimeout(res, Delay));
       }
-
+      
       // 2. PREPARE NEW PAGE
       this._resetPageDOM(targetEl);
       if (newPage.OnStart) await newPage.OnStart();
-
+      
       const animDuration = this._parseTime(AnimationTime);
       const hasAnim = !!AnimationName;
-
+      
       // 3. ANIMATION LOGIC
       if (mode === 'open') {
         // Opening: New page overlays current page and animates
         if (currentEl) currentEl.style.zIndex = '1';
         targetEl.style.zIndex = '10';
         targetEl.setAttribute('active', 'true');
-
+        
         if (hasAnim) {
           targetEl.style.animation = `${AnimationName} ${animDuration} ease forwards`;
           await new Promise(resolve => {
@@ -8077,7 +8077,7 @@ const Carbon = {
         // Closing: Current page animates out, revealing target page behind it
         targetEl.style.zIndex = '1';
         targetEl.setAttribute('active', 'true');
-
+        
         if (currentEl) {
           currentEl.style.zIndex = '10';
           if (hasAnim) {
@@ -8089,7 +8089,7 @@ const Carbon = {
           }
         }
       }
-
+      
       // 4. GHOST VIEW CLEANUP (Force wipe states to prevent stuck views)
       document.querySelectorAll('PageView, pageview').forEach(el => {
         el.style.animation = ''; // Clear animations
@@ -8098,18 +8098,18 @@ const Carbon = {
           el.removeAttribute('active'); // Hide non-targets
         }
       });
-
+      
       // 5. LIFECYCLE SCRIPTS
       if (this.currentPage && this.pages[this.currentPage]?.OnFinished) {
         await this.pages[this.currentPage].OnFinished();
       }
-
+      
       this.currentPage = Target;
-
+      
       if (newPage.OnScript) {
         setTimeout(async () => { await newPage.OnScript(); }, 0);
       }
-
+      
     } catch (error) {
       console.error("Carbon Router Error:", error);
     } finally {
@@ -8128,7 +8128,7 @@ const ClosePageView = (config) => Carbon.navigate(config, 'close');
       _months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 
       // --- PUBLIC API ---
-
+      
       /** * Returns the currently selected date string (YYYY-MM-DD) or null
        */
       getSelectDate: function(id) {
@@ -8143,7 +8143,7 @@ const ClosePageView = (config) => Carbon.navigate(config, 'close');
           viewYear: now.getFullYear(),
           tempSelected: null,
           confirmedDate: null,
-          mode: 'calendar'
+          mode: 'calendar' 
         };
         this.render(id);
       },
@@ -8212,7 +8212,7 @@ const ClosePageView = (config) => Carbon.navigate(config, 'close');
         const footer = dialog.querySelector('.calendar-footer');
         const headerBtnLeft = dialog.querySelector('.header-left');
         const headerBtnRight = dialog.querySelector('.header-right');
-
+        
         headerBtnLeft.style.display = "inline-flex";
         headerBtnRight.style.display = "inline-flex";
 
@@ -8250,7 +8250,7 @@ const ClosePageView = (config) => Carbon.navigate(config, 'close');
 
         } else {
           title.innerHTML = `
-            <span onclick="CarbonDatePicker.changeView('${id}', 'month')" style="cursor:pointer">${this._months[s.viewMonth]}</span>
+            <span onclick="CarbonDatePicker.changeView('${id}', 'month')" style="cursor:pointer">${this._months[s.viewMonth]}</span> 
             <span onclick="CarbonDatePicker.changeView('${id}', 'year')" style="cursor:pointer">${s.viewYear} <i>arrow_drop_down</i></span>
           `;
           footer.innerHTML = `
@@ -8266,7 +8266,7 @@ const ClosePageView = (config) => Carbon.navigate(config, 'close');
           let html = `<div class="calendar-grid">
             <div class="weekday">S</div><div class="weekday">M</div><div class="weekday">T</div>
             <div class="weekday">W</div><div class="weekday">T</div><div class="weekday">F</div><div class="weekday">S</div>`;
-
+          
           for (let i = 0; i < firstDay; i++) html += `<div class="calendar-day empty"></div>`;
           for (let d = 1; d <= daysInMonth; d++) {
             const dateKey = `${s.viewYear}-${String(s.viewMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
@@ -8333,18 +8333,18 @@ const ClosePageView = (config) => Carbon.navigate(config, 'close');
 
 const CarbonSelect = {
   _dataStore: {},
-
+  
   getSelect: function(id) {
     const el = document.getElementById(id);
     return el ? el.value : null;
   },
-
+  
   setValue: function(id, value) {
     const input = document.getElementById(id);
     if (!input) return;
     input.value = value;
     input.parentElement.classList.add('active');
-
+    
     const dialog = document.getElementById(`dlg_${id}`);
     if (dialog) {
       const vals = value.split(', ');
@@ -8354,7 +8354,7 @@ const CarbonSelect = {
       });
     }
   },
-
+  
   unSet: function(id) {
     const input = document.getElementById(id);
     if (!input) return;
@@ -8367,62 +8367,62 @@ const CarbonSelect = {
       });
     }
   },
-
+  
   appendData: function(id, newDataArray) {
     if (!this._dataStore[id]) this._dataStore[id] = [];
     const dataToAdd = Array.isArray(newDataArray) ? newDataArray : [newDataArray];
     this._dataStore[id] = [...this._dataStore[id], ...dataToAdd];
     this._renderList(id);
   },
-
+  
   removeData: function(id, itemValue) {
     if (!this._dataStore[id]) return;
     this._dataStore[id] = this._dataStore[id].filter(item => item !== itemValue);
     if (this.getSelect(id) === itemValue) this.unSet(id);
     this._renderList(id);
   },
-
+  
   removeAll: function(id) {
     this._dataStore[id] = [];
     this.unSet(id);
     this._renderList(id);
   },
-
+  
   getAll: function(id) {
     return this._dataStore[id] || [];
   },
-
+  
   checkExistData: function(id, itemValue) {
     if (!this._dataStore[id]) return false;
     return this._dataStore[id].includes(itemValue);
   },
-
+  
   getAllChecked: function(id) {
     const dialog = document.getElementById(`dlg_${id}`);
     if (!dialog) return [];
     return Array.from(dialog.querySelectorAll('input[type="checkbox"]:checked'))
       .map(cb => cb.closest('li').querySelector('text').textContent);
   },
-
+  
   getAllUnchecked: function(id) {
     const dialog = document.getElementById(`dlg_${id}`);
     if (!dialog) return [];
     return Array.from(dialog.querySelectorAll('input[type="checkbox"]:not(:checked)'))
       .map(cb => cb.closest('li').querySelector('text').textContent);
   },
-
+  
   addData: function(id, dataArray) {
     this._dataStore[id] = [...dataArray];
     this._renderList(id);
   },
-
+  
   _renderList: function(id) {
     const dialog = document.getElementById(`dlg_${id}`);
     if (!dialog) return;
     const listContainer = dialog.querySelector('.m3-dialog-list');
     const data = this._dataStore[id] || [];
     const isMulti = dialog.hasAttribute('data-multi');
-
+    
     let html = '';
     data.forEach((opt, index) => {
       const itemId = `${id}_cb_${index}_${Math.random().toString(36).substr(2, 4)}`;
@@ -8443,7 +8443,7 @@ const CarbonSelect = {
 function handleCarbonSelectLogic(inputId, val, cbId, dialogId, isMulti) {
   const dialog = document.getElementById(dialogId);
   const currentCb = document.getElementById(cbId);
-
+  
   if (!isMulti) {
     const wasChecked = currentCb.checked;
     dialog.querySelectorAll('input[type="checkbox"]').forEach(cb => {
@@ -8460,7 +8460,7 @@ function handleCarbonSelectOk(id, dialogId) {
   const dialog = document.getElementById(dialogId);
   const selected = Array.from(dialog.querySelectorAll('input[type="checkbox"]:checked'))
     .map(cb => cb.closest('li').querySelector('text').textContent);
-
+  
   if (selected.length > 0) {
     input.value = selected.join(", ");
     input.parentElement.classList.add('active');
@@ -8478,13 +8478,13 @@ function renderCarbon(tag, isMulti) {
     const type = el.getAttribute('Type') || "Border";
     const initialData = (el.getAttribute('Data') || "").split(',').filter(o => o.trim() !== "");
     const dialogId = `dlg_${id}`;
-
+    
     const fieldWrapper = document.createElement('div');
     fieldWrapper.setAttribute('data-ui', `#${dialogId}`);
     fieldWrapper.className = `field label suffix ${type.toLowerCase() === "filled" ? "fill" : "border"}`;
     fieldWrapper.style.cursor = "pointer";
     fieldWrapper.innerHTML = `<input type="text" id="${id}" readonly placeholder=" "><label>${placeholder}</label><img src="Resources/svg/carbon.fill.dropdown.svg"/>`;
-
+    
     const dialog = document.createElement('dialog');
     dialog.id = dialogId;
     dialog.className = "m3-select-dialog";
@@ -8496,7 +8496,7 @@ function renderCarbon(tag, isMulti) {
                     <button class="transparent link" data-ui="#${dialogId}">Cancel</button>
                     <button class="primary" onclick="handleCarbonSelectOk('${id}', '${dialogId}')">Ok</button>
                 </nav>`;
-
+    
     const container = document.createElement('div');
     container.appendChild(fieldWrapper);
     container.appendChild(dialog);
@@ -8513,7 +8513,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Source: Engine/Prebuilt/TimePicker/Script/TimePicker.js
     document.addEventListener("DOMContentLoaded", () => {
-
+      
       window.CarbonTimePicker = {
         instances: {},
         getTime: function(id) {
@@ -8551,7 +8551,7 @@ document.addEventListener("DOMContentLoaded", () => {
             isDragging: false,
             clockRadiusOuter: 100,
             clockRadiusInner: 64, // Precise radius to separate inner/outer rings
-            centerOffset: 128
+            centerOffset: 128 
           };
 
           this.DOM = {
@@ -8627,7 +8627,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         renderClockNumbers() {
-          this.DOM.numbersContainer.innerHTML = '';
+          this.DOM.numbersContainer.innerHTML = ''; 
           let items = [];
 
           if (this.state.mode === 'hours') {
@@ -8666,7 +8666,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const x = Math.cos(angleRad) * item.radius;
             const y = Math.sin(angleRad) * item.radius;
 
-            numDiv.style.left = `calc(50% - 20px + ${x}px)`;
+            numDiv.style.left = `calc(50% - 20px + ${x}px)`; 
             numDiv.style.top = `calc(50% - 20px + ${y}px)`;
             this.DOM.numbersContainer.appendChild(numDiv);
           });
@@ -8706,12 +8706,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
           this.DOM.clockHand.style.width = `${handRadius}px`;
           this.DOM.clockHand.style.transform = `rotate(${angle}deg)`;
-
+          
           // Display the exact value in the pointer circle
-          let handText = (this.state.mode === 'hours' && this.format === '24' && displayValue === 0)
-            ? '00'
+          let handText = (this.state.mode === 'hours' && this.format === '24' && displayValue === 0) 
+            ? '00' 
             : this.pad(displayValue);
-
+            
           this.DOM.clockHandText.innerText = handText;
           this.DOM.clockHandText.style.transform = `rotate(${-angle}deg)`; // Keeps text upright
         }
@@ -8756,19 +8756,19 @@ document.addEventListener("DOMContentLoaded", () => {
           if (this.state.mode === 'hours') {
             let index = Math.round(angle / 30);
             if (index === 0) index = 12; // Top position
-
+            
             let hour = index;
 
             if (this.format === '24') {
               // Determine inner/outer ring by touch distance
-              if (distance < 82) {
-                if (hour === 12) hour = 12;
-              } else {
-                if (hour === 12) hour = 0;
-                else hour += 12;
+              if (distance < 82) { 
+                if (hour === 12) hour = 12; 
+              } else { 
+                if (hour === 12) hour = 0; 
+                else hour += 12; 
               }
             }
-
+            
             if (this.state.hour !== hour) {
               this.state.hour = hour;
               this.updateDisplays();
@@ -8777,7 +8777,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Minutes snap nicely to individual markers (1-59)
             let minute = Math.round(angle / 6);
             if (minute === 60) minute = 0;
-
+            
             if (this.state.minute !== minute) {
               this.state.minute = minute;
               this.updateDisplays();
@@ -8853,52 +8853,52 @@ document.addEventListener("DOMContentLoaded", () => {
         const format = el.getAttribute('Format') || el.getAttribute('format') || '12';
         const iconDir=el.getAttribute('Icon') || "Right";
         const wrapper = document.createElement('div');
-
+        
         if(iconDir==="Left"){
           wrapper.className = `field prefix ${type} label`;
-        //svg
+        //svg 
         const svgClock= document.createElement("svg")
          svgClock.innerHTML=`
          <svg fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12.5 7.25a.75.75 0 00-1.5 0v5.5c0 .27.144.518.378.651l3.5 2a.75.75 0 00.744-1.302L12.5 12.315V7.25z"></path><path fill-rule="evenodd" d="M12 1C5.925 1 1 5.925 1 12s4.925 11 11 11 11-4.925 11-11S18.075 1 12 1zM2.5 12a9.5 9.5 0 1119 0 9.5 9.5 0 01-19 0z"></path></g></svg>
          `;
         const input = document.createElement('input');
         input.id = id;
-        input.readOnly = true;
+        input.readOnly = true; 
         input.onclick = () => { if(typeof ui === 'function') ui(`#${id}_dialog`); };
-
-
+        
+        
         const label = document.createElement('label');
         label.innerText = placeholder;
-
+        
         wrapper.appendChild(svgClock)
         wrapper.appendChild(input);
         wrapper.appendChild(label);
-
+        
         }
         else{
           wrapper.className = `field suffix ${type} label`;
-        //svg
+        //svg 
         const svgClock= document.createElement("svg")
          svgClock.innerHTML=`
          <svg fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12.5 7.25a.75.75 0 00-1.5 0v5.5c0 .27.144.518.378.651l3.5 2a.75.75 0 00.744-1.302L12.5 12.315V7.25z"></path><path fill-rule="evenodd" d="M12 1C5.925 1 1 5.925 1 12s4.925 11 11 11 11-4.925 11-11S18.075 1 12 1zM2.5 12a9.5 9.5 0 1119 0 9.5 9.5 0 01-19 0z"></path></g></svg>
          `;
         const input = document.createElement('input');
         input.id = id;
-        input.readOnly = true;
+        input.readOnly = true; 
         input.onclick = () => { if(typeof ui === 'function') ui(`#${id}_dialog`); };
-
-
+        
+        
         const label = document.createElement('label');
         label.innerText = placeholder;
-
-
+        
+        
         wrapper.appendChild(input);
         wrapper.appendChild(label);
         wrapper.appendChild(svgClock)
-
+        
         }
-
-
+        
+        
 
         const dialog = document.createElement('dialog');
         dialog.id = `${id}_dialog`;
@@ -8907,7 +8907,7 @@ document.addEventListener("DOMContentLoaded", () => {
         dialog.innerHTML = `
           <div class="time-picker-container">
             <div class="time-picker-header">Select Time</div>
-
+            
             <div class="time-display">
               <div class="time-block hour-block active">
                 <span class="hour-text ripple">12</span>
@@ -8916,7 +8916,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="time-block minute-block">
                 <span class="minute-text ripple">00</span>
               </div>
-
+              
               <div class="ampm-toggle">
                 <div class="ampm-btn am-btn ripple">AM</div>
                 <div class="ampm-btn pm-btn ripple active">PM</div>
@@ -8959,14 +8959,14 @@ document.addEventListener("DOMContentLoaded", () => {
     function ElasticityEffect(id) {
         const el = document.getElementById(id);
         if (!el) return console.error(`Element ${id} not found`);
-
+        
         // Find or create internal content wrapper to prevent distortion
         let content = el.querySelector('.elastic-content');
-
+        
         const style = window.getComputedStyle(el);
         const baseHeight = parseFloat(style.height);
         const baseRadius = parseFloat(style.borderRadius);
-
+        
         // Default Settings
         let settings = {
             maxPx: baseHeight * 1.8,
@@ -8974,30 +8974,30 @@ document.addEventListener("DOMContentLoaded", () => {
             snap: "0.85s cubic-bezier(0.16, 1, 0.3, 1)",
             drag: "0.2s cubic-bezier(0.2, 0, 0, 1)"
         };
-
+        
         let startY = 0;
         let isActive = false;
-
+        
         // Apply initial transitions
         const setTransitions = (type) => {
             const t = type === 'drag' ? settings.drag : settings.snap;
             el.style.transition = `transform ${t}, border-radius ${t}`;
             if (content) content.style.transition = `transform ${t}`;
         };
-
+        
         setTransitions('snap');
-
+        
         const update = (currentY) => {
             const deltaY = currentY - startY;
             if (deltaY > 0) {
                 let scale = 1 + (deltaY / settings.friction);
                 let currentHeight = baseHeight * scale;
-
+                
                 // Enforce maxSize(px) limit
                 if (currentHeight > settings.maxPx) {
                     scale = settings.maxPx / baseHeight;
                 }
-
+                
                 // 1. Stretch background
                 el.style.transform = `scaleY(${scale})`;
                 // 2. Fix border radius distortion
@@ -9008,20 +9008,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
         };
-
+        
         // Event Handlers
         const onStart = (e) => {
             isActive = true;
             startY = e.pageY || e.touches[0].pageY;
             setTransitions('drag');
         };
-
+        
         const onMove = (e) => {
             if (!isActive) return;
             const y = e.pageY || e.touches[0].pageY;
             update(y);
         };
-
+        
         const onEnd = () => {
             isActive = false;
             setTransitions('snap');
@@ -9029,14 +9029,14 @@ document.addEventListener("DOMContentLoaded", () => {
             el.style.borderRadius = `${baseRadius}px`;
             if (content) content.style.transform = `scaleY(1)`;
         };
-
+        
         el.addEventListener('mousedown', onStart);
         window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseup', onEnd);
         el.addEventListener('touchstart', onStart, { passive: false });
         window.addEventListener('touchmove', onMove, { passive: false });
         window.addEventListener('touchend', onEnd);
-
+        
         // Framework API
         const api = {
             maxSize: (px) => {
@@ -9048,25 +9048,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 return api;
             }
         };
-
+        
         return api;
     }
-
+    
 
 // Source: Engine/Prebuilt/Gesture/Script/gesture.js
   const UIStyleFixer = {
     _sheet: null,
     _registeredIds: new Set(), // Keeps track of IDs so we don't inject duplicates
-
+    
     _init: function() {
       if (this._sheet) return; // Already initialized
-
+      
       // Create a dedicated style tag for the framework
       const styleEl = document.createElement("style");
       styleEl.id = "lithium-dynamic-styles";
       document.head.appendChild(styleEl);
       this._sheet = styleEl.sheet;
-
+      
       // ==========================================
       // SOLVE OTHER COMMON WEBVIEW PROBLEMS GLOBALLY
       // ==========================================
@@ -9077,7 +9077,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 3. Prevent text selection while swiping (smooths out gestures)
       this._insertRule(".gesture-active { user-select: none; -webkit-user-select: none; }");
     },
-
+    
     _insertRule: function(ruleText) {
       try {
         this._sheet.insertRule(ruleText, this._sheet.cssRules.length);
@@ -9085,22 +9085,22 @@ document.addEventListener("DOMContentLoaded", () => {
         console.warn("Lithium Engine: CSS Rule rejected by browser ->", ruleText);
       }
     },
-
+    
     // --- THE DYNAMIC ID FIXER ---
     removeOutlineForId: function(id) {
       if (!id) return;
       this._init();
-
+      
       // Clean the ID (removes '#' if accidentally passed)
       const cleanId = id.replace(/^#/, '');
-
+      
       // If we already fixed this ID, skip it (saves memory & CPU)
       if (this._registeredIds.has(cleanId)) return;
-
+      
       // Inject the specific rule for this dynamic ID
       const rule = `#${cleanId}:focus, #${cleanId}:focus-visible { outline: none !important; }`;
       this._insertRule(rule);
-
+      
       // Mark as processed
       this._registeredIds.add(cleanId);
     }
@@ -9113,22 +9113,22 @@ document.addEventListener("DOMContentLoaded", () => {
         startY: 0,
         startedInZone: false
       };
-
+      
       const edgeLimit = parseInt(config.EdgeSize) || 40;
       const threshold = 60;
-
+      
       // --- NEW: AUTOMATICALLY FIX CSS FOR THIS ID ---
       if (config.Content) {
         UIStyleFixer.removeOutlineForId(config.Content);
       }
       // ----------------------------------------------
-
+      
       window.addEventListener('touchstart', (e) => {
         // Click outside to close logic
         if (state.active && config.Content) {
           const elementId = config.Content.replace(/^#/, '');
           const contentElement = document.getElementById(elementId);
-
+          
           if (contentElement && !contentElement.contains(e.target)) {
             state.active = false;
             state.startedInZone = false;
@@ -9138,12 +9138,12 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
           }
         }
-
+        
         state.startX = e.touches[0].clientX;
         state.startY = e.touches[0].clientY;
         const screenW = window.innerWidth;
         const screenH = window.innerHeight;
-
+        
         if (!state.active) {
           if (direction === 'top' && state.startY <= edgeLimit) state.startedInZone = true;
           else if (direction === 'bottom' && state.startY >= screenH - edgeLimit) state.startedInZone = true;
@@ -9153,34 +9153,34 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           state.startedInZone = true;
         }
-
+        
         // Apply anti-selection class while gesture might be starting
         if (state.startedInZone) {
           document.body.classList.add('gesture-active');
         }
-
+        
       }, { passive: false });
-
+      
       window.addEventListener('touchmove', (e) => {
         if (state.startedInZone) {
           e.preventDefault();
         }
       }, { passive: false });
-
+      
       const handleEnd = (e) => {
         // Clean up anti-selection class
         document.body.classList.remove('gesture-active');
-
+        
         if (!state.startedInZone) return;
-
+        
         const endX = e.changedTouches[0].clientX;
         const endY = e.changedTouches[0].clientY;
         const diffX = endX - state.startX;
         const diffY = endY - state.startY;
-
+        
         let shouldOpen = false;
         let shouldClose = false;
-
+        
         if (direction === 'top') {
           shouldOpen = diffY > threshold;
           shouldClose = diffY < -threshold;
@@ -9194,7 +9194,7 @@ document.addEventListener("DOMContentLoaded", () => {
           shouldOpen = diffX < -threshold;
           shouldClose = diffX > threshold;
         }
-
+        
         if (!state.active && shouldOpen) {
           state.active = true;
           if (typeof config.OnOpen === 'function') config.OnOpen();
@@ -9203,10 +9203,10 @@ document.addEventListener("DOMContentLoaded", () => {
           state.active = false;
           if (typeof config.OnClose === 'function') config.OnClose();
         }
-
+        
         state.startedInZone = false;
       };
-
+      
       window.addEventListener('touchend', handleEnd);
       window.addEventListener('touchcancel', () => {
         state.startedInZone = false;
@@ -9218,7 +9218,7 @@ document.addEventListener("DOMContentLoaded", () => {
     grastureBottom: function(config) { this._createGesture('bottom', config); },
     grastureLeft: function(config) { this._createGesture('left', config); },
     grastureRight: function(config) { this._createGesture('right', config); }
-
+    
   };
 
 // Source: Engine/Prebuilt/Layout/Script/Layout.js
@@ -9228,11 +9228,11 @@ document.addEventListener("DOMContentLoaded", () => {
             'HLeft', 'HCenter', 'HRight', 'HBottom',
             'HScroll', 'VScroll'
           ];
-
+          
           customTags.forEach(tag => {
             document.createElement(tag);
           });
-
+          
         }
         layout()
 
@@ -9244,23 +9244,23 @@ class AutoScroll {
         this.timeout = null;
         this.vBar = null;
         this.hBar = null;
-
+        
         this.createBars();
-
+        
         // Listen to scroll events properly
         const targetEl = (this.el === document.body || this.el === document.documentElement) ? window : this.el;
         targetEl.addEventListener('scroll', () => this.handleScroll(), { passive: true });
         window.addEventListener('resize', () => this.update(), { passive: true });
-
+        
         // Render initial state
         this.update();
     }
-
+    
     createBars() {
         const isBody = this.el === document.body || this.el === document.documentElement;
         const parent = isBody ? document.body : this.el;
         const posType = isBody ? 'fixed' : 'absolute';
-
+        
         if (this.type.includes('VScroll')) {
             this.vBar = document.createElement('div');
             this.vBar.className = 'md-scrollbar-track';
@@ -9270,7 +9270,7 @@ class AutoScroll {
             this.vBar.style.position = posType;
             parent.appendChild(this.vBar);
         }
-
+        
         if (this.type.includes('HScroll')) {
             this.hBar = document.createElement('div');
             this.hBar.className = 'md-scrollbar-track';
@@ -9281,67 +9281,67 @@ class AutoScroll {
             parent.appendChild(this.hBar);
         }
     }
-
+    
     handleScroll() {
         if (this.vBar && this.vBar.style.display !== 'none') this.vBar.style.opacity = '1';
         if (this.hBar && this.hBar.style.display !== 'none') this.hBar.style.opacity = '1';
-
+        
         this.update();
-
+        
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
             if (this.vBar) this.vBar.style.opacity = '0';
             if (this.hBar) this.hBar.style.opacity = '0';
         }, 1200);
     }
-
+    
     update() {
         const isBody = this.el === document.body || this.el === document.documentElement;
         const target = isBody ? document.documentElement : this.el;
-
+        
         const sTop = isBody ? window.scrollY : target.scrollTop;
         const sLeft = isBody ? window.scrollX : target.scrollLeft;
         const sHeight = target.scrollHeight;
         const sWidth = target.scrollWidth;
         const vHeight = isBody ? window.innerHeight : target.clientHeight;
         const vWidth = isBody ? window.innerWidth : target.clientWidth;
-
+        
         // --- VSCROLL LOGIC ---
         if (this.vBar) {
             if (sHeight > vHeight + 2) {
                 this.vBar.style.display = 'block';
-
+                
                 // Material minimum scrollbar length is usually around 30px
                 const barHeight = Math.max((vHeight / sHeight) * vHeight, 30);
                 const maxTravel = vHeight - barHeight - 4; // 2px margin top and bottom
                 const scrollPercent = sTop / (sHeight - vHeight);
                 const barPos = scrollPercent * maxTravel;
-
-                // Position 4px from edge
+                
+                // Position 4px from edge 
                 const offsetX = isBody ? (vWidth - 4) : (sLeft + vWidth -4 );
                 const offsetY = isBody ? 0 : sTop;
-
+                
                 this.vBar.style.height = `${barHeight}px`;
                 this.vBar.style.transform = `translate(${offsetX}px, ${barPos + offsetY + 2}px)`;
             } else {
                 this.vBar.style.display = 'none';
             }
         }
-
+        
         // --- HSCROLL LOGIC ---
         if (this.hBar) {
             if (sWidth > vWidth + 2) {
                 this.hBar.style.display = 'block';
-
+                
                 const barWidth = Math.max((vWidth / sWidth) * vWidth, 30);
                 const maxTravel = vWidth - barWidth - 4; // 2px margin left and right
                 const scrollPercent = sLeft / (sWidth - vWidth);
                 const barPos = scrollPercent * maxTravel;
-
+                
                 // Position 6px from bottom (4px height + 2px gap)
                 const offsetX = isBody ? 0 : sLeft;
                 const offsetY = isBody ? (vHeight - 6) : (sTop + vHeight - 6);
-
+                
                 this.hBar.style.width = `${barWidth}px`;
                 this.hBar.style.transform = `translate(${barPos + offsetX + 2}px, ${offsetY}px)`;
             } else {
@@ -9386,13 +9386,13 @@ const ActionSheetEngine = {
     const alpha = (val * 0.03) + 0.05;
     return `0px -${val}px ${blur}px ${spread}px rgba(0,0,0,${alpha})`;
   },
-
+  
   initSheet(el) {
     const name = el.getAttribute('Name');
     const pos = (el.getAttribute('Position') || 'Bottom').toLowerCase();
     const hasNotch = el.getAttribute('Notch') === 'true';
     const elevation = el.getAttribute('Elevation') || '2';
-
+    
     // 1. Create Overlay (Global Singleton)
     if (!document.getElementById('as-global-overlay')) {
       const overlay = document.createElement('div');
@@ -9401,27 +9401,27 @@ const ActionSheetEngine = {
       // REMOVED: overlay.onclick close logic
       document.body.appendChild(overlay);
     }
-
+    
     // 2. Create UI Wrapper
     const wrapper = document.createElement('div');
     wrapper.className = `as-wrapper as-${pos}`;
     wrapper.style.boxShadow = this.getShadow(elevation);
-
+    
     // Set width based on parent element at time of initialization
     const parentWidth = el.parentElement.clientWidth;
     wrapper.style.maxWidth = parentWidth + 'px';
-
+    
     if (hasNotch) {
       const notch = document.createElement('div');
       notch.className = 'as-notch';
       wrapper.appendChild(notch);
     }
-
+    
     // 3. Migrate Content
     while (el.firstChild) {
       wrapper.appendChild(el.firstChild);
     }
-
+    
     // 4. Register
     document.body.appendChild(wrapper);
     ActionSheetRegistry[name] = wrapper;
@@ -9552,7 +9552,7 @@ window.addEventListener('resize', () => {
 
         // Initial Boot
         document.querySelectorAll('Drawer').forEach(el => DrawerEngine.initDrawer(el));
-
+   
 
 // Source: Engine/Prebuilt/Alert/Script/Alert.js
 const alertQueue = [];
@@ -9578,36 +9578,36 @@ function AlertConfirm(message, callback) {
 
 function processQueue() {
   if (isDialogOpen || alertQueue.length === 0) return;
-
+  
   isDialogOpen = true;
   const task = alertQueue.shift();
   const { type, message, callback, placeholder } = task;
-
+  
   const overlay = document.createElement('div');
   overlay.className = 'md-dialog-overlay';
-
+  
   const isInput = type === 'input';
   const isConfirm = type === 'confirm';
-
+  
   // Set title based on type
   let titleText = 'Alert';
   if (isInput) titleText = 'Input Required';
   if (isConfirm) titleText = 'Confirm';
-
+  
   // Create Input HTML if needed
   const inputHtml = isInput ?
     `<input type="text" id="md-input-field" class="md-dialog-input" placeholder="${placeholder}" autocomplete="off">` : '';
-
+  
   // Create Buttons HTML
   let buttonsHtml = '';
   if (isInput || isConfirm) {
     buttonsHtml += `<button class="transparent no-round ripple" id="md-cancel-btn">Cancel</button>`;
   }
   buttonsHtml += `<button class="transparent no-round ripple" id="md-close-btn">OK</button>`;
-
+  
   const dialog = document.createElement('div');
   dialog.className = 'md-dialog';
-
+  
   dialog.innerHTML = `
     <div>
         <h4 class="md-dialog-title">${titleText}</h4>
@@ -9620,40 +9620,40 @@ function processQueue() {
         ${buttonsHtml}
     </div>
   `;
-
+  
   overlay.appendChild(dialog);
   document.body.appendChild(overlay);
-
+  
   // Focus input if it exists
   const inputField = overlay.querySelector('#md-input-field');
   if (isInput) {
     setTimeout(() => inputField.focus(), 100);
   }
-
+  
   // Trigger entrance animation
   requestAnimationFrame(() => {
     overlay.classList.add('show');
   });
-
+  
 const closeDialog = (returnValue) => {
   overlay.classList.remove('show');
-
+  
   setTimeout(() => {
     if (document.body.contains(overlay)) {
       document.body.removeChild(overlay);
     }
-
+    
     // 1. Reset the flag FIRST so the next alert can start
     isDialogOpen = false;
-
+    
     // 2. Execute the callback
     if (typeof callback === 'function') {
       callback(returnValue);
     }
-
+    
     // 3. Process the next item in the queue
     processQueue();
-
+    
   }, 250); // Matches your transition time
 };
   // OK Button Click
@@ -9664,7 +9664,7 @@ const closeDialog = (returnValue) => {
       closeDialog(true);
     }
   };
-
+  
   // Cancel Button Click (only exists for Input and Confirm)
   const cancelBtn = overlay.querySelector('#md-cancel-btn');
   if (cancelBtn) {
@@ -9676,7 +9676,7 @@ const closeDialog = (returnValue) => {
       }
     };
   }
-
+  
   // Enter key support for Input
   if (isInput) {
     inputField.onkeydown = function(e) {
@@ -9693,60 +9693,60 @@ class FabManager {
     this.initExistingFabs();
     this.observeDOM();
   }
-
+  
   closeAll() {
     document.querySelectorAll('fab.active').forEach(f => f.classList.remove('active'));
   }
-
+  
   initExistingFabs() {
     document.querySelectorAll('fab').forEach(fab => this.setupFab(fab));
   }
-
+  
   setupFab(fab) {
     if (fab.dataset.initialized) return;
     fab.dataset.initialized = 'true';
-
+    
     // 1. Create a scoped overlay specifically for THIS Fab
     const overlay = document.createElement('div');
     overlay.className = 'fab-overlay';
     fab.insertBefore(overlay, fab.firstChild);
-
+    
     // Clicking the local overlay closes this fab
     overlay.addEventListener('click', (e) => {
       e.stopPropagation();
       this.closeAll();
     });
-
+    
     const button = fab.querySelector('fabbutton');
     const items = fab.querySelectorAll('fabitem');
-
+    
     if (button) {
       button.addEventListener('click', (e) => {
         e.stopPropagation(); // Prevent hitting the overlay
         const isActive = fab.classList.contains('active');
-
+        
         this.closeAll(); // Close any other open fabs just in case
-
+        
         if (!isActive) {
           fab.classList.add('active');
         }
       });
     }
-
+    
     if (items) {
       items.forEach(item => {
         item.addEventListener('click', (e) => {
           e.stopPropagation();
-
+          
           const action = item.getAttribute('data-action') || item.innerText;
           console.log(`✅ FAB Action triggered: ${action}`);
-
+          
           this.closeAll(); // Close after selection
         });
       });
     }
   }
-
+  
   observeDOM() {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach(mutation => {
@@ -10078,7 +10078,7 @@ Prism.languages.yang={comment:/\/\*[\s\S]*?\*\/|\/\/.*/,string:{pattern:/"(?:[^\
             super();
             this.attachShadow({ mode: 'open' });
         }
-
+        
         connectedCallback() {
             if (window.Prism) {
                 this.render();
@@ -10086,34 +10086,34 @@ Prism.languages.yang={comment:/\/\*[\s\S]*?\*\/|\/\/.*/,string:{pattern:/"(?:[^\
                 setTimeout(() => this.render(), 100);
             }
         }
-
+        
         // Added observedAttributes to auto-update when changed via JS
         static get observedAttributes() {
             return ['Code', 'Language'];
         }
-
+        
         attributeChangedCallback(name, oldValue, newValue) {
             if (oldValue !== newValue && this.shadowRoot.innerHTML !== '') {
                 this.render();
             }
         }
-
+        
         render() {
             const lang = (this.getAttribute('Language') || 'text').toLowerCase();
             const wrap = this.getAttribute('WordWrap') === 'true';
             const showCopy = this.getAttribute('Copy') !== 'false'; // Default to true for API
             const showLines = this.getAttribute('LineCount') !== 'false'; // Default to true
-
+            
             const width = this.getAttribute('Width') || '100%';
             const height = this.getAttribute('Height') || 'auto';
-
+            
             const codeContent = (this.getAttribute('Code') || this.innerHTML || '').trim();
-
+            
             const lines = codeContent.split('\n');
             const lineNumbers = showLines ?
                 `<div class="ln-col">${lines.map((_, i) => `<span>${i + 1}</span>`).join('')}</div>` :
                 '';
-
+            
             const prismCSS = Array.from(document.styleSheets)
                 .map(sheet => {
                     try { return Array.from(sheet.cssRules).map(rule => rule.cssText).join(''); }
@@ -10121,87 +10121,87 @@ Prism.languages.yang={comment:/\/\*[\s\S]*?\*\/|\/\/.*/,string:{pattern:/"(?:[^\
                 }).join('').includes('language-') ?
                 Array.from(document.querySelectorAll('style')).find(s => s.textContent.includes('language-'))?.textContent :
                 '';
-
+            
             this.shadowRoot.innerHTML = `
             <style>
                 ${prismCSS}
-                :host {
-                    display: block;
-                    margin: 1.5em 0;
-                    border-radius: 8px;
-                    overflow: hidden;
+                :host { 
+                    display: block; 
+                    margin: 1.5em 0; 
+                    border-radius: 8px; 
+                    overflow: hidden; 
                     box-shadow: 0 5px 20px rgba(0,0,0,0.2);
                     width: ${width};
                     height: ${height};
                     max-width: 100%;
                 }
-                .wrapper {
-                    display: flex;
+                .wrapper { 
+                    display: flex; 
                     flex-direction: column;
                     height: 100%;
-                    background: #1e1e1e;
-                    border: 1px solid #333;
-                    font-family: 'Consolas', 'Courier New', monospace;
+                    background: #1e1e1e; 
+                    border: 1px solid #333; 
+                    font-family: 'Consolas', 'Courier New', monospace; 
                 }
-                .toolbar {
-                    background: #2d2d2d;
-                    color: #999;
-                    padding: 10px 16px;
-                    font-size: 11px;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    border-bottom: 1px solid #111;
-                    letter-spacing: 0.5px;
+                .toolbar { 
+                    background: #2d2d2d; 
+                    color: #999; 
+                    padding: 10px 16px; 
+                    font-size: 11px; 
+                    display: flex; 
+                    justify-content: space-between; 
+                    align-items: center; 
+                    border-bottom: 1px solid #111; 
+                    letter-spacing: 0.5px; 
                 }
-                .main {
-                    display: flex;
-                    overflow: auto;
+                .main { 
+                    display: flex; 
+                    overflow: auto; 
                     flex: 1;
-                    position: relative;
-                    align-items: stretch;
+                    position: relative; 
+                    align-items: stretch; 
                 }
-                .ln-col {
-                    padding: 1em 12px;
-                    color: #4b4b4b;
-                    text-align: right;
-                    font-size: 13px;
-                    line-height: 1.5;
-                    background: #181818;
-                    user-select: none;
-                    border-right: 1px solid #2a2a2a;
-                    display: flex;
-                    flex-direction: column;
-                    min-width: 35px;
+                .ln-col { 
+                    padding: 1em 12px; 
+                    color: #4b4b4b; 
+                    text-align: right; 
+                    font-size: 13px; 
+                    line-height: 1.5; 
+                    background: #181818; 
+                    user-select: none; 
+                    border-right: 1px solid #2a2a2a; 
+                    display: flex; 
+                    flex-direction: column; 
+                    min-width: 35px; 
                 }
-                pre {
-                    margin: 0 !important;
-                    padding: 1em !important;
-                    flex: 1;
-                    font-size: 13px !important;
-                    line-height: 1.5 !important;
+                pre { 
+                    margin: 0 !important; 
+                    padding: 1em !important; 
+                    flex: 1; 
+                    font-size: 13px !important; 
+                    line-height: 1.5 !important; 
                     background: transparent !important;
-                    white-space: ${wrap ? 'pre-wrap' : 'pre'} !important;
-                    word-break: ${wrap ? 'break-all' : 'normal'} !important;
+                    white-space: ${wrap ? 'pre-wrap' : 'pre'} !important; 
+                    word-break: ${wrap ? 'break-all' : 'normal'} !important; 
                 }
-                .copy-btn {
-                    color: #4fc1ff;
-                    background: transparent;
-                    border: 1px solid #4fc1ff;
-                    padding: 3px 12px;
-                    border-radius: 4px;
-                    font-size: 10px;
-                    font-weight: bold;
-                    transition: 0.1s ease;
+                .copy-btn { 
+                    color: #4fc1ff; 
+                    background: transparent; 
+                    border: 1px solid #4fc1ff; 
+                    padding: 3px 12px; 
+                    border-radius: 4px; 
+                    font-size: 10px; 
+                    font-weight: bold; 
+                    transition: 0.1s ease; 
                 }
-                .copy-btn:hover {
-                    background: #7cfc00;
-                    color: #1e1e1e;
+                .copy-btn:hover { 
+                    background: #7cfc00; 
+                    color: #1e1e1e; 
                 }
-                .copy-btn.success {
-                    pointer-events: none;
-                    border-color: #7cfc00;
-                    color: #000000;
+                .copy-btn.success { 
+                    pointer-events: none; 
+                    border-color: #7cfc00; 
+                    color: #000000; 
                 }
             </style>
             <div class="wrapper">
@@ -10214,10 +10214,10 @@ Prism.languages.yang={comment:/\/\*[\s\S]*?\*\/|\/\/.*/,string:{pattern:/"(?:[^\
                     <pre><code class="language-${lang}">${this.escape(codeContent)}</code></pre>
                 </div>
             </div>`;
-
+            
             const codeEl = this.shadowRoot.querySelector('code');
             if (window.Prism) window.Prism.highlightElement(codeEl);
-
+            
             if (showCopy) {
                 const btn = this.shadowRoot.querySelector('.copy-btn');
                 btn.onclick = () => {
@@ -10232,17 +10232,17 @@ Prism.languages.yang={comment:/\/\*[\s\S]*?\*\/|\/\/.*/,string:{pattern:/"(?:[^\
                 };
             }
         }
-
+        
         escape(s) {
             return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
     }
-
+    
     // Register Custom Element
     if (!customElements.get('code-highlighter')) {
         customElements.define('code-highlighter', CodeHighlighterElement);
     }
-
+    
     // Convert <CodeHighlighter> to <code-highlighter> and preserve ID
     const initialize = () => {
         document.querySelectorAll('CodeHighlighter').forEach(el => {
@@ -10254,18 +10254,18 @@ Prism.languages.yang={comment:/\/\*[\s\S]*?\*\/|\/\/.*/,string:{pattern:/"(?:[^\
             el.replaceWith(replacement);
         });
     };
-
+    
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initialize);
     } else {
         initialize();
     }
-
+    
     // --- NEW CHAINABLE API ---
     // Syntax: CodeHighlighter('target-id').syntax('javascript').code(`...`)
     window.CodeHighlighter = function(targetId) {
         let selectedLang = 'text';
-
+        
         return {
             // Allows both .syntax and .syntex (just in case of typos)
             syntax: function(lang) {
@@ -10275,22 +10275,22 @@ Prism.languages.yang={comment:/\/\*[\s\S]*?\*\/|\/\/.*/,string:{pattern:/"(?:[^\
             syntex: function(lang) {
                 return this.syntax(lang);
             },
-
+            
             code: function(codeString) {
                 const targetEl = document.getElementById(targetId);
-
+                
                 // Scenario 1: The ID belongs to an existing <CodeHighlighter>
                 if (targetEl && targetEl.tagName.toLowerCase() === 'code-highlighter') {
                     targetEl.setAttribute('Language', selectedLang);
                     targetEl.setAttribute('Code', codeString);
                     return targetEl;
                 }
-
+                
                 // Scenario 2: The ID belongs to a parent container (like a <div>)
                 const el = document.createElement('code-highlighter');
                 el.setAttribute('Language', selectedLang);
                 el.setAttribute('Code', codeString);
-
+                
                 if (targetEl) {
                     // This clears the container completely before putting the new code block inside,
                     // replacing old instances instead of appending endlessly.
@@ -10299,12 +10299,12 @@ Prism.languages.yang={comment:/\/\*[\s\S]*?\*\/|\/\/.*/,string:{pattern:/"(?:[^\
                 } else {
                     console.warn(`Container or element with ID '${targetId}' not found.`);
                 }
-
+                
                 return el;
             }
         };
     };
-
+    
 })();
 
 // Source: Engine/Prebuilt/Svg/Script/Svg.js
@@ -10312,7 +10312,7 @@ Prism.languages.yang={comment:/\/\*[\s\S]*?\*\/|\/\/.*/,string:{pattern:/"(?:[^\
   connectedCallback() {
     // 1. Set the container's own styles to prevent ghost space
     this.style.display = 'block';
-
+    
     // 2. Apply dimensions from the custom attributes
     if (this.hasAttribute('width')) {
       this.style.width = this.getAttribute('width');
@@ -10320,10 +10320,10 @@ Prism.languages.yang={comment:/\/\*[\s\S]*?\*\/|\/\/.*/,string:{pattern:/"(?:[^\
     if (this.hasAttribute('height')) {
       this.style.height = this.getAttribute('height');
     }
-
+    
     // 3. Check if we are loading an external SVG or an inline one
     const externalSrc = this.getAttribute('externalsrc');
-
+    
     if (externalSrc) {
       this.loadExternalSvg(externalSrc);
     } else {
@@ -10331,34 +10331,34 @@ Prism.languages.yang={comment:/\/\*[\s\S]*?\*\/|\/\/.*/,string:{pattern:/"(?:[^\
       this.fixSvg(this.querySelector('svg'));
     }
   }
-
+  
   async loadExternalSvg(url) {
     try {
       const response = await fetch(url);
       if (!response.ok) throw new Error('Network response was not ok');
-
+      
       const svgText = await response.text();
       this.innerHTML = svgText; // Inject the SVG
-
+      
       // Now that it's in the DOM, apply the fixes
       this.fixSvg(this.querySelector('svg'));
     } catch (error) {
       console.error("Failed to load SVG from externalsrc:", error);
     }
   }
-
+  
   fixSvg(svgElement) {
     if (!svgElement) return;
-
+    
     // Remove the hardcoded dimensions that cause scaling issues
     svgElement.removeAttribute('width');
     svgElement.removeAttribute('height');
-
+    
     // Apply CSS to make it fit the container and remove ghost space
     svgElement.style.display = 'block';
     svgElement.style.width = '100%';
     svgElement.style.height = '100%';
-
+    
     // Optional: Warn if the SVG is missing a viewBox, as it won't scale properly without one
     if (!svgElement.hasAttribute('viewBox')) {
       console.warn('<svg-container> warning: The loaded SVG is missing a viewBox attribute.');
@@ -10368,7 +10368,7 @@ Prism.languages.yang={comment:/\/\*[\s\S]*?\*\/|\/\/.*/,string:{pattern:/"(?:[^\
 
 // Register the custom element
 customElements.define('svg-container', SvgContainer);
-
+ 
 
 // Source: Engine/Prebuilt/Accordion/Script/Accordion.js
 // 1. Global JS API
@@ -10421,7 +10421,7 @@ customElements.define('svg-container', SvgContainer);
             `;
 
             const accordions = document.querySelectorAll('Accordion');
-            if (accordions.length === 0) return;
+            if (accordions.length === 0) return; 
 
             accordions.forEach(accordion => {
                 // Apply GapY attribute if it exists
@@ -10464,7 +10464,7 @@ customElements.define('svg-container', SvgContainer);
                 });
             });
         });
-</script>
+</script> 
     <script>
 // Source: Package/Script/Carbon.MaterialDesign/Carbon.MaterialDesign.js
 (function() {
@@ -11308,31 +11308,37 @@ customElements.define('svg-container', SvgContainer);
 Themes.apply("syberSky")
 </script>
     <div>
-
+       
             <div>
-    <PageView Name="HomeView">
-
-
+    <PageView  Name="HomeView">
+	<App>
+		<AppBody>
+			<VCenter>
+				<h1>👋Hello,Dev</h1>
+				<p>Welcome, to Carbon Framework</p>
+				<p><a class="link underline"href="http://localhost:3000">Running http://localhost:3000</a></p>
+			</VCenter>
+		</AppBody>
+	</App>
 </PageView>
-
   </div>
-
+        
     </div>
     <!--adding post script--->
     <script>
 // Source: Main/PostScript/PixelGrid.js
 class GridPixel {
     constructor() {
-        this.engine = null;
+        this.engine = null; 
         this._id = null;
         this._visible = true;
-        this._colSpan = 100;
-        this._rowSpan = 100;
-        this._x = 0;
+        this._colSpan = 100; 
+        this._rowSpan = 100; 
+        this._x = 0; 
         this._y = 0;
         this.parent = null;
         this._children = [];
-
+        
         this._hScroll = false;
         this._vScroll = false;
         this.scrollX = 0;
@@ -11343,12 +11349,12 @@ class GridPixel {
         this._text = "";
         this._html = "";
         this._events = {};
-
+        
         this._domNode = null;
         this.bounds = { x: 0, y: 0, w: 0, h: 0 };
         this._isHovered = false;
         this._hoverCss = null;
-
+        
         this.css = {
             backgroundColor: "transparent",
             color: "#ffffff",
@@ -11373,13 +11379,13 @@ class GridPixel {
     }
 
     id(name) { this._id = name; return this; }
-
+    
     patch(newProps) {
         let changed = false;
         if (newProps.x !== undefined && this._x !== newProps.x) { this._x = newProps.x; changed = true; }
         if (newProps.y !== undefined && this._y !== newProps.y) { this._y = newProps.y; changed = true; }
         if (newProps.html !== undefined && this._html !== newProps.html) { this._html = newProps.html; changed = true; }
-
+        
         if (newProps.css) {
             for (let key in newProps.css) {
                 if (this.css[key] !== newProps.css[key]) {
@@ -11399,15 +11405,15 @@ class GridPixel {
     hoverStyle(cssObj) { this._hoverCss = cssObj; return this; }
     vScroll(enabled) { this._vScroll = enabled === true || enabled === 'true'; this.markDirty(); return this; }
     hScroll(enabled) { this._hScroll = enabled === true || enabled === 'true'; this.markDirty(); return this; }
-
-    children(arr) {
-        this._children = arr;
-        for(let c of arr) c.parent = this;
+    
+    children(arr) { 
+        this._children = arr; 
+        for(let c of arr) c.parent = this; 
         this._calculateScrollLimits();
         this.markDirty();
-        return this;
+        return this; 
     }
-
+    
     text(str) { if(this._text !== str) { this._text = str; this.markDirty(); } return this; }
     html(content) { this.patch({html: content}); return this; }
     event(eventName, callback) { this._events[eventName] = callback; return this; }
@@ -11464,7 +11470,7 @@ class GridPixel {
 
         if (activeCss.backgroundColor !== "transparent" || activeCss.border || this._text) {
             const radii = this._parseBorderRadius(activeCss.borderRadius);
-
+            
             ctx.save();
             if(activeCss.opacity !== 1) ctx.globalAlpha = activeCss.opacity;
 
@@ -11527,12 +11533,12 @@ class GridPixel {
                 this._domNode.innerHTML = this._html;
                 this._cachedState.html = this._html;
             }
-
+            
             const cTop = Math.max(0, myClipBounds.y - absY);
             const cLeft = Math.max(0, myClipBounds.x - absX);
             const cBottom = Math.max(0, (absY + absH) - (myClipBounds.y + myClipBounds.h));
             const cRight = Math.max(0, (absX + absW) - (myClipBounds.x + myClipBounds.w));
-
+            
             const transformStr = `perspective(1000px) rotateX(${activeCss.rotateX||0}deg) rotateY(${activeCss.rotateY||0}deg) rotateZ(${activeCss.rotateZ||0}deg)`;
             let boxShadowStr = "none";
             if (activeCss.shadowColor && activeCss.shadowColor !== "transparent") {
@@ -11543,7 +11549,7 @@ class GridPixel {
                              `clip-path:inset(${cTop}px ${cRight}px ${cBottom}px ${cLeft}px); ` +
                              `opacity:${activeCss.opacity}; border-radius:${activeCss.borderRadius}; ` +
                              `transform:${transformStr}; transform-origin: center center; box-shadow:${boxShadowStr};`;
-
+            
             if (this._cachedState.styleString !== newStyle) {
                 this._domNode.style.cssText = newStyle;
                 this._cachedState.styleString = newStyle;
@@ -11571,7 +11577,7 @@ class GridPixel {
 
     findHit(mouseX, mouseY, clipBounds) {
         if (!this._visible) return null;
-        if (mouseX < clipBounds.x || mouseX > clipBounds.x + clipBounds.w ||
+        if (mouseX < clipBounds.x || mouseX > clipBounds.x + clipBounds.w || 
             mouseY < clipBounds.y || mouseY > clipBounds.y + clipBounds.h) return null;
 
         const myClipBounds = {
@@ -11583,7 +11589,7 @@ class GridPixel {
 
         for (let i = this._children.length - 1; i >= 0; i--) {
             const childHit = this._children[i].findHit(mouseX, mouseY, myClipBounds);
-            if (childHit) return childHit;
+            if (childHit) return childHit; 
         }
 
         if (mouseX >= this.bounds.x && mouseX <= this.bounds.x + this.bounds.w &&
@@ -11600,7 +11606,7 @@ class EngineManager {
         this.canvas = canvas;
         this.overlay = overlay;
         this.rootPixels = rootPixels;
-
+        
         const bindEngine = (pixels) => {
             for(let p of pixels) {
                 p.engine = this;
@@ -11610,15 +11616,15 @@ class EngineManager {
         bindEngine(this.rootPixels);
 
         this.ctx = this.canvas.getContext("2d", { desynchronized: false, alpha: true });
-
-        this.hoveredPixel = null;
+        
+        this.hoveredPixel = null; 
         this.activeScrollTarget = null;
         this.lastTouchY = 0;
         this.lastTouchX = 0;
-
+        
         this.lockedWidth = 0;
         this.lockedHeight = 0;
-
+        
         this._isRendering = false;
         this._needsRedraw = true;
 
@@ -11638,13 +11644,13 @@ class EngineManager {
         this.lockedHeight = rect.height;
 
         const dpr = Math.max(window.devicePixelRatio || 1, 2);
-
+        
         // Exact pixel matching
         this.canvas.width = Math.floor(this.lockedWidth * dpr);
         this.canvas.height = Math.floor(this.lockedHeight * dpr);
-
+        
         this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
+        
         // Optimize context for UI Sharpness
         this.ctx.imageSmoothingEnabled = true;
         this.ctx.imageSmoothingQuality = "high";
@@ -11675,13 +11681,13 @@ class EngineManager {
         if (!this._needsRedraw || !this.ctx || this.rootPixels.length === 0) return;
         this._needsRedraw = false;
 
-        this.ctx.clearRect(0, 0, this.cssWidth, this.cssHeight);
+        this.ctx.clearRect(0, 0, this.cssWidth, this.cssHeight); 
         const baseClip = { x: 0, y: 0, w: this.cssWidth, h: this.cssHeight };
-
+        
         for (const pixel of this.rootPixels) {
             pixel.render(this.ctx, this.overlay, this.cssWidth, this.cssHeight, 0, 0, baseClip);
         }
-
+       
 
     }
 
@@ -11745,7 +11751,7 @@ class EngineManager {
                     if (target.scrollX !== oldX) scrolled = true;
                 }
                 if (scrolled) { e.preventDefault(); target.markDirty(); return; }
-                target = target.parent;
+                target = target.parent; 
             }
         }, { passive: false });
 
@@ -11803,7 +11809,7 @@ const DOMParserEngine = {
 
     parseNode(domNode) {
         let p = new GridPixel();
-
+        
         let x = parseFloat(domNode.getAttribute('x') || 0);
         let y = parseFloat(domNode.getAttribute('y') || 0);
         p.at(x, y);
@@ -11823,9 +11829,9 @@ const DOMParserEngine = {
             // Matches <PixelGrid> (HTML treats it as 'pixelgrid')
             if (child.nodeName.toLowerCase() === 'pixelgrid') {
                 children.push(this.parseNode(child));
-            } else if (child.nodeType === 1) {
+            } else if (child.nodeType === 1) { 
                 htmlContent += child.outerHTML;
-            } else if (child.nodeType === 3) {
+            } else if (child.nodeType === 3) { 
                 htmlContent += child.textContent;
             }
         }
@@ -11858,7 +11864,7 @@ const DOMParserEngine = {
         const overlay = engineNode.querySelector('.ui-overlay');
 
         const engine = new EngineManager(container, canvas, overlay, rootPixels);
-
+        
         // Attach the instance to the DOM node for manual triggering
         engineNode.engineInstance = engine;
 
@@ -11882,17 +11888,17 @@ Carbon.PageView({
   Name:"HomeView",
   Initial:true,
   OnScript(){
-
+ 
 
   }
   })
-
+  
 
 </script>
     <script>
 // Source: Main/BottomScript/bottom.js
 console.log("bottom script")
 </script>
-
+    
 </body>
 </html>

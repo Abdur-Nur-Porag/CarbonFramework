@@ -20,6 +20,8 @@
     :PageView
       :Script
         - PageView.js
+      :Style
+        - PageView.css
     :DatePicker
       :Script
         - DatePicker.js
@@ -87,6 +89,11 @@
     :Divider
       :Style
         - Divider.css
+    :Accordion
+      :Script
+        - Accordion.js
+      :Style
+        - Accordion.css
   :Style
     - Carbon.Style.css
     - material-icons-embedded.css

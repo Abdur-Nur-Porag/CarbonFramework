@@ -26,4 +26,6 @@
 	1. [Add Tutorial/Hello,World.md](Add Tutorial/Hello,World.md)
 	2. [Add Tutorial/BasicPageView.md](Tutorial/BasicPageView)
 	3.  Update README.md file 🛠 Getting Started 
+4. R1.3
+    1. [Add Accordion Documentation](Example/Accordion/md/Accordion.md)
 

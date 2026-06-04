@@ -2,7 +2,7 @@
 
 const NativeToastQueue = [];
 let NativeToastActive = false;
-const NativeToastConfigs = {}; // store registered toast configs
+const NativeToastConfigs = {};
 
 // ---------------- Register Toast ----------------
 function NativeToast({
@@ -12,13 +12,12 @@ function NativeToast({
   BackgroundColor = "rgba(0,0,0,0.8)",
   FontColor = "#fff",
   Duration = 3000,
-  Width = "", // "full" or "300px"
+  Width = "full", // default: full device width
   Height = "",
 } = {}) {
   if (!Html) return console.error("NativeToast: Html is required");
   if (!Name) Name = "toast";
-
-  // Register configuration
+  
   NativeToastConfigs[Name] = { Name, Html, Position, BackgroundColor, FontColor, Duration, Width, Height };
 }
 
@@ -26,7 +25,7 @@ function NativeToast({
 function openNativeToast(Name) {
   const config = NativeToastConfigs[Name];
   if (!config) return console.error(`NativeToast: No toast found with Name "${Name}"`);
-
+  
   NativeToastQueue.push(config);
   processToastQueue();
 }
@@ -35,62 +34,75 @@ function openNativeToast(Name) {
 function processToastQueue() {
   if (NativeToastActive) return;
   if (NativeToastQueue.length === 0) return;
-
+  
   NativeToastActive = true;
   const { Html, Position, BackgroundColor, FontColor, Duration, Width, Height } = NativeToastQueue.shift();
-
+  
   const toast = document.createElement("div");
   toast.innerHTML = Html;
-
-  // Basic styles
+  
+  // ── Base styles ──────────────────────────────────────────
   toast.style.position = "fixed";
-  toast.style.padding = "10px 16px";
+  toast.style.left = "0";
+  toast.style.padding = "12px 16px";
   toast.style.background = BackgroundColor;
   toast.style.color = FontColor;
   toast.style.fontSize = "14px";
-  toast.style.borderRadius = "8px";
   toast.style.boxShadow = "0 2px 8px rgba(0,0,0,0.3)";
   toast.style.zIndex = "9999";
   toast.style.opacity = "0";
-  toast.style.transition = "opacity 0.3s ease, transform 0.3s ease";
   toast.style.textAlign = "center";
   toast.style.pointerEvents = "none";
   toast.style.boxSizing = "border-box";
-
-  // Width handling
+  
+  // ── Width ────────────────────────────────────────────────
   if (Width === "full") {
-    toast.style.width = "100vw";
-    toast.style.left = "0";
-    toast.style.transform = "none";
-  } else if (Width) {
+    // Full device width — no border-radius on sides
+    toast.style.width = "100%";
+    toast.style.borderRadius = "0";
+  } else {
+    // Custom width — centred with rounded corners
     toast.style.width = Width;
     toast.style.left = "50%";
     toast.style.transform = "translateX(-50%)";
-  } else {
-    toast.style.maxWidth = "80vw";
-    toast.style.left = "50%";
-    toast.style.transform = "translateX(-50%)";
-    toast.style.whiteSpace = "nowrap";
+    toast.style.borderRadius = "8px";
   }
-
+  
   if (Height) toast.style.height = Height;
-
-  // Position
-  if (Position === "top") toast.style.top = "20px";
-  else toast.style.bottom = "20px";
-
+  
+  // ── Slide direction based on Position ───────────────────
+  const slideOffset = "100%";
+  if (Position === "top") {
+    toast.style.top = "0";
+    toast.style.transform = (Width === "full") ? "translateY(-100%)" : "translate(-50%, -100%)";
+    toast.style.transition = "opacity 0.3s ease, transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+  } else {
+    toast.style.bottom = "0";
+    toast.style.transform = (Width === "full") ? "translateY(100%)" : "translate(-50%, 100%)";
+    toast.style.transition = "opacity 0.3s ease, transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+  }
+  
   document.body.appendChild(toast);
-
-  // Show toast
-  requestAnimationFrame(() => toast.style.opacity = "1");
-
-  // Auto-hide after duration
+  
+  // ── Show: slide in ───────────────────────────────────────
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      toast.style.opacity = "1";
+      toast.style.transform = (Width === "full") ? "translateY(0)" : "translate(-50%, 0)";
+    });
+  });
+  
+  // ── Hide: slide out, then show next ─────────────────────
   setTimeout(() => {
     toast.style.opacity = "0";
+    toast.style.transform = (Position === "top") ?
+      (Width === "full" ? "translateY(-100%)" : "translate(-50%, -100%)") :
+      (Width === "full" ? "translateY(100%)" : "translate(-50%, 100%)");
+    
     setTimeout(() => {
       toast.remove();
       NativeToastActive = false;
-      processToastQueue();
+      processToastQueue(); // show next in queue
     }, 300);
-  }, Duration || 3000);
+  }, Duration);
 }

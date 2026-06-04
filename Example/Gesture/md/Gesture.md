@@ -4,16 +4,19 @@ GestureManager allows you to handle edge-swiping gestures (Top, Bottom, Left, Ri
 
 ## Use Example
 ```js
-GestureManager.grastureLeft({
-  Content: "#main-drawer",
+GestureManager.gestureLeft({
+
+  PageView:"HomeView",
+  Content: "main-drawer",
   EdgeSize: 50,
   OnOpen: () => {
-    console.log("Gesture: Opening drawer");
     openDrawer("mainMenu");
   },
   OnClose: () => {
-    console.log("Gesture: Closing drawer");
     closeDrawer("mainMenu");
+  },
+  OnBackdrop:()=>{
+  	closeDrawer("mainMenu");
   }
 });
 ```
@@ -21,19 +24,24 @@ GestureManager.grastureLeft({
 ## Javascript Api
 ### Use of api:
 ```js
-GestureManager.grastureLeft(config);
+GestureManager.gestureLeft(config);
 ```
 
-| Api Name | Method | Example | Extra |
-| :--- | :--- | :--- | :--- |
-| **Top Gesture** | `grastureTop(config)` | `GestureManager.grastureTop(c)` | Handles downward swipe from top edge. |
-| **Bottom Gesture** | `grastureBottom(config)` | `GestureManager.grastureBottom(c)` | Handles upward swipe from bottom edge. |
-| **Left Gesture** | `grastureLeft(config)` | `GestureManager.grastureLeft(c)` | Handles rightward swipe from left edge. |
-| **Right Gesture** | `grastureRight(config)` | `GestureManager.grastureRight(c)` | Handles leftward swipe from right edge. |
+| Api Name           | Method                   | Example                            | Extra                                   |
+| :----------------- | :----------------------- | :--------------------------------- | :-------------------------------------- |
+| **Top Gesture**    | `gestureTop(config)`    | `GestureManager.gestureTop(c)`    | Handles downward swipe from top edge.   |
+| **Bottom Gesture** | `gestureBottom(config)` | `GestureManager.gestureBottom(c)` | Handles upward swipe from bottom edge.  |
+| **Left Gesture**   | `gestureLeft(config)`   | `GestureManager.gestureLeft(c)`   | Handles rightward swipe from left edge. |
+| **Right Gesture**  | `gestureRight(config)`  | `GestureManager.gestureRight(c)`  | Handles leftward swipe from right edge. |
 
 ## Config Object Properties:
-1.  **Content** = Selector of the element to target (fixes focus outlines).
-2.  **EdgeSize** = Detection zone size in pixels. Default is 40.
-3.  **OnOpen** = Callback function triggered on "Open" gesture.
-4.  **OnClose** = Callback function triggered on "Close" gesture.
+1. PageView = PageView name
+2.  **Content** = Id of elements
+3.  **EdgeSize** = Detection zone size in pixels. Default is 40.
+4.  **OnOpen** = Callback function triggered on "Open" gesture.
+5.  **OnClose** = Callback function triggered on "Close" gesture.
+6. OnBackdrop = CallNack function triggered on "Backdrop" gesture.
+>[!Danger]
+PageView is optional becuase unless this will available in globally.
+
 #verified 

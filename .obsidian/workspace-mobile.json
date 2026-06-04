@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Example/DatePicker/md/DatePicker.md",
+                "file": "Example/Gesture/md/Gesture.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "DatePicker"
+              "title": "Gesture"
             }
           }
         ]
@@ -170,6 +170,8 @@
   },
   "active": "5bf79301ff21d1d5",
   "lastOpenFiles": [
+    "Example/Layout/md/Layout.md",
+    "Example/DatePicker/md/DatePicker.md",
     "Example/DatePicker/datepicker.png",
     "Example/PageView/md/PageView.md",
     "Tutorial/BasicPageView.md",
@@ -177,7 +179,6 @@
     "README.md",
     "version.md",
     "Release.md",
-    "Example/Layout/md/Layout.md",
     "Tutorial/svg/goPre.png",
     "Tutorial/svg/gonext.png",
     "Tutorial/svg/gonext.png",

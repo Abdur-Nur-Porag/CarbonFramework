@@ -1,6 +1,8 @@
 # Version History
 
 This file tracks all published updates and releases of the Carbon Framework.
+## [R1.3] [04/06/2026]
+- Add Accordion component and documentation. #bot
 ## [R1.2] [11/03/2026]
 - Add Tutorial folder with Hello,World.md && BasicPageView.md && Update ReadMe #me
 ## [R1.1] [10/03/2026]

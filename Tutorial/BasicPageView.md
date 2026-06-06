@@ -12,7 +12,7 @@ var HomeView=(
 	<App>
 	<AppBody>
 	<p>Hello,From HomeView</p>
-	<button onclick="Carbon.openPageView('SettingsView')">go SettingsView</button>
+	<button onclick="OpenPageView({ Target: 'SettingsView' })">go SettingsView</button>
 	</AppBody>
 	</App>
 </PageView>
@@ -25,7 +25,7 @@ var SettingsView=(
 			<p>
 			Hello,From Settings View
 			</p>
-			<button onclick="Carbon.openPageView('HomeView')">go home</button>
+			<button onclick="OpenPageView({ Target: 'HomeView' })">go home</button>
 	</AppBody>
 	</App>
 </PageView>
@@ -52,7 +52,7 @@ Carbon.PageView({
   }
 })
 Carbon.PageView({
-  Name:"SettlingsView",
+  Name:"SettingsView",
   Initial:false,
   OnScript(){
     
@@ -73,14 +73,14 @@ Another's way: you can enable pageview but I do not recommended that. You use (I
 # Extra
 ## Attribute Define:
 ### AppBody
-1.  **Type** = Scroll direction ("VScroll" or "HScroll").
-2.  **ScrollBar** = Boolean ("true"/"false").
+1.  **type** = Scroll direction ("vscroll" or "hscroll").
+2.  **scrollbar** = Boolean ("true"/"false").
 ```html
-<AppBody Type="VScroll" ScrollBar="true/false">
+<AppBody type="vscroll" scrollbar="true/false">
 With ScrollBar
 </AppBody>
 Or
 <AppBody>No Scrollbar</AppBody>
 ```
 
-## [Learn PageView](Example/PageView/md/PageView)
+## [Learn PageView](Example/PageView/md/PageView.md)

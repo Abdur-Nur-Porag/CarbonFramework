@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carbon Framework — Component Demo</title>
+
+  <!-- ═══════════════════════════════════════════════════
+       CORE STYLES
+  ════════════════════════════════════════════════════ -->
+  <link rel="stylesheet" href="Engine/Style/Carbon.Style.css" />
+  <link rel="stylesheet" href="Engine/Style/material-icons-embedded.css" />
+  <link rel="stylesheet" href="Package/Style/Carbon.MaterialDesign/Carbon.MaterialDesign.css" />
+
+  <!-- ═══════════════════════════════════════════════════
+       PREBUILT COMPONENT STYLES
+  ════════════════════════════════════════════════════ -->
+  <link rel="stylesheet" href="Engine/Prebuilt/Accordion/Style/Accordion.css" />
+  <link rel="stylesheet" href="Engine/Prebuilt/ActionSheet/Style/ActionSheet.css" />
+  <link rel="stylesheet" href="Engine/Prebuilt/Alert/Style/Alert.css" />
+  <link rel="stylesheet" href="Engine/Prebuilt/DatePicker/Style/DatePicker.css" />
+  <link rel="stylesheet" href="Engine/Prebuilt/Divider/Style/Divider.css" />
+  <link rel="stylesheet" href="Engine/Prebuilt/Drawer/Style/Drawer.css" />
+  <link rel="stylesheet" href="Engine/Prebuilt/Elasticity/Style/Elasticity.css" />
+  <link rel="stylesheet" href="Engine/Prebuilt/Fab/Style/Fab.css" />
+  <link rel="stylesheet" href="Engine/Prebuilt/GridView/Style/GridView.css" />
+  <link rel="stylesheet" href="Engine/Prebuilt/Layout/Style/Layout.css" />
+  <link rel="stylesheet" href="Engine/Prebuilt/PageView/Style/PageView.css" />
+  <link rel="stylesheet" href="Engine/Prebuilt/Prism/Style/Prism.css" />
+  <link rel="stylesheet" href="Engine/Prebuilt/Scroll/Style/Scroll.css" />
+  <link rel="stylesheet" href="Engine/Prebuilt/Select/Style/Select.css" />
+  <link rel="stylesheet" href="Engine/Prebuilt/TimePicker/Style/TimePicker.css" />
+
+  <!-- Minimal demo-page chrome — no extra stylesheet, only inline vars -->
+  <style>
+    :root {
+      --demo-gap: 24px;
+      --demo-radius: 12px;
+      --demo-card-bg: var(--surface-container-low, #f3f0f4);
+      --demo-header-h: 56px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      margin: 0; padding: 0;
+      height: 100%; width: 100%;
+      overflow-x: hidden;
+    }
+
+    /* ── Sidebar nav ── */
+    #demo-shell {
+      display: flex;
+      height: 100vh;
+    }
+
+    #demo-nav {
+      width: 220px;
+      min-width: 220px;
+      background: var(--surface-container, #ece6f0);
+      border-right: 1px solid var(--outline-variant, #cac4d0);
+      overflow-y: auto;
+      padding: 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    #demo-nav .nav-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--on-surface-variant, #49454f);
+      padding: 8px 20px 4px;
+    }
+
+    #demo-nav a {
+      display: block;
+      padding: 10px 20px;
+      font-size: 13px;
+      color: var(--on-surface, #1c1b1f);
+      text-decoration: none;
+      border-radius: 0 24px 24px 0;
+      margin-right: 12px;
+      transition: background 0.2s;
+    }
+    #demo-nav a:hover { background: var(--surface-container-high, #e6e0eb); }
+    #demo-nav a.active { background: var(--secondary-container, #e8def8); color: var(--on-secondary-container, #211a28); font-weight: 600; }
+
+    /* ── Content pane ── */
+    #demo-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0;
+    }
+
+    /* ── Page sections ── */
+    .demo-section {
+      padding: var(--demo-gap);
+      border-bottom: 1px solid var(--outline-variant, #cac4d0);
+    }
+
+    .demo-section h2 {
+      margin: 0 0 4px;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--on-surface, #1c1b1f);
+    }
+    .demo-section .section-subtitle {
+      margin: 0 0 20px;
+      font-size: 13px;
+      color: var(--on-surface-variant, #49454f);
+    }
+
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .demo-card {
+      background: var(--demo-card-bg);
+      border-radius: var(--demo-radius);
+      padding: 20px;
+      flex: 1 1 280px;
+      min-width: 0;
+    }
+    .demo-card h4 {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--on-surface-variant, #49454f);
+    }
+
+    /* ── Hero ── */
+    #hero {
+      background: linear-gradient(135deg, var(--primary, #6750a4), var(--tertiary, #7d5260));
+      color: var(--on-primary, #fff);
+      padding: 48px var(--demo-gap);
+      text-align: center;
+    }
+    #hero h1 { margin: 0 0 8px; font-size: 36px; font-weight: 700; }
+    #hero p  { margin: 0 0 24px; font-size: 16px; opacity: .85; }
+    #hero .badge {
+      display: inline-block;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      margin: 4px;
+    }
+
+    /* ── Theme toggle bar ── */
+    #theme-bar {
+      background: var(--surface-container-highest, #e6e0eb);
+      border-bottom: 1px solid var(--outline-variant, #cac4d0);
+      padding: 10px 20px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    #theme-bar span { font-size: 13px; font-weight: 600; color: var(--on-surface, #1c1b1f); margin-right: 4px; }
+
+    /* ── Elasticity section ── */
+    #elastic-box {
+      width: 100%;
+      height: 80px;
+      background: var(--primary-container, #eaddff);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--on-primary-container, #21005d);
+      cursor: grab;
+      user-select: none;
+    }
+
+    /* ── CodeHighlighter placeholder ── */
+    .code-block-container {
+      background: #1e1e2e;
+      border-radius: 8px;
+      padding: 16px;
+      font-family: monospace;
+      font-size: 13px;
+      color: #cdd6f4;
+      overflow-x: auto;
+    }
+
+    /* ── GridView demo ── */
+    GridView > div {
+      background: var(--secondary-container, #e8def8);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--on-secondary-container, #211a28);
+    }
+    ColumnSpan > div {
+      background: var(--tertiary-container, #ffd8e4);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--on-tertiary-container, #31111d);
+    }
+
+    /* ── Scroll demo ── */
+    .scroll-demo-box {
+      height: 150px;
+      overflow-y: auto;
+      background: var(--surface-container-highest, #e6e0eb);
+      border-radius: 8px;
+      padding: 12px;
+      position: relative;
+    }
+    .scroll-demo-box p { margin: 0 0 8px; font-size: 13px; }
+
+    /* ── API output ── */
+    .api-output {
+      background: var(--surface-container-highest, #e6e0eb);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-family: monospace;
+      min-height: 36px;
+      color: var(--on-surface, #1c1b1f);
+      word-break: break-all;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      #demo-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     LEFT NAV DRAWER
+════════════════════════════════════════════════════ -->
+<div id="demo-shell">
+  <nav id="demo-nav">
+    <div class="nav-title">Components</div>
+    <a href="#hero" class="active">Overview</a>
+    <a href="#accordion">Accordion</a>
+    <a href="#actionsheet">ActionSheet</a>
+    <a href="#alert">Alert</a>
+    <a href="#codehighlighter">CodeHighlighter</a>
+    <a href="#datepicker">DatePicker</a>
+    <a href="#divider">Divider</a>
+    <a href="#drawer">Drawer</a>
+    <a href="#elasticity">Elasticity</a>
+    <a href="#fab">FAB</a>
+    <a href="#gridview">GridView</a>
+    <a href="#layout">Layout</a>
+    <a href="#nativetoast">NativeToast</a>
+    <a href="#pageview">PageView</a>
+    <a href="#scroll">Scroll</a>
+    <a href="#select">Select</a>
+    <a href="#svg">SvgContainer</a>
+    <a href="#timepicker">TimePicker</a>
+    <a href="#themes">Themes</a>
+  </nav>
+
+  <main id="demo-content">
+
+    <!-- ── HERO ── -->
+    <section id="hero">
+      <h1>⚡ Carbon Framework</h1>
+      <p>Material Design 3 UI components for modern web apps</p>
+      
+    </section>
+
+    <!-- ── THEME BAR ── -->
+    <div id="theme-bar">
+      <span>Themes:</span>
+      <button class="chip" onclick="applyTheme('light')">Light</button>
+      <button class="chip" onclick="applyTheme('dark')">Dark</button>
+      <button class="chip" onclick="applyTheme('greenForest')">Green Forest</button>
+      <button class="chip" onclick="applyTheme('syberSky')">Syber Sky</button>
+      <button class="chip" onclick="applyTheme('cream')">Cream</button>
+      <button class="chip" onclick="applyTheme('deepBerry')">Deep Berry</button>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         1. ACCORDION
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="accordion">
+      <h2>Accordion</h2>
+      <p class="section-subtitle">Expandable / collapsible content sections — Material Design 3 style.</p>
+      <div class="demo-row">
+        <div class="demo-card">
+          <h4>Totality Mode (one open at a time)</h4>
+          <Accordion Totality="true" GapY="8">
+            <AccordionItem id="acc1">
+              <AccordionItemTitle>What is Carbon Framework?</AccordionItemTitle>
+              <AccordionItemDetail>A UI library designed for Android-style app development with Material Design 3 components.</AccordionItemDetail>
+            </AccordionItem>
+            <AccordionItem id="acc2">
+              <AccordionItemTitle>Is it Material Design 3?</AccordionItemTitle>
+              <AccordionItemDetail>Yes! Every component follows MD3 guidelines for a modern, cohesive look and feel.</AccordionItemDetail>
+            </AccordionItem>
+            <AccordionItem id="acc3">
+              <AccordionItemTitle>How do I get started?</AccordionItemTitle>
+              <AccordionItemDetail>Include the CSS and JS files, add your components in JSX, then run the CLI build step.</AccordionItemDetail>
+            </AccordionItem>
+          </Accordion>
+        </div>
+        <div class="demo-card">
+          <h4>Multiple Open + JS API</h4>
+          <Accordion GapY="8">
+            <AccordionItem id="accB1" Active="true">
+              <AccordionItemTitle>Pre-expanded item</AccordionItemTitle>
+              <AccordionItemDetail>This item starts expanded via the <code>Active</code> attribute.</AccordionItemDetail>
+            </AccordionItem>
+            <AccordionItem id="accB2">
+              <AccordionItemTitle>Another item</AccordionItemTitle>
+              <AccordionItemDetail>Multiple items can be open at the same time when <code>Totality</code> is omitted.</AccordionItemDetail>
+            </AccordionItem>
+          </Accordion>
+          <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="border" onclick="Accordion.ActiveAll()">Open All</button>
+            <button class="border" onclick="Accordion.CloseAll()">Close All</button>
+            <button class="border" onclick="Accordion.Active('accB2')">Open #2</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         2. ACTION SHEET
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="actionsheet">
+      <h2>ActionSheet</h2>
+      <p class="section-subtitle">Bottom / top / side sheets for contextual choices.</p>
+      <div class="demo-row">
+        <div class="demo-card">
+          <h4>Bottom Sheet</h4>
+          <ActionSheet Name="demoSheet" Position="Bottom" Notch="true" Elevation="5">
+            <div class="padding">
+              <h6 style="margin:0 0 12px;">Choose an action</h6>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <button class="border" onclick="closeActionSheet('demoSheet')">📸 Take Photo</button>
+                <button class="border" onclick="closeActionSheet('demoSheet')">📁 Browse Files</button>
+                <button class="border" onclick="closeActionSheet('demoSheet')">🔗 Share Link</button>
+                <button onclick="closeActionSheet('demoSheet')">Cancel</button>
+              </div>
+            </div>
+          </ActionSheet>
+          <button onclick="openActionSheet('demoSheet')">Open Bottom Sheet</button>
+        </div>
+       
+        <div class="demo-card">
+          <h4>Top Sheet</h4>
+          <ActionSheet Name="topSheet" Position="Top" Notch="true" Elevation="3">
+            <div class="padding">
+              <h6 style="margin:0 0 12px;">Top Notification</h6>
+              <p style="font-size:13px;margin:0 0 16px;">Slides in from the top.</p>
+              <button onclick="closeActionSheet('topSheet')">Dismiss</button>
+            </div>
+          </ActionSheet>
+          <button onclick="openActionSheet('topSheet')">Open Top Sheet</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         3. ALERT
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="alert">
+      <h2>Alert</h2>
+      <p class="section-subtitle">Standard Material Design 3 dialogs — alert, confirm, and input.</p>
+      <div class="demo-row">
+        <div class="demo-card">
+          <h4>Simple Alert</h4>
+          <button onclick="Alert('✅ Operation was successful!', () => {})">Show Alert</button>
+        </div>
+        <div class="demo-card">
+          <h4>Confirmation Dialog</h4>
+          <button onclick="AlertConfirm('Delete this item permanently?', (ok) => { document.getElementById('alert-result').textContent = ok ? 'Confirmed ✔' : 'Cancelled ✘'; })">Confirm Dialog</button>
+          <div class="api-output" id="alert-result" style="margin-top:10px;">—</div>
+        </div>
+        <div class="demo-card">
+          <h4>Input Dialog</h4>
+          <button onclick="AlertInput('Enter your name:', (val) => { document.getElementById('alert-input-result').textContent = val !== null ? 'Hello, ' + val + '!' : 'Cancelled'; }, 'Your name...')">Input Dialog</button>
+          <div class="api-output" id="alert-input-result" style="margin-top:10px;">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         4. CODE HIGHLIGHTER
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="codehighlighter">
+      <h2>CodeHighlighter</h2>
+      <p class="section-subtitle">Syntax-highlighted code blocks powered by PrismJS.</p>
+      <div class="demo-row">
+        <div class="demo-card" style="flex:1 1 100%;">
+          <h4>JavaScript — with line numbers &amp; copy button</h4>
+          <div id="code-js-demo"></div>
+        </div>
+        <div class="demo-card" style="flex:1 1 100%;">
+          <h4>CSS snippet</h4>
+          <div id="code-css-demo"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         5. DATE PICKER
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="datepicker">
+      <h2>DatePicker</h2>
+      <p class="section-subtitle">Material Design calendar pickers — Filled &amp; Border styles, icon left or right.</p>
+      <div class="demo-row">
+        <div class="demo-card">
+          <h4>Filled · Icon Right</h4>
+          <CarbonDatePicker Id="dp1" Placeholder="Event Date" Type="Filled" Icon="Right"></CarbonDatePicker>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="border" onclick="document.getElementById('dp-out').textContent = CarbonDatePicker.getSelectDate('dp1') || 'None selected'">Get Date</button>
+            <button class="border" onclick="CarbonDatePicker.goToday('dp1')">Go Today</button>
+            <button class="border" onclick="CarbonDatePicker.init('dp1')">Reset</button>
+          </div>
+          <div class="api-output" id="dp-out" style="margin-top:8px;">—</div>
+        </div>
+        <div class="demo-card">
+          <h4>Border · Icon Left</h4>
+          <CarbonDatePicker Id="dp2" Placeholder="Birth Date" Type="Border" Icon="Left"></CarbonDatePicker>
+          <div style="margin-top:12px;display:flex;gap:8px;">
+            <button class="border" onclick="document.getElementById('dp-out2').textContent = CarbonDatePicker.getSelectDate('dp2') || 'None selected'">Get Date</button>
+          </div>
+          <div class="api-output" id="dp-out2" style="margin-top:8px;">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         6. DIVIDER
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="divider">
+      <h2>Divider</h2>
+      <p class="section-subtitle">Styled separator lines — solid, dashed, dotted, with optional label.</p>
+      <div class="demo-card" style="max-width:600px;">
+        <h4>Solid with text</h4>
+        <DividerBody><DividerText>OR</DividerText></DividerBody>
+        <h4>Dashed</h4>
+        <DividerBody type="dash"><DividerText>SECTION</DividerText></DividerBody>
+        <h4>Dotted</h4>
+        <DividerBody type="dot"></DividerBody>
+        <h4>No text</h4>
+        <DividerBody></DividerBody>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         7. DRAWER
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="drawer">
+      <h2>Drawer</h2>
+      <p class="section-subtitle">Navigation drawers that slide in from left or right.</p>
+      <Drawer Name="leftDrawer" Position="Left" Elevation="5">
+        <div class="padding">
+          <h4 style="margin:0 0 16px;">☰ Navigation</h4>
+          <nav style="display:flex;flex-direction:column;gap:8px;">
+            <a class="button transparent" onclick="closeDrawer('leftDrawer')">🏠 Home</a>
+            <a class="button transparent" onclick="closeDrawer('leftDrawer')">⚙️ Settings</a>
+            <a class="button transparent" onclick="closeDrawer('leftDrawer')">👤 Profile</a>
+            <a class="button transparent" onclick="closeDrawer('leftDrawer')">📋 Reports</a>
+          </nav>
+          <div style="margin-top:24px;">
+            <button onclick="closeDrawer('leftDrawer')">Close</button>
+          </div>
+        </div>
+      </Drawer>
+      <Drawer Name="rightDrawer" Position="Right" Elevation="5">
+        <div class="padding">
+          <h4 style="margin:0 0 16px;">🔔 Notifications</h4>
+          <p style="font-size:13px;">You have 3 new messages.</p>
+          <button onclick="closeDrawer('rightDrawer')">Close</button>
+        </div>
+      </Drawer>
+      <div class="demo-row">
+        <div class="demo-card">
+          <h4>Left Drawer</h4>
+          <button onclick="openDrawer('leftDrawer')">Open Left Drawer</button>
+        </div>
+        <div class="demo-card">
+          <h4>Right Drawer</h4>
+          <button onclick="openDrawer('rightDrawer')">Open Right Drawer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         8. ELASTICITY
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="elasticity">
+      <h2>Elasticity</h2>
+      <p class="section-subtitle">Bouncy stretch effect when dragged — like a mobile pull-to-refresh visual.</p>
+      <div class="demo-card" style="max-width:500px;">
+        <h4>Drag the box downward to stretch it</h4>
+        <div id="elastic-box">
+          <div class="elastic-content" style="pointer-events:none; text-align:center;">
+            <p style="margin:0;">⬇ Drag Me</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         9. FAB — Floating Action Button
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="fab">
+      <h2>FAB — Floating Action Button</h2>
+      <p class="section-subtitle">Primary action button with expandable sub-actions. The FAB on this page is fixed bottom-right.</p>
+      <div class="demo-card">
+        <h4>The FAB appears fixed at the bottom-right corner of the page</h4>
+        <p style="font-size:13px;margin:0;">Click the <strong>+</strong> button (bottom-right) to expand sub-actions. Click an action or the backdrop to close.</p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         10. GRID VIEW
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="gridview">
+      <h2>GridView</h2>
+      <p class="section-subtitle">CSS Grid wrapper with row / column control and column-spanning.</p>
+      <div class="demo-row">
+        <div class="demo-card">
+          <h4>3 Columns × 2 Rows</h4>
+          <GridView Row="2" Col="3" GapX="8" GapY="8">
+            <div>Cell 1</div>
+            <div>Cell 2</div>
+            <div>Cell 3</div>
+            <ColumnSpan ColRange="2"><div>Spans 2 cols</div></ColumnSpan>
+            <div>Cell 6</div>
+          </GridView>
+        </div>
+        <div class="demo-card">
+          <h4>2 Columns with padding</h4>
+          <GridView Col="2" GapX="10" GapY="10" GapTop="10" GapBottom="10">
+            <div>A</div>
+            <div>B</div>
+            <div>C</div>
+            <ColumnSpan ColRange="2"><div>Full Width</div></ColumnSpan>
+          </GridView>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         11. LAYOUT
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="layout">
+      <h2>Layout</h2>
+      <p class="section-subtitle">Flexbox-based custom layout tags — vtop, vcenter, vbottom, hleft, hcenter, hright.</p>
+      <div class="demo-row">
+        <div class="demo-card">
+          <h4>&lt;hcenter&gt;</h4>
+          <div style="height:60px; border:1px dashed var(--outline,#999); border-radius:8px; overflow:hidden;">
+            <hcenter style="height:100%;">
+              <button class="border">Centered</button>
+              <button class="border">Items</button>
+            </hcenter>
+          </div>
+        </div>
+        <div class="demo-card">
+          <h4>&lt;hright&gt;</h4>
+          <div style="height:60px; border:1px dashed var(--outline,#999); border-radius:8px; overflow:hidden;">
+            <hright style="height:100%;gap:8px;">
+              <button class="border">Right</button>
+              <button class="border">Align</button>
+            </hright>
+          </div>
+        </div>
+        <div class="demo-card">
+          <h4>&lt;vcenter&gt;</h4>
+          <div style="height:120px; border:1px dashed var(--outline,#999); border-radius:8px; overflow:hidden;">
+            <vcenter style="height:100%; gap:8px;">
+              <button class="border">Centered</button>
+              <button class="border">Vertically</button>
+            </vcenter>
+          </div>
+        </div>
+        <div class="demo-card">
+          <h4>&lt;hleft&gt; + gap</h4>
+          <div style="height:60px; border:1px dashed var(--outline,#999); border-radius:8px; overflow:hidden;">
+            <hleft style="height:100%;gap:8px;padding:0 12px;">
+              <button class="border">A</button>
+              <button class="border">B</button>
+              <button class="border">C</button>
+            </hleft>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         12. NATIVE TOAST
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="nativetoast">
+      <h2>NativeToast</h2>
+      <p class="section-subtitle">Sleek notification messages that auto-dismiss with slide animations.</p>
+      <div class="demo-row">
+        <div class="demo-card">
+          <h4>Bottom Toast (full width)</h4>
+          <button onclick="openNativeToast('toast-bottom')">Show Bottom Toast</button>
+        </div>
+        <div class="demo-card">
+          <h4>Top Toast (custom width)</h4>
+          <button onclick="openNativeToast('toast-top')">Show Top Toast</button>
+        </div>
+        <div class="demo-card">
+          <h4>Success Toast</h4>
+          <button onclick="openNativeToast('toast-success')">Show Success Toast</button>
+        </div>
+        <div class="demo-card">
+          <h4>Queue Multiple</h4>
+          <button onclick="queueToasts()">Queue 3 Toasts</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         13. PAGE VIEW
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="pageview">
+      <h2>PageView &amp; Router</h2>
+      <p class="section-subtitle">Built-in page routing with animated transitions (SlideIn, SlideOut, FadeIn…).</p>
+      <div class="demo-card" style="max-width:420px; padding:0; overflow:hidden; border-radius:12px; position:relative; height:260px; border:1px solid var(--outline-variant,#cac4d0);">
+        <PageView Name="pv-home" style="position:absolute;inset:0;">
+          <App>
+            <AppBody style="padding:20px;">
+              <h3 style="margin:0 0 8px;">🏠 Home Page</h3>
+              <p style="font-size:13px;margin:0 0 16px;">This is rendered by PageView. Click below to navigate.</p>
+              <button onclick="OpenPageView({Target:'pv-settings', AnimationName:'SlideIn', AnimationTime:'300ms'})">Go to Settings →</button>
+            </AppBody>
+          </App>
+        </PageView>
+        <PageView Name="pv-settings" style="position:absolute;inset:0;">
+          <App>
+            <AppBody style="padding:20px;">
+              <h3 style="margin:0 0 8px;">⚙️ Settings Page</h3>
+              <p style="font-size:13px;margin:0 0 16px;">Navigated with <code>SlideIn</code> animation.</p>
+              <button onclick="ClosePageView({Target:'pv-home', AnimationName:'SlideOut', AnimationTime:'300ms'})">← Back to Home</button>
+            </AppBody>
+          </App>
+        </PageView>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         14. SCROLL
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="scroll">
+      <h2>Scroll (Custom Scrollbar)</h2>
+      <p class="section-subtitle">Material Design styled scrollbars that auto-hide — vertical and horizontal.</p>
+      <div class="demo-row">
+        <div class="demo-card">
+          <h4>Vertical ScrollBar</h4>
+          <div class="scroll-demo-box" ScrollBar="true" Type="VScroll" style="position:relative;">
+            <p>Line 1 — scroll me!</p><p>Line 2</p><p>Line 3</p><p>Line 4</p>
+            <p>Line 5</p><p>Line 6</p><p>Line 7</p><p>Line 8</p>
+            <p>Line 9</p><p>Line 10 — end</p>
+          </div>
+        </div>
+        <div class="demo-card">
+          <h4>Horizontal ScrollBar</h4>
+          <div style="height:80px; overflow-x:auto; position:relative; background:var(--surface-container-highest,#e6e0eb); border-radius:8px; padding:16px;" ScrollBar="true" Type="HScroll">
+            <div style="white-space:nowrap;">
+              <span style="display:inline-block;padding:0 16px;font-size:13px;" *ngFor="">Item A &nbsp;&nbsp; Item B &nbsp;&nbsp; Item C &nbsp;&nbsp; Item D &nbsp;&nbsp; Item E &nbsp;&nbsp; Item F &nbsp;&nbsp; Item G &nbsp;&nbsp; Item H &nbsp;&nbsp; Item I</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         15. SELECT
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="select">
+      <h2>Select &amp; MultipleSelect</h2>
+      <p class="section-subtitle">Material Design 3 dropdown pickers — single and multi-select.</p>
+      <div class="demo-row">
+        <div class="demo-card">
+          <h4>CarbonSelect — Border style</h4>
+          <CarbonSelect Id="sel1" Placeholder="Choose Fruit" Type="Border" Data="Apple, Banana, Orange, Mango, Grape"></CarbonSelect>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="border" onclick="document.getElementById('sel-out').textContent = CarbonSelect.getSelect('sel1') || 'None'">Get Value</button>
+            <button class="border" onclick="CarbonSelect.setValue('sel1','Mango')">Set Mango</button>
+            <button class="border" onclick="CarbonSelect.unSet('sel1')">Clear</button>
+          </div>
+          <div class="api-output" id="sel-out" style="margin-top:8px;">—</div>
+        </div>
+        <div class="demo-card">
+          <h4>CarbonSelect — Filled style</h4>
+          <CarbonSelect Id="sel2" Placeholder="Choose Color" Type="Filled" Data="Red, Green, Blue, Yellow, Purple"></CarbonSelect>
+          <div style="margin-top:12px;display:flex;gap:8px;">
+            <button class="border" onclick="CarbonSelect.appendData('sel2',['Cyan'])">Add Cyan</button>
+          </div>
+        </div>
+        <div class="demo-card">
+          <h4>CarbonMultipleSelect</h4>
+          <CarbonMultipleSelect Id="msel1" Placeholder="Pick Skills" Type="Border" Data="HTML, CSS, JavaScript, TypeScript, Vue, React"></CarbonMultipleSelect>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="border" onclick="document.getElementById('msel-out').textContent = JSON.stringify(CarbonSelect.getAllChecked('msel1'))">Get Checked</button>
+            <button class="border" onclick="CarbonSelect.unSet('msel1')">Clear</button>
+          </div>
+          <div class="api-output" id="msel-out" style="margin-top:8px;">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         16. SVG CONTAINER
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="svg">
+      <h2>SvgContainer</h2>
+      <p class="section-subtitle">Web component that makes SVGs scale perfectly without ghost space.</p>
+      <div class="demo-row">
+        <div class="demo-card">
+          <h4>Inline SVG (48×48)</h4>
+          <svg-container width="48px" height="48px">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="45" fill="#6750a4" />
+              <text x="50" y="58" text-anchor="middle" fill="white" font-size="40" font-weight="bold">C</text>
+            </svg>
+          </svg-container>
+        </div>
+        <div class="demo-card">
+          <h4>Inline SVG — Star (64×64)</h4>
+          <svg-container width="64px" height="64px">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="50,5 61,35 95,35 68,57 79,91 50,70 21,91 32,57 5,35 39,35" fill="#ffd700" stroke="#e6a000" stroke-width="2"/>
+            </svg>
+          </svg-container>
+        </div>
+        <div class="demo-card">
+          <h4>Responsive SVG (100%×80px)</h4>
+          <svg-container width="100%" height="80px">
+            <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+              <rect width="200" height="60" rx="8" fill="var(--primary-container,#eaddff)"/>
+              <text x="100" y="37" text-anchor="middle" fill="var(--on-primary-container,#21005d)" font-size="18" font-weight="600">Carbon Framework</text>
+            </svg>
+          </svg-container>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         17. TIME PICKER
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="timepicker">
+      <h2>TimePicker</h2>
+      <p class="section-subtitle">Material Design clock picker — 12h / 24h formats, Filled &amp; Border.</p>
+      <div class="demo-row">
+        <div class="demo-card">
+          <h4>12-Hour · Filled · Icon Right</h4>
+          <CarbonTimePicker Id="tp1" Placeholder="Meeting Time" Type="fill" Format="12" Icon="Right"></CarbonTimePicker>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="border" onclick="document.getElementById('tp-out').textContent = CarbonTimePicker.getTime('tp1') || 'None'">Get Time</button>
+            <button class="border" onclick="CarbonTimePicker.setTime('tp1','09:30 AM')">Set 9:30 AM</button>
+            <button class="border" onclick="CarbonTimePicker.removeTime('tp1')">Clear</button>
+          </div>
+          <div class="api-output" id="tp-out" style="margin-top:8px;">—</div>
+        </div>
+        <div class="demo-card">
+          <h4>24-Hour · Border · Icon Left</h4>
+          <CarbonTimePicker Id="tp2" Placeholder="Alarm Time" Type="border" Format="24" Icon="Left"></CarbonTimePicker>
+          <div style="margin-top:12px;">
+            <button class="border" onclick="document.getElementById('tp-out2').textContent = CarbonTimePicker.getTime('tp2') || 'None'">Get Time</button>
+          </div>
+          <div class="api-output" id="tp-out2" style="margin-top:8px;">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         18. THEMES
+    ══════════════════════════════════════════ -->
+    <section class="demo-section" id="themes">
+      <h2>Themes</h2>
+      <p class="section-subtitle">Dynamic theming via <code>Themes.config()</code> and <code>Themes.apply()</code>. Use the theme bar at the top to switch.</p>
+      <div class="demo-row">
+        <div class="demo-card">
+          <h4>Current theme colors</h4>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <div style="width:40px;height:40px;border-radius:8px;background:var(--primary,#6750a4);title:primary;" title="--primary"></div>
+            <div style="width:40px;height:40px;border-radius:8px;background:var(--secondary,#625b71);" title="--secondary"></div>
+            <div style="width:40px;height:40px;border-radius:8px;background:var(--tertiary,#7d5260);" title="--tertiary"></div>
+            <div style="width:40px;height:40px;border-radius:8px;background:var(--primary-container,#eaddff);" title="--primary-container"></div>
+            <div style="width:40px;height:40px;border-radius:8px;background:var(--secondary-container,#e8def8);" title="--secondary-container"></div>
+            <div style="width:40px;height:40px;border-radius:8px;background:var(--tertiary-container,#ffd8e4);" title="--tertiary-container"></div>
+            <div style="width:40px;height:40px;border-radius:8px;background:var(--surface,#fffbfe);" title="--surface" style="border:1px solid var(--outline-variant,#cac4d0);"></div>
+            <div style="width:40px;height:40px;border-radius:8px;background:var(--error,#b3261e);" title="--error"></div>
+          </div>
+          <p style="font-size:12px;margin:8px 0 0;color:var(--on-surface-variant,#49454f);">primary · secondary · tertiary · containers · surface · error</p>
+        </div>
+        <div class="demo-card">
+          <h4>API Usage</h4>
+          <pre style="margin:0;font-size:12px;background:var(--surface-container-highest,#e6e0eb);padding:12px;border-radius:8px;overflow-x:auto;">Themes.config({
+  myTheme: \`
+    :root, body.myTheme {
+      --primary: #006d32;
+    }
+  \`
+});
+Themes.apply("myTheme");</pre>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════
+     FIXED FAB (bottom-right)
+══════════════════════════════════════════ -->
+<Fab name="DemoFab" style="position:fixed;bottom:24px;right:24px;z-index:800;">
+  <FabBody>
+    <FabItem data-action="add">Create New <FabSpace></FabSpace> 📝</FabItem>
+    <FabItem data-action="upload">Upload File <FabSpace></FabSpace> ☁️</FabItem>
+    <FabItem data-action="settings">Settings <FabSpace></FabSpace> ⚙️</FabItem>
+    <FabItem data-action="share">Share <FabSpace></FabSpace> 🔗</FabItem>
+  </FabBody>
+  <FabButton></FabButton>
+</Fab>
+
+<!-- ═══════════════════════════════════════════════════
+     CORE ENGINE SCRIPTS
+════════════════════════════════════════════════════ -->
+<script src="Engine/Core/vue.global.prod.js"></script>
+<script src="Engine/Core/Carbon.BuildApi.js"></script>
+<script src="Engine/Core/Carbon.GlobalFunction.js"></script>
+<script src="Engine/Core/Carbon.Router.js"></script>
+<script src="Engine/Themes/Carbon.Themes.js"></script>
+
+<!-- ═══════════════════════════════════════════════════
+     PREBUILT COMPONENT SCRIPTS
+════════════════════════════════════════════════════ -->
+<script src="Engine/Prebuilt/Accordion/Script/Accordion.js"></script>
+<script src="Engine/Prebuilt/ActionSheet/Script/ActionSheet.js"></script>
+<script src="Engine/Prebuilt/Alert/Script/Alert.js"></script>
+<script src="Engine/Prebuilt/Prism/Script/Prism.js"></script>
+<script src="Engine/Prebuilt/CodeHighlighter/Script/CodeHighlighter.js"></script>
+<script src="Engine/Prebuilt/DatePicker/Script/DatePicker.js"></script>
+<script src="Engine/Prebuilt/Drawer/Script/Drawer.js"></script>
+<script src="Engine/Prebuilt/Elasticity/Script/Elasticity.js"></script>
+<script src="Engine/Prebuilt/Fab/Script/Fab.js"></script>
+<script src="Engine/Prebuilt/GridView/Script/GridView.js"></script>
+<script src="Engine/Prebuilt/Layout/Script/Layout.js"></script>
+<script src="Engine/Prebuilt/NativeToast/Script/NativeToast.js"></script>
+<script src="Engine/Prebuilt/PageView/Script/PageView.js"></script>
+<script src="Engine/Prebuilt/Scroll/Script/Scroll.js"></script>
+<script src="Engine/Prebuilt/Select/Script/Select.js"></script>
+<script src="Engine/Prebuilt/Svg/Script/Svg.js"></script>
+<script src="Engine/Prebuilt/TimePicker/Script/TimePicker.js"></script>
+
+<!-- ═══════════════════════════════════════════════════
+     PACKAGE SCRIPTS
+════════════════════════════════════════════════════ -->
+<script src="Package/Script/Carbon.MaterialDesign/Carbon.MaterialDesign.js"></script>
+
+<!-- ═══════════════════════════════════════════════════
+     MAIN THEMES
+════════════════════════════════════════════════════ -->
+<script src="Main/Themes/Carbon.Material.Themes.js"></script>
+
+<!-- ═══════════════════════════════════════════════════
+     DEMO BOOTSTRAP
+════════════════════════════════════════════════════ -->
+<script>
+  /* ── Theme system ── */
+  function applyTheme(name) {
+    Themes.apply(name);
+    document.querySelectorAll('#demo-nav a').forEach(a => a.classList.remove('active'));
+  }
+  // Start with light theme
+  document.addEventListener('DOMContentLoaded', () => {
+    Themes.apply('greenForest');
+  });
+
+  /* ── Sidebar active link on scroll ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    const sections = document.querySelectorAll('.demo-section, #hero');
+    const links = document.querySelectorAll('#demo-nav a');
+    const content = document.getElementById('demo-content');
+
+    content.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(sec => {
+        if (content.scrollTop >= sec.offsetTop - 80) current = sec.id;
+      });
+      links.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    }, { passive: true });
+
+    // Smooth nav clicks
+    links.forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const id = a.getAttribute('href').slice(1);
+        const target = document.getElementById(id);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  });
+
+  /* ── NativeToast setup ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    NativeToast({ Name: 'toast-bottom', Html: '🔔 Hello from <b>NativeToast</b>!', Position: 'bottom', Duration: 2500 });
+    NativeToast({ Name: 'toast-top',    Html: '📣 Top notification!', Position: 'top', Width: '300px', BackgroundColor: '#6750a4', Duration: 2500 });
+    NativeToast({ Name: 'toast-success',Html: '✅ <b>Success!</b> Action completed.', Position: 'bottom', BackgroundColor: '#2e7d32', Duration: 2000 });
+    NativeToast({ Name: 'toast-q1',    Html: '1️⃣  First queued toast', Position: 'bottom', Duration: 1500 });
+    NativeToast({ Name: 'toast-q2',    Html: '2️⃣  Second queued toast', Position: 'bottom', Duration: 1500 });
+    NativeToast({ Name: 'toast-q3',    Html: '3️⃣  Third queued toast', Position: 'bottom', Duration: 1500 });
+  });
+
+  function queueToasts() {
+    openNativeToast('toast-q1');
+    openNativeToast('toast-q2');
+    openNativeToast('toast-q3');
+  }
+
+  /* ── Elasticity setup ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    ElasticityEffect('elastic-box').maxSize(180).friction(1000);
+  });
+
+  /* ── PageView registration ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof Carbon !== 'undefined' && Carbon.PageView) {
+      Carbon.PageView({ Name: 'pv-home',     Initial: true });
+      Carbon.PageView({ Name: 'pv-settings', Initial: false });
+    }
+  });
+
+  /* ── CodeHighlighter setup ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof CodeHighlighter !== 'undefined') {
+      CodeHighlighter('code-js-demo')
+        .syntax('javascript')
+        .code(`// Carbon Framework — Build API example
+function $(selector) {
+  const el = document.querySelector(selector);
+  return buildAPI(el);
+}
+
+$('#myBtn')
+  .class('primary')
+  .event('click', () => {
+    Alert('Hello from Carbon!', () => {});
+  });`);
+
+      CodeHighlighter('code-css-demo')
+        .syntax('css')
+        .code(`/* Material Design 3 tokens */
+:root {
+  --primary:   #6750a4;
+  --secondary: #625b71;
+  --tertiary:  #7d5260;
+}
+
+.card {
+  background: var(--surface-container-low);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--elevate1);
+}`);
+    }
+  });
+
+  /* ── Scroll custom scrollbar init ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof AutoScroll !== 'undefined') {
+      document.querySelectorAll('[ScrollBar="true"]').forEach(el => {
+        new AutoScroll(el);
+      });
+    }
+  });
+</script>
+
+<script>
+  Themes.apply("greenForest")
+</script>
+</body>
+</html>

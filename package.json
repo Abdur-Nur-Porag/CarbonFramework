@@ -8,7 +8,7 @@
     "build": "node CarbonCli.js --carbon-framework --build",
     "build:js": "node CarbonCli.js --build-js",
     "build:css": "node CarbonCli.js --build-css",
-    "start": "node LiveServer.js"
+    "start": "node CarbonCli.js --sync && node LiveServer.js"
   },
   "keywords": [
     "carbon",

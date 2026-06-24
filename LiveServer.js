@@ -73,6 +73,11 @@ async function bundleFiles(fileList, type) {
     }
     return bundle;
 }
+
+/* ==========================================================================
+   LITHIUM CARBON ENGINE v3.2 (Synchronous Edition - Node Patched)
+   ========================================================================== */
+
 const CarbonConfig = {
     root: './',
     debug: true,
@@ -267,10 +272,11 @@ function runLithiumEngine(processedResponses, baseState) {
                 const className = propMatch[1];
                 const rules = propMatch[2];
                 const cssString = rules.split(',').map(line => {
-                    const parts = line.split(':');
-                    if (parts.length < 2) return '';
-                    const key = parts[0].trim().replace(/([A-Z])/g, "-$1").toLowerCase();
-                    const val = parts[1].trim().replace(/['"]/g, '');
+                    // Split only on the FIRST colon so values like var(--x) or url(a:b) survive intact
+                    const colonIdx = line.indexOf(':');
+                    if (colonIdx === -1) return '';
+                    const key = line.slice(0, colonIdx).trim().replace(/([A-Z])/g, "-$1").toLowerCase();
+                    const val = line.slice(colonIdx + 1).trim().replace(/^['"]|['"]$/g, '');
                     return `${key}: ${val};`;
                 }).join(' ');
                 styles[styleName][className] = cssString.trim();
@@ -366,6 +372,15 @@ function runLithiumEngine(processedResponses, baseState) {
         });
 
         // PHASE 4: Expressions
+        // First, protect string-literal style attributes (e.g. style="var(--x)") by temporarily
+        // encoding them so the expression phase cannot corrupt their values.
+        const styleStringPlaceholders = [];
+        html = html.replace(/style="([^"]*)"/g, (m, val) => {
+            const idx = styleStringPlaceholders.length;
+            styleStringPlaceholders.push(val);
+            return `style="__STYLE_LITERAL_${idx}__"`;
+        });
+
         html = html.replace(/\{([^{}]+)\}/g, (m, expr) => {
             const trimExpr = expr.trim();
             if (trimExpr.includes('.map') || (trimExpr.includes('.') && styles[trimExpr.split('.')[0]])) return m;
@@ -380,6 +395,27 @@ function runLithiumEngine(processedResponses, baseState) {
                 }
             } catch (e) { }
             
+            return m;
+        });
+
+        // Restore protected style="..." string literals
+        html = html.replace(/style="__STYLE_LITERAL_(\d+)__"/g, (m, idx) => {
+            return `style="${styleStringPlaceholders[parseInt(idx)]}"`;
+        });
+
+        // Resolve style="${varName}" — convert a nested style object to inline CSS string.
+        // Example: var mainStyle = { color: 'red', fontSize: '14px' }
+        // Usage in JSX: style="${mainStyle}" → style="color: red; font-size: 14px;"
+        html = html.replace(/style="\$\{(\w+)\}"/g, (m, varName) => {
+            const val = state[varName];
+            if (val && typeof val === 'object' && !Array.isArray(val)) {
+                const cssStr = Object.entries(val).map(([k, v]) => {
+                    const cssKey = k.replace(/([A-Z])/g, '-$1').toLowerCase();
+                    return `${cssKey}: ${v};`;
+                }).join(' ');
+                changed = true;
+                return `style="${cssStr}"`;
+            }
             return m;
         });
 

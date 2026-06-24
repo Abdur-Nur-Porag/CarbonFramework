@@ -31,10 +31,6 @@ const ActionSheetEngine = {
     wrapper.className = `as-wrapper as-${pos}`;
     wrapper.style.boxShadow = this.getShadow(elevation);
     
-    // Set width based on parent element at time of initialization
-    const parentWidth = el.parentElement.clientWidth;
-    wrapper.style.maxWidth = parentWidth + 'px';
-    
     if (hasNotch) {
       const notch = document.createElement('div');
       notch.className = 'as-notch';
@@ -89,12 +85,3 @@ observer_2.observe(document.documentElement, { childList: true, subtree: true })
 
 // Initial Boot
 document.querySelectorAll('ActionSheet').forEach(el => ActionSheetEngine.initSheet(el));
-
-// Update width on window resize to ensure responsiveness
-window.addEventListener('resize', () => {
-  Object.values(ActionSheetRegistry).forEach(sheet => {
-    // You can customize this logic if sheets should respond to parent resizing
-    const container = document.querySelector('.app-container');
-    sheet.style.maxWidth = container.clientWidth + 'px';
-  });
-});

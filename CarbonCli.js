@@ -383,10 +383,11 @@ function runLithiumEngine(processedResponses, baseState) {
                 const className = propMatch[1];
                 const rules = propMatch[2];
                 const cssString = rules.split(',').map(line => {
-                    const parts = line.split(':');
-                    if (parts.length < 2) return '';
-                    const key = parts[0].trim().replace(/([A-Z])/g, "-$1").toLowerCase();
-                    const val = parts[1].trim().replace(/['"]/g, '');
+                    // Split only on the FIRST colon so values like var(--x) or url(a:b) survive intact
+                    const colonIdx = line.indexOf(':');
+                    if (colonIdx === -1) return '';
+                    const key = line.slice(0, colonIdx).trim().replace(/([A-Z])/g, "-$1").toLowerCase();
+                    const val = line.slice(colonIdx + 1).trim().replace(/^['"]|['"]$/g, '');
                     return `${key}: ${val};`;
                 }).join(' ');
                 styles[styleName][className] = cssString.trim();
@@ -482,6 +483,15 @@ function runLithiumEngine(processedResponses, baseState) {
         });
 
         // PHASE 4: Expressions
+        // First, protect string-literal style attributes (e.g. style="var(--x)") by temporarily
+        // encoding them so the expression phase cannot corrupt their values.
+        const styleStringPlaceholders = [];
+        html = html.replace(/style="([^"]*)"/g, (m, val) => {
+            const idx = styleStringPlaceholders.length;
+            styleStringPlaceholders.push(val);
+            return `style="__STYLE_LITERAL_${idx}__"`;
+        });
+
         html = html.replace(/\{([^{}]+)\}/g, (m, expr) => {
             const trimExpr = expr.trim();
             if (trimExpr.includes('.map') || (trimExpr.includes('.') && styles[trimExpr.split('.')[0]])) return m;
@@ -496,6 +506,27 @@ function runLithiumEngine(processedResponses, baseState) {
                 }
             } catch (e) { }
             
+            return m;
+        });
+
+        // Restore protected style="..." string literals
+        html = html.replace(/style="__STYLE_LITERAL_(\d+)__"/g, (m, idx) => {
+            return `style="${styleStringPlaceholders[parseInt(idx)]}"`;
+        });
+
+        // Resolve style="${varName}" — convert a nested style object to inline CSS string.
+        // Example: var mainStyle = { color: 'red', fontSize: '14px' }
+        // Usage in JSX: style="${mainStyle}" → style="color: red; font-size: 14px;"
+        html = html.replace(/style="\$\{(\w+)\}"/g, (m, varName) => {
+            const val = state[varName];
+            if (val && typeof val === 'object' && !Array.isArray(val)) {
+                const cssStr = Object.entries(val).map(([k, v]) => {
+                    const cssKey = k.replace(/([A-Z])/g, '-$1').toLowerCase();
+                    return `${cssKey}: ${v};`;
+                }).join(' ');
+                changed = true;
+                return `style="${cssStr}"`;
+            }
             return m;
         });
 
@@ -772,6 +803,118 @@ function mergeDirectoryIntoObject(existingObj, physicalData) {
     return result;
 }
 
+/* ==========================================================================
+   VIEW GENERATOR (--create-view <name>)
+   ========================================================================== */
+
+/**
+ * Creates a new PageView: Main/Views/<Name>.jsx + Main/Script/<Name>.js
+ * Then wires it into Main/Views/MainView.jsx and Main/Script/MainView.js
+ * so it renders and registers automatically.
+ */
+async function createView(rawName) {
+    if (!rawName) {
+        console.error("❌ Syntax Error: --create-view requires a name. Ex: --create-view Profile");
+        return;
+    }
+
+    // Normalize: PascalCase, strip illegal chars, ensure it ends with "View"
+    let name = rawName.replace(/[^a-zA-Z0-9]/g, '');
+    name = name.charAt(0).toUpperCase() + name.slice(1);
+    if (!/View$/.test(name)) name += 'View';
+
+    const viewsDir  = path.join('Main', 'Views');
+    const scriptDir = path.join('Main', 'Script');
+    const jsxPath   = path.join(viewsDir, `${name}.jsx`);
+    const jsPath    = path.join(scriptDir, `${name}.js`);
+
+    // 1. Guard against overwriting an existing view
+    if (fsSync.existsSync(jsxPath) || fsSync.existsSync(jsPath)) {
+        console.error(`❌ View "${name}" already exists. Choose a different name.`);
+        return;
+    }
+
+    await fs.mkdir(viewsDir, { recursive: true });
+    await fs.mkdir(scriptDir, { recursive: true });
+
+    // 2. Write the new View JSX (PageView boilerplate)
+    const jsxContent = `var ${name}=(
+<PageView Name="${name}">
+\t<App>
+\t\t<AppBody>
+\t\t\t<VCenter>
+\t\t\t\t<h1>${name}</h1>
+\t\t\t\t<p>This is the ${name} page.</p>
+\t\t\t</VCenter>
+\t\t</AppBody>
+\t</App>
+</PageView>
+)`;
+    await fs.writeFile(jsxPath, jsxContent, 'utf8');
+    console.log(`✅ Created: ${jsxPath}`);
+
+    // 3. Write the new View's registration script
+    const jsContent = `
+function ${name}(){
+    
+}
+`;
+    await fs.writeFile(jsPath, jsContent, 'utf8');
+    console.log(`✅ Created: ${jsPath}`);
+
+    // 4. Update Main/Views/MainView.jsx — inject <NewView/> inside <Main>
+    const mainViewJsxPath = path.join(viewsDir, 'MainView.jsx');
+    if (fsSync.existsSync(mainViewJsxPath)) {
+        let mainViewJsx = await fs.readFile(mainViewJsxPath, 'utf8');
+
+        if (mainViewJsx.includes(`<${name}/>`) || mainViewJsx.includes(`<${name} />`)) {
+            console.log(`ℹ️  ${mainViewJsxPath} already references <${name}/>, skipping injection.`);
+        } else {
+            // Insert the new view tag right before the closing </div> of <Main>
+            const closingDivIndex = mainViewJsx.lastIndexOf('</div>');
+            if (closingDivIndex !== -1) {
+                mainViewJsx =
+                    mainViewJsx.slice(0, closingDivIndex) +
+                    `    <${name}/>\n  ` +
+                    mainViewJsx.slice(closingDivIndex);
+            } else {
+                // Fallback: append at the end if structure is non-standard
+                mainViewJsx += `\n<${name}/>\n`;
+            }
+            await fs.writeFile(mainViewJsxPath, mainViewJsx, 'utf8');
+            console.log(`✅ Updated: ${mainViewJsxPath} (added <${name}/>)`);
+        }
+    } else {
+        console.warn(`⚠️ ${mainViewJsxPath} not found. Skipped injection.`);
+    }
+
+    // 5. Update Main/Script/MainView.js — append registration for the new view
+    const mainViewJsPath = path.join(scriptDir, 'MainView.js');
+    if (fsSync.existsSync(mainViewJsPath)) {
+        let mainViewJs = await fs.readFile(mainViewJsPath, 'utf8');
+
+        if (mainViewJs.includes(`Name:"${name}"`) || mainViewJs.includes(`Name: "${name}"`)) {
+            console.log(`ℹ️  ${mainViewJsPath} already registers "${name}", skipping.`);
+        } else {
+            mainViewJs += `
+Carbon.PageView({
+Name: "${name}",
+Initial: false,
+OnScript(){
+  ${name}();
+ }
+})
+`;
+            await fs.writeFile(mainViewJsPath, mainViewJs, 'utf8');
+            console.log(`✅ Updated: ${mainViewJsPath} (registered "${name}")`);
+        }
+    } else {
+        console.warn(`⚠️ ${mainViewJsPath} not found. Skipped registration update.`);
+    }
+
+    console.log(`\n🎉 View "${name}" created successfully.`);
+}
+
 /**
  * Updated Master Sync function
  */
@@ -959,6 +1102,9 @@ Build Commands:
 Sync Commands:
   --sync                            Scans physical folders and updates Carbon.package, Carbon.build, Carbon.main
 
+View Commands:
+  --create-view <name>              Creates a new PageView (.jsx + .js), wires it into MainView, then auto-syncs
+
 Encryption:
   --enc <key>                       Encrypt build 
   Ex: --enc MyEncKey
@@ -978,8 +1124,16 @@ Viewer Commands:
     }
     
     try {
+        // --- CREATE VIEW COMMAND ---
+        if (args.includes('--create-view')) {
+            const viewName = args[args.indexOf('--create-view') + 1];
+            await createView(viewName);
+            console.log("\n🔄 Auto-syncing project after view creation...");
+            await syncProjectFiles();
+        }
+
         // --- SYNC COMMAND ---
-        if (args.includes('--sync')) {
+        else if (args.includes('--sync')) {
             await syncProjectFiles();
         }
         
@@ -1046,4 +1200,3 @@ await organizeAndEncryptOutputs(args, encKey);
 }
 
 runCli();
-

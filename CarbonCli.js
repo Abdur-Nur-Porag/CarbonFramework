@@ -915,6 +915,191 @@ OnScript(){
     console.log(`\n🎉 View "${name}" created successfully.`);
 }
 
+/* ==========================================================================
+   VIEW REMOVER (--remove-view <name>)
+   ========================================================================== */
+
+/**
+ * Removes a previously created PageView entirely:
+ *  - Deletes Main/Views/<Name>.jsx (if it exists)
+ *  - Deletes Main/Script/<Name>.js  (if it exists)
+ *  - Strips the <Name/> tag out of Main/Views/MainView.jsx
+ *  - Strips the Carbon.PageView({ Name: "<Name>", ... }) block out of Main/Script/MainView.js
+ */
+async function removeView(rawName) {
+    if (!rawName) {
+        console.error("❌ Syntax Error: --remove-view requires a name. Ex: --remove-view Profile");
+        return;
+    }
+
+    // Normalize the same way --create-view does, so names always line up
+    let name = rawName.replace(/[^a-zA-Z0-9]/g, '');
+    name = name.charAt(0).toUpperCase() + name.slice(1);
+    if (!/View$/.test(name)) name += 'View';
+
+    const viewsDir  = path.join('Main', 'Views');
+    const scriptDir = path.join('Main', 'Script');
+    const jsxPath   = path.join(viewsDir, `${name}.jsx`);
+    const jsPath    = path.join(scriptDir, `${name}.js`);
+
+    let touched = false;
+
+    // 1. Delete Main/Views/<Name>.jsx (if it exists)
+    if (fsSync.existsSync(jsxPath)) {
+        await fs.unlink(jsxPath);
+        console.log(`🗑️  Deleted: ${jsxPath}`);
+        touched = true;
+    } else {
+        console.warn(`⚠️ ${jsxPath} does not exist. Skipped.`);
+    }
+
+    // 2. Delete Main/Script/<Name>.js (if it exists)
+    if (fsSync.existsSync(jsPath)) {
+        await fs.unlink(jsPath);
+        console.log(`🗑️  Deleted: ${jsPath}`);
+        touched = true;
+    } else {
+        console.warn(`⚠️ ${jsPath} does not exist. Skipped.`);
+    }
+
+    // 3. Strip the <Name/> reference out of Main/Views/MainView.jsx
+    const mainViewJsxPath = path.join(viewsDir, 'MainView.jsx');
+    if (fsSync.existsSync(mainViewJsxPath)) {
+        let mainViewJsx = await fs.readFile(mainViewJsxPath, 'utf8');
+        const { content, removed } = stripViewTag(mainViewJsx, name);
+
+        if (removed) {
+            await fs.writeFile(mainViewJsxPath, content, 'utf8');
+            console.log(`✅ Updated: ${mainViewJsxPath} (removed <${name}/>)`);
+            touched = true;
+        } else {
+            console.log(`ℹ️  ${mainViewJsxPath} does not reference <${name}/>, skipping.`);
+        }
+    } else {
+        console.warn(`⚠️ ${mainViewJsxPath} not found. Skipped cleanup.`);
+    }
+
+    // 4. Strip the Carbon.PageView({ Name: "<Name>", ... }) block out of Main/Script/MainView.js
+    const mainViewJsPath = path.join(scriptDir, 'MainView.js');
+    if (fsSync.existsSync(mainViewJsPath)) {
+        let mainViewJs = await fs.readFile(mainViewJsPath, 'utf8');
+        const { content, removed } = stripPageViewRegistration(mainViewJs, name);
+
+        if (removed) {
+            await fs.writeFile(mainViewJsPath, content, 'utf8');
+            console.log(`✅ Updated: ${mainViewJsPath} (unregistered "${name}")`);
+            touched = true;
+        } else {
+            console.log(`ℹ️  ${mainViewJsPath} does not register "${name}", skipping.`);
+        }
+    } else {
+        console.warn(`⚠️ ${mainViewJsPath} not found. Skipped cleanup.`);
+    }
+
+    if (touched) {
+        console.log(`\n🎉 View "${name}" removed successfully.`);
+    } else {
+        console.warn(`\n⚠️ Nothing was found for view "${name}".`);
+    }
+}
+
+/**
+ * Removes a `<Name/>` (or `<Name />`) tag from a .jsx source line-by-line.
+ * Line-based on purpose: a single sweeping regex over the whole file can
+ * silently fail to match depending on mixed tabs/spaces or mixed CRLF/LF
+ * line endings, which is exactly what caused tags to survive removal.
+ * This approach normalizes line endings, checks each line independently,
+ * and either drops the line entirely (tag was alone on it) or removes just
+ * the tag substring if it shared a line with other content.
+ */
+function stripViewTag(source, name) {
+    const eol = source.includes('\r\n') ? '\r\n' : '\n';
+    const lines = source.split(/\r\n|\r|\n/);
+    const tagPattern = new RegExp(`<${name}\\s*\\/>`);
+
+    let removed = false;
+    const kept = [];
+
+    for (const line of lines) {
+        if (!tagPattern.test(line)) {
+            kept.push(line);
+            continue;
+        }
+
+        removed = true;
+        const withoutTag = line.replace(tagPattern, '');
+
+        // If the tag was the only meaningful thing on the line, drop the
+        // whole line (avoids leaving a blank/whitespace-only gap behind).
+        if (withoutTag.trim() === '') continue;
+
+        kept.push(withoutTag);
+    }
+
+    return { content: kept.join(eol), removed };
+}
+
+/**
+ * Finds a `Carbon.PageView({ ... Name: "<name>" ... })` call in a script's
+ * source text and replaces it with a `// Removed PageView: <name>` comment,
+ * using paren-depth balancing so it safely handles the nested braces inside
+ * `OnScript(){ ... }` callbacks instead of relying on a naive non-greedy regex.
+ *
+ * The surrounding blank-line spacing is left untouched on purpose, so the
+ * blank line that used to separate this block from the previous one is
+ * preserved instead of being collapsed away:
+ *   Carbon.PageView({...A...})
+ *                                <- blank line preserved
+ *   // Removed PageView: B
+ *   Carbon.PageView({...C...})
+ */
+function stripPageViewRegistration(source, name) {
+    const callRegex = /Carbon\.PageView\s*\(/g;
+    let match;
+
+    while ((match = callRegex.exec(source)) !== null) {
+        const blockStart = match.index;
+        const parenOpenIndex = match.index + match[0].length - 1; // index of '('
+
+        // Walk forward counting parens to find the matching closing ')'
+        let depth = 0;
+        let parenCloseIndex = -1;
+        for (let i = parenOpenIndex; i < source.length; i++) {
+            if (source[i] === '(') depth++;
+            else if (source[i] === ')') {
+                depth--;
+                if (depth === 0) {
+                    parenCloseIndex = i;
+                    break;
+                }
+            }
+        }
+        if (parenCloseIndex === -1) break; // malformed source, bail out
+
+        const block = source.slice(blockStart, parenCloseIndex + 1);
+        const nameMatches =
+            block.includes(`Name: "${name}"`) ||
+            block.includes(`Name:"${name}"`) ||
+            block.includes(`Name: '${name}'`) ||
+            block.includes(`Name:'${name}'`);
+
+        if (nameMatches) {
+            // Swap just the call itself for a comment — keep every blank
+            // line around it exactly as it was.
+            const updated =
+                source.slice(0, blockStart) +
+                `// Removed PageView: ${name}` +
+                source.slice(parenCloseIndex + 1);
+
+            return { content: updated, removed: true };
+        }
+
+        callRegex.lastIndex = parenCloseIndex + 1;
+    }
+
+    return { content: source, removed: false };
+}
+
 /**
  * Updated Master Sync function
  */
@@ -1104,6 +1289,7 @@ Sync Commands:
 
 View Commands:
   --create-view <name>              Creates a new PageView (.jsx + .js), wires it into MainView, then auto-syncs
+  --remove-view <name>              Deletes a PageView (.jsx + .js), unwires it from MainView, then auto-syncs
 
 Encryption:
   --enc <key>                       Encrypt build 
@@ -1129,6 +1315,24 @@ Viewer Commands:
             const viewName = args[args.indexOf('--create-view') + 1];
             await createView(viewName);
             console.log("\n🔄 Auto-syncing project after view creation...");
+            await syncProjectFiles();
+        }
+
+        // --- REMOVE VIEW COMMAND ---
+        else if (args.includes('--remove-view')) {
+            // Support one or more "--remove-view <name>" pairs in a single command,
+            // e.g. --remove-view X --remove-view Y --remove-view Z
+            const viewNames = [];
+            args.forEach((arg, idx) => {
+                if (arg === '--remove-view' && args[idx + 1] && !args[idx + 1].startsWith('--')) {
+                    viewNames.push(args[idx + 1]);
+                }
+            });
+
+            for (const viewName of viewNames) {
+                await removeView(viewName);
+            }
+            console.log("\n🔄 Auto-syncing project after view removal...");
             await syncProjectFiles();
         }
 
